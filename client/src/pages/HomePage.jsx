@@ -1,9 +1,9 @@
-import { useRef } from 'react';
+import HomeComponent from "../components/HomeComponent";
 
 function HomePage() {
   return (
   <>
-  home page
+  <HomeComponent />
   
   </>)
   ;
