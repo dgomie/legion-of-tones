@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// import { PlansProvider } from "./context/plansContext.jsx";
 
 import App from "./App.jsx";
 import HomePage from "./pages/HomePage";

@@ -1,14 +1,12 @@
 import { useRouteError } from "react-router-dom";
-import Nav from "../components/Nav";
-import Layout from "../components/LayoutComponent";
+
 
 export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);
   return (
     <div id="error-page">
-      <Layout>
-        <Nav />
+
         <div
           style={{
             display: "flex",
@@ -24,7 +22,6 @@ export default function ErrorPage() {
             </p>
           </div>
         </div>
-      </Layout>
     </div>
   );
 }

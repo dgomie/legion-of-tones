@@ -20,8 +20,6 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@fullcalendar/daygrid": "^6.1.15",
-    "@fullcalendar/react": "^6.1.15",
     "@google/generative-ai": "^0.13.0",
     "@mui/material": "^5.15.20",
     "@mui/x-charts": "^7.10.0",
