@@ -11,12 +11,28 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import logo from "../images/navlogo.png";
+import logo from '../images/navlogo.png';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Auth from '../utils/auth';
 
-const pages = ['Dashboard', 'Leagues', 'Blog'];
+
+const isLoggedIn = Auth.loggedIn(); 
+
+let pages = []
+if (isLoggedIn) {
+  pages = ['dashboard', 'leagues', 'blog'];
+} else {
+  pages  = ['login', 'sign up', 'blog'];
+}
+
+
 const settings = ['Profile', 'Account', 'Logout'];
 
 function Nav() {
+  const navigate = useNavigate(); // navigates pages
+  const location = useLocation();
+  const isLoggedIn = Auth.loggedIn(); // checks if user is logged in
+
   const [anchorElNav, setAnchorElNav] = React.useState();
   const [anchorElUser, setAnchorElUser] = React.useState();
 
@@ -35,13 +51,23 @@ function Nav() {
     setAnchorElUser(null);
   };
 
+
+
   return (
-    <AppBar position="static" sx= {{mb: 3}}>
+    <AppBar position="static" sx={{ mb: 3 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img src={logo} width="150px" alt="" />
+          <Button onClick={() => navigate('/')}>
+            <img src={logo} width="150px" alt="" />
+          </Button>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end'  }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' },
+              justifyContent: 'flex-end',
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -71,25 +97,31 @@ function Nav() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page}  onClick={() => { handleCloseNavMenu; navigate(`/${page.replace(/\s+/g, '')}`); }}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-        
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', md: 'flex' },
+              justifyContent: 'flex-end',
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => { handleCloseNavMenu; navigate(`/${page.replace(/\s+/g, '')}`); }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
               </Button>
             ))}
           </Box>
-
+          {isLoggedIn && (
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -119,6 +151,7 @@ function Nav() {
               ))}
             </Menu>
           </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
