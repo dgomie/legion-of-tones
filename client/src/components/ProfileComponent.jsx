@@ -19,8 +19,11 @@ const ProfileComponent = () => {
     setUsername(profile.data.username);
     setUserId(profile.data._id);
     getImage(profile.data._id);
+    setDateJoined(profile.data.formattedCreatedAt)
     console.log(profile.data)
   }, []);
+
+  
 
   // profile picture handlers
   const handleAvatarClick = () => {
@@ -144,9 +147,14 @@ const ProfileComponent = () => {
             </Box>
             <Typography
               variant="h6"
-              sx={{ textAlign: "center", padding: "1rem", fontWeight: "bold" }}
+              sx={{ textAlign: "center", padding: "10px", fontWeight: "bold" }}
             >
               {username}
+            </Typography>
+            <Typography
+              sx={{ textAlign: "center" }}
+            >
+              Member Since {dateJoined}
             </Typography>
           </Paper>
         </Grid>

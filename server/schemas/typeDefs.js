@@ -7,6 +7,7 @@ const typeDefs = `
     email: String!
     age: Int
     profilePicture: String
+    formattedCreatedAt: String
   }
 
 

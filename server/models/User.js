@@ -37,10 +37,10 @@ const userSchema = new Schema(
     profilePicture: {
       type: String,
     },
-    yearCreated: {
-      type: Number,
+    createdAt: {
+      type: Date,
       required: true,
-      default: new Date().getFullYear()
+      default: Date.now
     }
   },
 
@@ -75,6 +75,14 @@ userSchema.virtual("age").get(function () {
     age--;
   }
   return age;
+});
+
+userSchema.virtual('formattedCreatedAt').get(function() {
+  return this.createdAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
 });
 
 // userSchema.pre("findOneAndDelete", async function (next) {
