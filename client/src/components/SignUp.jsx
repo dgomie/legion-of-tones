@@ -9,11 +9,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, duration, ThemeProvider } from "@mui/material/styles";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
@@ -76,9 +72,6 @@ const Signup = () => {
       email: event.target.email.value,
       password: event.target.password.value,
       dateOfBirth: event.target.dateOfBirth.value,
-      activityLevel: event.target.activityLevel.value,
-      durationGoal: parseInt(event.target.durationGoal.value, 10),
-      workoutGoal: parseInt(event.target.workoutGoal.value, 10)
     };
 
     try {

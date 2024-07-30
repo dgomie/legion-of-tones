@@ -1,7 +1,5 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
-const PlansAI = require("./PlansAI");
-const Workout = require("./Workout");
 
 const userSchema = new Schema(
   {
@@ -36,24 +34,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    weight: {
-      type: Number,
-    },
-    activityLevel: {
-      type: String,
-    },
-    durationGoal: {
-      type: Number,
-    },
-    workoutGoal: {
-      type: Number,
-    },
-    workouts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Workout",
-      },
-    ],
     profilePicture: {
       type: String,
     },
@@ -92,15 +72,15 @@ userSchema.virtual("age").get(function () {
   return age;
 });
 
-userSchema.pre("findOneAndDelete", async function (next) {
-  const docToDelete = await this.model.findOne(this.getFilter());
-  if (docToDelete) {
-    // Assuming the Plan model references the User model with a field named 'userId'
-    await PlansAI.deleteMany({ userId: docToDelete._id });
-    await Workout.deleteMany({ userId: docToDelete._id });
-  }
-  next();
-});
+// userSchema.pre("findOneAndDelete", async function (next) {
+//   const docToDelete = await this.model.findOne(this.getFilter());
+//   if (docToDelete) {
+//     // Assuming the Plan model references the User model with a field named 'userId'
+//     await PlansAI.deleteMany({ userId: docToDelete._id });
+//     await Workout.deleteMany({ userId: docToDelete._id });
+//   }
+//   next();
+// });
 
 const User = model("User", userSchema);
 
