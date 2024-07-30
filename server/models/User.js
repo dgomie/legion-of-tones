@@ -37,6 +37,11 @@ const userSchema = new Schema(
     profilePicture: {
       type: String,
     },
+    yearCreated: {
+      type: Number,
+      required: true,
+      default: new Date().getFullYear()
+    }
   },
 
   {

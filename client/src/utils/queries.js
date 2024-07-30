@@ -17,9 +17,7 @@ export const GET_USER = gql`
       email
       firstName
       lastName
-      activityLevel
-      workoutGoal
-      durationGoal
+      yearCreated
     }
   }
 `;
@@ -31,20 +29,6 @@ export const GET_AI_PLANS = gql`
       userId
       title
       plan
-    }
-  }
-`;
-
-export const GET_WORKOUTS_BY_USER = gql`
-  query workouts($userId: ID!) {
-    workouts(userId: $userId) {
-      _id
-      userId
-      workoutTitle
-      dateOfWorkout
-      duration
-      caloriesBurned
-      createdAt
     }
   }
 `;

@@ -26,8 +26,8 @@ module.exports = {
       res.sendStatus(401); // Unauthorized
     }
   },
-  signToken: function ({ email, username, _id, age, activityLevel, avatarUrl }) {
-    const payload = { email, username, _id, age, activityLevel, avatarUrl };
+  signToken: function ({ email, username, _id, avatarUrl  }) {
+    const payload = { email, username, _id, avatarUrl };
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };
