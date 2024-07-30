@@ -7,6 +7,7 @@ import LoginPage from "./pages/loginPage.jsx";
 import SignUpPage from "./pages/signUpPage.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",

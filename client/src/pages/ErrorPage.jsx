@@ -1,17 +1,17 @@
 import { useRouteError } from "react-router-dom";
-
+import Nav from '../components/Nav';
 
 export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);
   return (
     <div id="error-page">
-
+      <Nav />
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            paddingTop: "120px",
+            padding: 75,
           }}
         >
           <div>
