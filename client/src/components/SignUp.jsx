@@ -33,7 +33,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        FITSYNC-PRO
+        Legion of Tones
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -98,13 +98,13 @@ const Signup = () => {
   };
 
   return (
-    <div style={{ paddingTop: "100px", paddingBottom: "25px" }}>
+    <div style={{ paddingBottom: "25px" }}>
       <ThemeProvider theme={defaultTheme}>
         <Container
           component="main"
           maxWidth="sm"
           sx={{
-            backgroundColor: "#b4c4ab",
+            backgroundColor: "#cfe2f3",
             borderRadius: "8px",
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
             display: "flex",
@@ -121,11 +121,11 @@ const Signup = () => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "#46563c" }}>
+            <Avatar sx={{ m: 1, bgcolor: "#e69138" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
+            <Typography component="h1" variant="h4">
+              Sign Up
             </Typography>
             <Box
               component="form"
@@ -232,45 +232,7 @@ const Signup = () => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControl fullWidth sx={{ backgroundColor: "white" }}>
-                    <InputLabel id="activity-level-label">
-                      Exercise Experience
-                    </InputLabel>
-                    <Select
-                      labelId="activity-level-label"
-                      id="activityLevel"
-                      name="activityLevel"
-                      defaultValue=""
-                    >
-                      <MenuItem value="Beginner">Beginner</MenuItem>
-                      <MenuItem value="Intermediate">Intermediate</MenuItem>
-                      <MenuItem value="Advanced">Advanced</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ backgroundColor: "white" }}>
-                    <TextField
-                      id="workoutGoal"
-                      label="Monthly Workouts Goal"
-                      type="number"
-                      variant="outlined"
-                      inputProps={{ min: "0" }}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth sx={{ backgroundColor: "white" }}>
-                    <TextField
-                      id="durationGoal"
-                      label="Monthly Active Minutes Goal"
-                      type="number"
-                      variant="outlined"
-                      inputProps={{ min: "0" }}
-                    />
-                  </FormControl>
-                </Grid>
+               
               </Grid>
               <Button
                 type="submit"
@@ -279,9 +241,9 @@ const Signup = () => {
                 sx={{
                   mt: 3,
                   mb: 2,
-                  backgroundColor: "#46563c",
+                  backgroundColor: "#c27ba0",
                   "&:hover": {
-                    backgroundColor: "#869f76",
+                    backgroundColor: "#a64d79",
                   },
                 }}
                 disabled={isButtonDisabled}

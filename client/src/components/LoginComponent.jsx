@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { TextField, Box, Typography, Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../utils/mutations";
-import Auth from "../utils/auth";
+import { TextField, Box, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 function LoginComponent() {
-  const [formState, setFormState] = useState({ username: "", password: "" });
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formState, setFormState] = useState({ username: '', password: '' });
+  const [errorMessage, setErrorMessage] = useState('');
   const [login] = useMutation(LOGIN_USER);
 
   const handleChange = (event) => {
@@ -30,49 +30,48 @@ function LoginComponent() {
       Auth.login(data.login.token);
     } catch (e) {
       console.error(e);
-      setErrorMessage("Incorrect username or password!");
+      setErrorMessage('Incorrect username or password!');
     }
 
     // clear form values
     setFormState({
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     });
   };
 
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100vh",
-        paddingTop: "100px",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100vh',
       }}
     >
-      <Typography
-        variant="h4"
-        component="h1"
-        gutterBottom
-        sx={{ textAlign: "center" }}
-      >
-        Login
-      </Typography>
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          "& .MuiTextField-root": { m: 1, width: "25ch" },
-          backgroundColor: "#b4c4ab",
-          padding: "5rem",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          maxWidth: "25rem",
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          backgroundColor: '#cfe2f3',
+          padding: '5rem',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          maxWidth: '25rem',
         }}
       >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ textAlign: 'center' }}
+        >
+          Login
+        </Typography>
         <TextField
           label="Username"
           variant="outlined"
@@ -82,7 +81,7 @@ function LoginComponent() {
           onChange={handleChange}
           required
           InputProps={{
-            style: { backgroundColor: "white" },
+            style: { backgroundColor: 'white' },
           }}
         />
         <TextField
@@ -95,7 +94,7 @@ function LoginComponent() {
           onChange={handleChange}
           required
           InputProps={{
-            style: { backgroundColor: "white" },
+            style: { backgroundColor: 'white' },
           }}
         />
         <Button
@@ -103,12 +102,12 @@ function LoginComponent() {
           variant="contained"
           sx={{
             mt: 1,
-            backgroundColor: "#46563c",
-            "&:hover": {
-              backgroundColor: "#869f76",
+            backgroundColor: '#c27ba0',
+            '&:hover': {
+              backgroundColor: '#a64d79',
             },
-            width: "10%",
-            minWidth: "120px",
+            width: '10%',
+            minWidth: '120px',
             marginTop: 3,
           }}
         >
@@ -120,18 +119,7 @@ function LoginComponent() {
           </Typography>
         )}
         <Typography sx={{ marginTop: 3 }}>
-          Don't have an account?{" "}
-          <Link
-            to="/signUp"
-            style={{
-              color: "#46563c",
-              fontWeight: "bold",
-              textDecoration: "none",
-              "&:hover": { color: "#869f76" },
-            }}
-          >
-            Sign Up
-          </Link>
+          <Link to="/signUp">Don't have an account? Sign Up</Link>
         </Typography>
       </Box>
     </Box>
