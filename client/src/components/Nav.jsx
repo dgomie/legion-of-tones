@@ -72,6 +72,7 @@ function Nav() {
               position: 'fixed',
               bottom: 0,
               display: { xs: 'flex', md: 'none' },
+             
             }}
             value={value}
             onChange={(event, newValue) => {
