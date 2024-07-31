@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-  const AccountComponent = () => {
+  const SettingsComponent = () => {
     
 
     return (
@@ -9,4 +9,4 @@ import { Box } from "@mui/material";
       </Box>
     );
   };
-  export default AccountComponent;
+  export default SettingsComponent;

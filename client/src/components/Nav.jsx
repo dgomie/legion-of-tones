@@ -30,7 +30,7 @@ if (isLoggedIn) {
   pages = ['login', 'sign up'];
 }
 
-const settings = ['Account', 'Logout'];
+const settings = ['settings', 'logout'];
 
 function Nav() {
   const navigate = useNavigate(); // navigates pages
@@ -42,9 +42,13 @@ function Nav() {
   const [anchorElNav, setAnchorElNav] = React.useState();
   const [anchorElUser, setAnchorElUser] = React.useState();
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+  }
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -151,14 +155,14 @@ function Nav() {
                     key={setting}
                     onClick={() => {
                       handleCloseUserMenu();
-                      if (setting === 'Logout') {
+                      if (setting === 'logout') {
                         Auth.logout();
                       } else {
                         navigate(`/${setting}`);
                       }
                     }}
                   >
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography textAlign="center">{toTitleCase(setting)}</Typography>
                   </MenuItem>
                 ))}
               </Menu>

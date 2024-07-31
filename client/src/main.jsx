@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/loginPage.jsx';
 import SignUpPage from './pages/signUpPage.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
-import AccountPage from './pages/AccountPage.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import LeaguesPage from './pages/LeaguesPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <SignUpPage />,
       },
       {
-        path: 'account',
-        element: <AccountPage />,
+        path: 'settings',
+        element: <SettingsPage />,
       },
       {
         path: 'dashboard',
