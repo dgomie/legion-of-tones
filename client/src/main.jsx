@@ -43,8 +43,16 @@ const router = createBrowserRouter([
         element: <LeaguesPage />,
       },
       {
+        path: 'profile/:usernameParam',
+        element: <ProfilePage />,
+      },
+      {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: '404',
+        element: <ErrorPage />,
       },
     ],
   },

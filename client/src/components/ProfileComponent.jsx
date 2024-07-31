@@ -1,33 +1,57 @@
-import { Box, Grid, Avatar, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import EditIcon from "@mui/icons-material/Edit";
+import {
+  Box,
+  Grid,
+  Avatar,
+  Paper,
+  Typography,
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { useState, useRef, useEffect } from 'react';
 import Auth from '../utils/auth';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GET_USER } from '../utils/queries';
 
 const ProfileComponent = () => {
-  const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");
-  const [dateJoined, setDateJoined] = useState("")
+  const [username, setUsername] = useState('');
+  const [userId, setUserId] = useState('');
+  const [dateJoined, setDateJoined] = useState('');
   const fileInputRef = useRef(null); // file input
   const [avatarUrl, setAvatarUrl] = useState(''); // avatar urls
   const [isHovering, setIsHovering] = useState(false); // setting state for hovers for profile picture
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
 
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('sm'));
+  // TODO: navigate to 404 page when profile doesn't exist
+  const navigate = useNavigate();
+
+  const { usernameParam } = useParams();
+  const { data, loading } = useQuery(GET_USER, {
+    variables: { username: usernameParam },
+  });
 
   useEffect(() => {
-    const profile = Auth.getProfile();
-    setUsername(profile.data.username);
-    setUserId(profile.data._id);
-    getImage(profile.data._id);
-    setDateJoined(profile.data.formattedCreatedAt)
-  }, []);
+    if (!loading) {
+      const profile = Auth.getProfile();
 
-  
-
-  // profile picture handlers
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
+      if (data) {
+        console.log('Using Param', data);
+        setUsername(data.user.username);
+        setUserId(data.user._id);
+        getImage(data.user._id);
+        setDateJoined(data.user.formattedCreatedAt);
+        if (data.user.username === profile.data.username) {
+          setIsCurrentUser(true);
+        }
+      } else {
+        console.log('using token');
+        setUsername(profile.data.username);
+        setUserId(profile.data._id);
+        getImage(profile.data._id);
+        setDateJoined(profile.data.formattedCreatedAt);
+        setIsCurrentUser(true);
+      }
+    }
+  }, [data, loading, isCurrentUser]);
 
   // Function to fetch user image
   function getImage(userId) {
@@ -66,6 +90,13 @@ const ProfileComponent = () => {
       });
   };
 
+  // profile picture handlers
+  const handleAvatarClick = () => {
+    if (isCurrentUser) {
+      fileInputRef.current.click();
+    }
+  };
+
   // handler for file changes
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -80,83 +111,84 @@ const ProfileComponent = () => {
     }
   };
 
-  return <Box>
-    
-    <Grid item xs={12} md={4}>
-          <Paper elevation={3} sx={{ padding: 2, borderRadius: "5px" }}>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+  return (
+    <Box>
+      <Grid item xs={12} md={4}>
+        <Paper elevation={3} sx={{ padding: 2, borderRadius: '5px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            {isCurrentUser && (
               <input
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
                 accept="image/*"
               />
-              <Box
-                sx={{
-                  position: "relative",
-                  width: 100,
-                  height: 100,
-                  "&:hover": {
-                    "& .editIcon": {
-                      display: "flex",
-                    },
-                    "&:hover": {
-                      filter: "grayscale(30%) brightness(70%)",
-                      svg: {
-                        fill: "#696969",
-                      },
+            )}
+            <Box
+              sx={{
+                position: 'relative',
+                width: 100,
+                height: 100,
+                '&:hover': {
+                  '& .editIcon': {
+                    display: 'flex',
+                  },
+                  '&:hover': {
+                    filter: 'grayscale(30%) brightness(70%)',
+                    svg: {
+                      fill: '#696969',
                     },
                   },
+                },
+              }}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <Avatar
+                alt="Profile Picture"
+                className="avatar"
+                sx={{
+                  width: 100,
+                  height: 100,
+                  marginBottom: 2,
+                  cursor: isCurrentUser ? 'pointer' : 'default',
                 }}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
+                onClick={handleAvatarClick}
+                src={avatarUrl}
               >
-                <Avatar
-                  alt="Profile Picture"
-                  className="avatar"
+                {!avatarUrl && isCurrentUser && <EditIcon />}
+              </Avatar>
+              {avatarUrl && isHovering && isCurrentUser && (
+                <EditIcon
+                  className="editIcon"
                   sx={{
-                    width: 100,
-                    height: 100,
-                    marginBottom: 2,
-                    cursor: "pointer",
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 24,
+                    height: 24,
+                    color: 'white',
+                    zIndex: 2,
+                    cursor: 'pointer',
                   }}
-                  onClick={handleAvatarClick}
-                  src={avatarUrl}
-                >
-                  {!avatarUrl && <EditIcon />}
-                </Avatar>
-                {avatarUrl && isHovering && (
-                  <EditIcon
-                    className="editIcon"
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      width: 24,
-                      height: 24,
-                      color: "white",
-                      zIndex: 2,
-                      cursor: "pointer",
-                    }}
-                  />
-                )}
-              </Box>
+                />
+              )}
             </Box>
-            <Typography
-              variant="h6"
-              sx={{ textAlign: "center", padding: "10px", fontWeight: "bold" }}
-            >
-              {username}
-            </Typography>
-            <Typography
-              sx={{ textAlign: "center" }}
-            >
-              Member Since {dateJoined}
-            </Typography>
-          </Paper>
-        </Grid>
-  </Box>;
+          </Box>
+          <Typography
+            variant="h6"
+            sx={{ textAlign: 'center', padding: '10px', fontWeight: 'bold' }}
+          >
+            {username}
+          </Typography>
+          <Typography sx={{ textAlign: 'center' }}>
+            Member Since {dateJoined}
+          </Typography>
+        </Paper>
+      </Grid>
+    </Box>
+  );
 };
 export default ProfileComponent;
