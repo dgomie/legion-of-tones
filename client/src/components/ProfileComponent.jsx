@@ -34,7 +34,6 @@ const ProfileComponent = () => {
       const profile = Auth.getProfile();
 
       if (data) {
-        console.log('Using Param', data);
         setUsername(data.user.username);
         setUserId(data.user._id);
         getImage(data.user._id);
@@ -43,12 +42,7 @@ const ProfileComponent = () => {
           setIsCurrentUser(true);
         }
       } else {
-        console.log('using token');
-        setUsername(profile.data.username);
-        setUserId(profile.data._id);
-        getImage(profile.data._id);
-        setDateJoined(profile.data.formattedCreatedAt);
-        setIsCurrentUser(true);
+        navigate('/404')
       }
     }
   }, [data, loading, isCurrentUser]);
@@ -84,7 +78,6 @@ const ProfileComponent = () => {
       }),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
       .catch((err) => {
         console.log(err);
       });

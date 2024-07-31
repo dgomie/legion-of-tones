@@ -25,8 +25,6 @@ const isLoggedIn = Auth.loggedIn();
 const user = Auth.getProfile();
 const username = user.data.username;
 
-console.log(username);
-
 let pages = [];
 if (isLoggedIn) {
   pages = ['dashboard', 'leagues', 'profile'];
