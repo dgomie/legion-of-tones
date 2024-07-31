@@ -76,9 +76,13 @@ const SettingsComponent = () => {
 
   // create check password function on backend. call the function if passwords match and new password matches confirmation, update user password
   const handlePasswordUpdate = async () => {
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword = document.getElementById('new-password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+    const currentPasswordInput = document.getElementById('current-password');
+    const newPasswordInput = document.getElementById('new-password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+
+    const currentPassword = currentPasswordInput.value;
+    const newPassword = newPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
 
     const hostUrl = import.meta.env.VITE_HOST_URL;
     const verifyUrl = import.meta.env.VITE_VERIFY_ENDPOINT_URL;
@@ -121,6 +125,11 @@ const SettingsComponent = () => {
 
       if (updateResponse.ok) {
         alert('Password updated successfully');
+        currentPasswordInput.value = '';
+        newPasswordInput.value = '';
+        confirmPasswordInput.value = '';
+
+        
       } else {
         const errorData = await updateResponse.json();
         alert(errorData.message);
@@ -166,9 +175,10 @@ const SettingsComponent = () => {
       <Container maxWidth="md">
         <Paper
           elevation={3}
+
           sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}
         >
-          <Typography variant="h3" component="header" gutterBottom>
+          <Typography variant="h4" component="header">
             Settings
           </Typography>
         </Paper>
@@ -181,6 +191,9 @@ const SettingsComponent = () => {
               <Typography variant="h5" component="h2" gutterBottom>
                 Profile Information
               </Typography>
+              
+        
+
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -232,8 +245,11 @@ const SettingsComponent = () => {
           elevation={3}
           sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}
         >
-          {/* TODO:: ADD ABILITY TO CHECK IF CURRENT PASSWORD TO STORED PASSWORD, IF MATCH, NEW PASSWORD AND CONFIRM PASSWORD MUST MATCH, IF MATCH SAVE NEW PASSWORD */}
-          <Grid item xs={12}>
+             <Typography variant="h5" component="h2" gutterBottom>
+              Change Password
+        
+            </Typography>
+          <Grid item xs={12} sx={{ marginBottom: 2}}>
             <TextField
               fullWidth
               id="current-password"
@@ -255,7 +271,7 @@ const SettingsComponent = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{ marginBottom: 2}}>
             <TextField
               fullWidth
               id="new-password"
@@ -277,7 +293,7 @@ const SettingsComponent = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{ marginBottom: 2}}>
             <TextField
               fullWidth
               id="confirm-password"
@@ -301,7 +317,7 @@ const SettingsComponent = () => {
           </Grid>
           <Box mt={2}>
             <Button variant="contained" color="primary" onClick={handlePasswordUpdate} >
-              Change Password
+              Update Password
             </Button>
           </Box>
         </Paper>
