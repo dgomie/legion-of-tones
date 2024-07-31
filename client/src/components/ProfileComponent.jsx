@@ -20,7 +20,6 @@ const ProfileComponent = () => {
     setUserId(profile.data._id);
     getImage(profile.data._id);
     setDateJoined(profile.data.formattedCreatedAt)
-    console.log(profile.data)
   }, []);
 
   
