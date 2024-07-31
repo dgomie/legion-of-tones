@@ -24,10 +24,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { REMOVE_USER, UPDATE_USER } from "../utils/mutations";
 import { GET_USER } from "../utils/queries";
 import Auth from "../utils/auth";
-import { useNavigate } from "react-router-dom";
 
 const SettingsComponent = () => {
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -79,6 +77,11 @@ const SettingsComponent = () => {
         console.error("Error removing user:", err);
       });
   };
+
+  // create check password function on backend. call the function if passwords match and new password matches confirmation, update user password
+  const handlePasswordUpdate = async () => {
+
+  }
 
   const handleUpdateProfile = async () => {
     const updateData = {
