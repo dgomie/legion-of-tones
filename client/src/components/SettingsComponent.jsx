@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -14,25 +14,21 @@ import {
   DialogTitle,
   IconButton,
   InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControl,
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useMutation, useQuery } from "@apollo/client";
-import { REMOVE_USER, UPDATE_USER } from "../utils/mutations";
-import { GET_USER } from "../utils/queries";
-import Auth from "../utils/auth";
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useMutation, useQuery } from '@apollo/client';
+import { REMOVE_USER, UPDATE_USER } from '../utils/mutations';
+import { GET_USER } from '../utils/queries';
+import Auth from '../utils/auth';
 
 const SettingsComponent = () => {
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [firstName, setFirstName] = useState("First Name");
-  const [lastName, setLastName] = useState("Last Name");
-  const [email, setEmail] = useState("Email");
-  const [userId, setUserId] = useState("");
+  const [firstName, setFirstName] = useState('First Name');
+  const [lastName, setLastName] = useState('Last Name');
+  const [email, setEmail] = useState('Email');
+  const [userId, setUserId] = useState('');
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -70,18 +66,69 @@ const SettingsComponent = () => {
   const handleDelete = () => {
     removeUserMutation({ variables: { userId } })
       .then((response) => {
-        console.log("User removed:", response.data.removeUser);
+        console.log('User removed:', response.data.removeUser);
         Auth.logout();
       })
       .catch((err) => {
-        console.error("Error removing user:", err);
+        console.error('Error removing user:', err);
       });
   };
 
   // create check password function on backend. call the function if passwords match and new password matches confirmation, update user password
   const handlePasswordUpdate = async () => {
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
 
-  }
+    const hostUrl = import.meta.env.VITE_HOST_URL;
+    const verifyUrl = import.meta.env.VITE_VERIFY_ENDPOINT_URL;
+    const verifyEndpoint = `${hostUrl}${verifyUrl}`;
+
+    const updateUrl = import.meta.env.VITE_UPDATE_ENDPOINT_URL;
+    const updateEndpoint = `${hostUrl}${updateUrl}`
+
+
+    if (newPassword !== confirmPassword) {
+      alert('New password and confirm password do not match');
+      return;
+    }
+
+    try {
+      // Verify current password
+      console.log(verifyEndpoint)
+      const verifyResponse = await fetch(verifyEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, currentPassword }),
+      });
+      console.log(verifyResponse.body)
+      if (!verifyResponse.ok) {
+        const errorData = await verifyResponse.json();
+        alert(errorData.message);
+        return;
+      }
+
+      // Update password
+      const updateResponse = await fetch(updateEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, newPassword }),
+      });
+
+      if (updateResponse.ok) {
+        alert('Password updated successfully');
+      } else {
+        const errorData = await updateResponse.json();
+        alert(errorData.message);
+      }
+    } catch (error) {
+      console.error('Error updating password:', error);
+    }
+  };
 
   const handleUpdateProfile = async () => {
     const updateData = {
@@ -93,11 +140,11 @@ const SettingsComponent = () => {
       const response = await updateUser({
         variables: { userId, updateData },
       });
-      console.log("Update successful", response);
+      console.log('Update successful', response);
       setUpdateSuccess(true);
       setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (error) {
-      console.log("Error details:", error);
+      console.log('Error details:', error);
     }
   };
 
@@ -114,16 +161,22 @@ const SettingsComponent = () => {
       alignItems="center"
       minHeight="100vh"
       textAlign="center"
-      sx={{paddingBottom: "100px" }}
+      sx={{ paddingBottom: '100px' }}
     >
       <Container maxWidth="md">
-      <Paper elevation={3} sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}>
+        <Paper
+          elevation={3}
+          sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}
+        >
           <Typography variant="h3" component="header" gutterBottom>
             Settings
           </Typography>
-          </Paper>
-        <Paper elevation={3} sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}>
-          <Box component="main" sx={{ width: "100%" }}>
+        </Paper>
+        <Paper
+          elevation={3}
+          sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}
+        >
+          <Box component="main" sx={{ width: '100%' }}>
             <Box mb={4}>
               <Typography variant="h5" component="h2" gutterBottom>
                 Profile Information
@@ -172,134 +225,124 @@ const SettingsComponent = () => {
                 </div>
               </Box>
             </Box>
-            
           </Box>
         </Paper>
 
-        <Paper elevation={3} sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}>
-              {/* TODO:: ADD ABILITY TO CHECK IF CURRENT PASSWORD TO STORED PASSWORD, IF MATCH, NEW PASSWORD AND CONFIRM PASSWORD MUST MATCH, IF MATCH SAVE NEW PASSWORD */}
-              <Box mb={4}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Change Password
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Current Password"
-                    type={showPassword ? "text" : "password"}
-                    variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="New Password"
-                    type={showNewPassword ? "text" : "password"}
-                    variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowNewPassword}
-                            edge="end"
-                          >
-                            {showNewPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Confirm New Password"
-                    type={showConfirmPassword ? "text" : "password"}
-                    variant="outlined"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowConfirmPassword}
-                            edge="end"
-                          >
-                            {showConfirmPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-              </Grid>
-              <Box mt={2}>
-                <Button variant="contained" color="primary">
-                  Change Password
-                </Button>
-              </Box>
-            </Box>
+        <Paper
+          elevation={3}
+          sx={{ marginBottom: 2, padding: { xs: 2, sm: 4, md: 6 } }}
+        >
+          {/* TODO:: ADD ABILITY TO CHECK IF CURRENT PASSWORD TO STORED PASSWORD, IF MATCH, NEW PASSWORD AND CONFIRM PASSWORD MUST MATCH, IF MATCH SAVE NEW PASSWORD */}
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="current-password"
+              label="Current Password"
+              type={showPassword ? 'text' : 'password'}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              id="new-password"
+              label="New Password"
+              type={showNewPassword ? 'text' : 'password'}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowNewPassword}
+                      edge="end"
+                    >
+                      {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              id="confirm-password"
+              label="Confirm New Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              variant="outlined"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Box mt={2}>
+            <Button variant="contained" color="primary" onClick={handlePasswordUpdate} >
+              Change Password
+            </Button>
+          </Box>
         </Paper>
 
-        <Paper elevation={3} sx={{padding: { xs: 2, sm: 4, md: 6 } }}>
-        <Box mb={4}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Delete Account
-              </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleClickOpen}
-              >
-                Delete Account
-              </Button>
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Delete Account"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Are you sure you want to delete your account? This action
-                    cannot be undone.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleDelete} color="secondary" autoFocus>
-                    Delete
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Box>
+        <Paper elevation={3} sx={{ padding: { xs: 2, sm: 4, md: 6 } }}>
+          <Box mb={4}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Delete Account
+            </Typography>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleClickOpen}
+            >
+              Delete Account
+            </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {'Delete Account'}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you want to delete your account? This action
+                  cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleDelete} color="secondary" autoFocus>
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
         </Paper>
       </Container>
     </Box>

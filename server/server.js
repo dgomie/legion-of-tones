@@ -9,7 +9,7 @@ const cors = require('cors');
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 const bodyParser = require('body-parser');
-
+const bcrypt = require('bcrypt');
 const User = require('./models/User');
 
 const PORT = process.env.PORT || 3001;
@@ -95,6 +95,46 @@ const startApolloServer = async () => {
     } catch (err) {
       console.error('Error fetching user:', err);
       res.status(500).json({ status: 'error', message: err.message });
+    }
+  });
+
+  app.post('/verify-password', async (req, res) => {
+    const { userId, currentPassword } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+ 
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+ 
+        return res.status(400).json({ message: 'Incorrect password' });
+      }
+
+      res.status(200).json({ message: 'Password verified' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
+  app.post('/update-password', async (req, res) => {
+    const { userId, newPassword } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      user.password = newPassword
+      await user.save();
+  
+      res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error' });
     }
   });
 
