@@ -22,6 +22,10 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonIcon from '@mui/icons-material/Person';
 
 const isLoggedIn = Auth.loggedIn();
+const user = Auth.getProfile();
+const username = user.data.username;
+
+console.log(username);
 
 let pages = [];
 if (isLoggedIn) {
@@ -45,7 +49,7 @@ function Nav() {
   function toTitleCase(str) {
     return str.replace(
       /\w\S*/g,
-      text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+      (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
     );
   }
 
@@ -70,35 +74,38 @@ function Nav() {
           </Button>
 
           {isLoggedIn && (
-          <BottomNavigation
-            sx={{
-              width: '100%',
-              position: 'fixed',
-              bottom: 0,
-              display: { xs: 'flex', md: 'none' },
-             
-            }}
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-              navigate(`/${pages[newValue].replace(/\s+/g, '')}`);
-            }}
-          >
-            {pages.map((page, index) => (
-              <BottomNavigationAction
-                key={page}
-                icon={
-                  index === 0 ? (
-                    <HomeRoundedIcon />
-                  ) : index === 1 ? (
-                    <LibraryMusicRoundedIcon />
-                  ) : (
-                    <PersonIcon />
-                  )
+            <BottomNavigation
+              sx={{
+                width: '100%',
+                position: 'fixed',
+                bottom: 0,
+                display: { xs: 'flex', md: 'none' },
+              }}
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+                if (pages[newValue] === 'profile') {
+                  navigate(`/profile/${username}`);
+                } else {
+                  navigate(`/${pages[newValue].replace(/\s+/g, '')}`);
                 }
-              />
-            ))}
-          </BottomNavigation>
+              }}
+            >
+              {pages.map((page, index) => (
+                <BottomNavigationAction
+                  key={page}
+                  icon={
+                    index === 0 ? (
+                      <HomeRoundedIcon />
+                    ) : index === 1 ? (
+                      <LibraryMusicRoundedIcon />
+                    ) : (
+                      <PersonIcon />
+                    )
+                  }
+                />
+              ))}
+            </BottomNavigation>
           )}
 
           <Box
@@ -106,15 +113,19 @@ function Nav() {
               flexGrow: 1,
               display: { xs: 'none', md: 'flex' },
               justifyContent: 'flex-end',
-              marginRight: "8%"
+              marginRight: '8%',
             }}
           >
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={() => {
-                  handleCloseNavMenu;
-                  navigate(`/${page.replace(/\s+/g, '')}`);
+                  handleCloseNavMenu();
+                  if (page === 'profile') {
+                    navigate(`/profile/${username}`);
+                  } else {
+                    navigate(`/${page.replace(/\s+/g, '')}`);
+                  }
                 }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
@@ -123,14 +134,18 @@ function Nav() {
             ))}
           </Box>
           {isLoggedIn && (
-             <Box sx={{ display: { xs: 'flex',}, justifyContent: {xs: 'flex-end'}, flexGrow: {xs: 1} }}>
-             <Tooltip title="Open settings">
-               <IconButton
-                 onClick={handleOpenUserMenu}
-                 sx={{ p: 0, marginLeft: 2 }}
+            <Box
+              sx={{
+                display: { xs: 'flex' },
+                justifyContent: { xs: 'flex-end' },
+                flexGrow: { xs: 1 },
+              }}
+            >
+              <Tooltip title="Open settings">
+                <IconButton
+                  onClick={handleOpenUserMenu}
+                  sx={{ p: 0, marginLeft: 2 }}
                 >
-                  {/* TODO: ADD USER PROFILE PIC TO NAV */}
-                  {/* <Avatar alt="" src="" /> */}
                   <SettingsIcon />
                 </IconButton>
               </Tooltip>
@@ -162,7 +177,9 @@ function Nav() {
                       }
                     }}
                   >
-                    <Typography textAlign="center">{toTitleCase(setting)}</Typography>
+                    <Typography textAlign="center">
+                      {toTitleCase(setting)}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
