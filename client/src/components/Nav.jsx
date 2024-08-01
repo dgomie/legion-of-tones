@@ -5,51 +5,28 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../images/navlogo.png';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Auth from '../utils/auth';
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
-
 import SettingsIcon from '@mui/icons-material/Settings';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PersonIcon from '@mui/icons-material/Person';
 
-const isLoggedIn = Auth.loggedIn();
-const user = Auth.getProfile();
-const username = user.data.username;
-
-let pages = [];
-if (isLoggedIn) {
-  pages = ['dashboard', 'leagues', 'profile'];
-} else {
-  pages = ['login', 'sign up'];
-}
-
-const settings = ['settings', 'logout'];
-
 function Nav() {
-  const navigate = useNavigate(); // navigates pages
-  // const location = useLocation();
-  const isLoggedIn = Auth.loggedIn(); // checks if user is logged in
+  const navigate = useNavigate();
+  const isLoggedIn = Auth.loggedIn();
+  const user = isLoggedIn ? Auth.getProfile() : null;
+  const username = user ? user.data.username : '';
 
   const [value, setValue] = React.useState(0);
-
-  const [anchorElNav, setAnchorElNav] = React.useState();
-  const [anchorElUser, setAnchorElUser] = React.useState();
-
-  function toTitleCase(str) {
-    return str.replace(
-      /\w\S*/g,
-      (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-    );
-  }
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -62,6 +39,16 @@ function Nav() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const toTitleCase = (str) => {
+    return str.replace(
+      /\w\S*/g,
+      (text) => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+    );
+  };
+
+  const pages = isLoggedIn ? ['dashboard', 'leagues', 'profile'] : ['login', 'sign up'];
+  const settings = ['settings', 'logout'];
 
   return (
     <AppBar position="static" sx={{ mb: 3 }}>
@@ -188,4 +175,5 @@ function Nav() {
     </AppBar>
   );
 }
+
 export default Nav;

@@ -37,10 +37,10 @@ const SettingsComponent = () => {
   const [updateUser] = useMutation(UPDATE_USER);
 
   const token = Auth.getToken();
-  const { _id } = Auth.getProfile(token).data;
+  const { username } = Auth.getProfile(token).data;
 
   const { loading, error, data } = useQuery(GET_USER, {
-    variables: { userId: _id },
+    variables: { username },
   });
 
   useEffect(() => {
