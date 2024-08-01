@@ -4,7 +4,6 @@ function HomePage() {
   return (
   <>
   <HomeComponent />
-  
   </>)
   ;
 }

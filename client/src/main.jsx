@@ -10,6 +10,9 @@ import SettingsPage from './pages/SettingsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import LeaguesPage from './pages/LeaguesPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
+import { ContactPage } from '@mui/icons-material';
+import PageNotFound from './pages/404Page.jsx';
 
 const router = createBrowserRouter([
   {
@@ -51,8 +54,16 @@ const router = createBrowserRouter([
         element: <ProfilePage />,
       },
       {
+        path: 'about',
+        element: <AboutPage />,
+      },
+      {
+        path: 'contact',
+        element: <ContactPage />,
+      },
+      {
         path: '404',
-        element: <ErrorPage />,
+        element: <PageNotFound />,
       },
     ],
   },
