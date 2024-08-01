@@ -58,40 +58,6 @@ function Nav() {
             <img src={logo} width="150px" alt="" />
           </Button>
 
-          {isLoggedIn && (
-            <BottomNavigation
-              sx={{
-                width: '100%',
-                position: 'fixed',
-                bottom: 0,
-                display: { xs: 'flex', md: 'none' },
-              }}
-              value={value}
-              onChange={(event, newValue) => {
-                setValue(newValue);
-                if (pages[newValue] === 'profile') {
-                  navigate(`/profile/${username}`);
-                } else {
-                  navigate(`/${pages[newValue].replace(/\s+/g, '')}`);
-                }
-              }}
-            >
-              {pages.map((page, index) => (
-                <BottomNavigationAction
-                  key={page}
-                  icon={
-                    index === 0 ? (
-                      <HomeRoundedIcon />
-                    ) : index === 1 ? (
-                      <LibraryMusicRoundedIcon />
-                    ) : (
-                      <PersonIcon />
-                    )
-                  }
-                />
-              ))}
-            </BottomNavigation>
-          )}
 
           <Box
             sx={{
@@ -171,7 +137,44 @@ function Nav() {
             </Box>
           )}
         </Toolbar>
+
+        
       </Container>
+      {isLoggedIn && (
+            <BottomNavigation
+              sx={{
+                width: '100%',
+                position: 'fixed',
+                bottom: 0,
+                display: { xs: 'flex', md: 'none' },
+                zIndex: 1300, 
+              }}
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+                if (pages[newValue] === 'profile') {
+                  navigate(`/profile/${username}`);
+                } else {
+                  navigate(`/${pages[newValue].replace(/\s+/g, '')}`);
+                }
+              }}
+            >
+              {pages.map((page, index) => (
+                <BottomNavigationAction
+                  key={page}
+                  icon={
+                    index === 0 ? (
+                      <HomeRoundedIcon />
+                    ) : index === 1 ? (
+                      <LibraryMusicRoundedIcon />
+                    ) : (
+                      <PersonIcon />
+                    )
+                  }
+                />
+              ))}
+            </BottomNavigation>
+          )}
     </AppBar>
   );
 }
