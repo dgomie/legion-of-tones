@@ -1,11 +1,11 @@
-import LeaguesComponent from "../components/LeaguesComponent";
+import LegionsComponent from "../components/LegionsComponent";
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Auth from "../utils/auth";
 
 
-function LeaguesPage() {
+function LegionsPage() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(Auth.loggedIn());
 
@@ -23,10 +23,10 @@ function LeaguesPage() {
 
   return (
   <>
-  <LeaguesComponent />
+  <LegionsComponent />
   
   </>)
   ;
 }
 
-export default LeaguesPage;
+export default LegionsPage;

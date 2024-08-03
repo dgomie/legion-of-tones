@@ -47,7 +47,7 @@ function Nav() {
     );
   };
 
-  const pages = isLoggedIn ? ['dashboard', 'leagues', 'profile'] : ['login'];
+  const pages = isLoggedIn ? ['dashboard', 'legions', 'profile'] : ['login'];
   const settings = ['settings', 'logout'];
 
   return (

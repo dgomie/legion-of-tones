@@ -8,7 +8,7 @@ import SignUpPage from './pages/signUpPage.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
-import LeaguesPage from './pages/LeaguesPage.jsx';
+import LegionsPage from './pages/LegionsPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import { ContactPage } from '@mui/icons-material';
@@ -42,15 +42,11 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
       {
-        path: 'leagues',
-        element: <LeaguesPage />,
+        path: 'legions',
+        element: <LegionsPage />,
       },
       {
         path: 'profile/:usernameParam',
-        element: <ProfilePage />,
-      },
-      {
-        path: 'profile',
         element: <ProfilePage />,
       },
       {

@@ -6,15 +6,15 @@ import music from '../images/music.svg';
 import { useState } from "react";
 
 const ProfileStatsComponent = () => {
-  const [questsStat, setQuestsStat] = useState(0);
+  const [legionsStat, setLegionsStat] = useState(0);
   const [winsStat, setWinsStat] = useState(0);
   const [songsStat, setSongsStat] = useState(0);
   const [votesStat, setVotesStat] = useState(0);
 
 
-  const categories = ["Quests Joined", "Treasures Won", "Songs Shared", "Votes Cast"];
+  const categories = ["Legions Joined", "Treasures Won", "Songs Shared", "Votes Cast"];
   const icons = [quest, grail, music, vote];
-  const stats = [questsStat, winsStat, songsStat, votesStat];
+  const stats = [legionsStat, winsStat, songsStat, votesStat];
 
   return (
     <Box sx={{ marginY: 3 }}>
