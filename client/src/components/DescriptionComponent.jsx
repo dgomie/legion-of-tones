@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Box, Typography, Button, List, ListItem, Grid } from '@mui/material';
 import '@fontsource/medievalsharp'; 

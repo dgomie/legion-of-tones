@@ -47,7 +47,7 @@ function Nav() {
     );
   };
 
-  const pages = isLoggedIn ? ['dashboard', 'leagues', 'profile'] : ['login', 'sign up'];
+  const pages = isLoggedIn ? ['dashboard', 'leagues', 'profile'] : ['login'];
   const settings = ['settings', 'logout'];
 
   return (
@@ -60,13 +60,13 @@ function Nav() {
 
 
           <Box
-            sx={{
-              flexGrow: 1,
-              display: { xs: 'none', md: 'flex' },
-              justifyContent: 'flex-end',
-              marginRight: '8%',
-            }}
-          >
+  sx={{
+    flexGrow: 1,
+    display: { xs: isLoggedIn ? 'none' : 'flex', md: 'flex' },
+    justifyContent: 'flex-end',
+    marginRight: '8%',
+  }}
+>
             {pages.map((page) => (
               <Button
                 key={page}
