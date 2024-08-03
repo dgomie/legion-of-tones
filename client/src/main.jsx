@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         element: <LegionsPage />,
       },
       {
+        path: 'legions/:legionId',
+        element: <LegionsPage />,
+      },
+      {
         path: 'profile/:usernameParam',
         element: <ProfilePage />,
       },
