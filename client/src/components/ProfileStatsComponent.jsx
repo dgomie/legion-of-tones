@@ -3,11 +3,18 @@ import grail from '../images/grail.svg';
 import quest from '../images/quest.svg';
 import vote from '../images/vote.svg';
 import music from '../images/music.svg';
+import { useState } from "react";
 
 const ProfileStatsComponent = () => {
+  const [questsStat, setQuestsStat] = useState(0);
+  const [winsStat, setWinsStat] = useState(0);
+  const [songsStat, setSongsStat] = useState(0);
+  const [votesStat, setVotesStat] = useState(0);
+
+
   const categories = ["Quests Joined", "Treasures Won", "Songs Shared", "Votes Cast"];
   const icons = [quest, grail, music, vote];
-  const stats = [3, 2, 15, 54];
+  const stats = [questsStat, winsStat, songsStat, votesStat];
 
   return (
     <Box sx={{ marginY: 3 }}>

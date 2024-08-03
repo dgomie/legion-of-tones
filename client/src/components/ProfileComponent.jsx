@@ -1,10 +1,4 @@
-import {
-  Box,
-  Grid,
-  Avatar,
-  Paper,
-  Typography,
-} from '@mui/material';
+import { Box, Grid, Avatar, Paper, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState, useRef, useEffect } from 'react';
 import Auth from '../utils/auth';
@@ -43,7 +37,7 @@ const ProfileComponent = () => {
           setIsCurrentUser(true);
         }
       } else {
-        navigate('/404')
+        navigate('/404');
       }
     }
   }, [data, loading, isCurrentUser, navigate]);
@@ -122,17 +116,16 @@ const ProfileComponent = () => {
             <Box
               sx={{
                 position: 'relative',
-                width: 100,
-                height: 100,
+                width: 200,
+                height: 200,
+                overflow: 'hidden', // Add this line to prevent spilling
                 '&:hover': {
                   '& .editIcon': {
                     display: 'flex',
                   },
-                  '&:hover': {
-                    filter: 'grayscale(30%) brightness(70%)',
-                    svg: {
-                      fill: '#696969',
-                    },
+                  filter: 'grayscale(30%) brightness(70%)',
+                  svg: {
+                    fill: '#696969',
                   },
                 },
               }}
@@ -143,8 +136,8 @@ const ProfileComponent = () => {
                 alt="Profile Picture"
                 className="avatar"
                 sx={{
-                  width: 100,
-                  height: 100,
+                  width: '100%',
+                  height: '100%',
                   marginBottom: 2,
                   cursor: isCurrentUser ? 'pointer' : 'default',
                 }}
@@ -173,7 +166,7 @@ const ProfileComponent = () => {
           </Box>
           <Typography
             variant="h6"
-            sx={{ textAlign: 'center', padding: '10px', fontWeight: 'bold' }}
+            sx={{ textAlign: 'center', padding: '10px', fontWeight: 'bold', fontSize: '2rem' }}
           >
             {username}
           </Typography>
