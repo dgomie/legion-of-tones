@@ -25,6 +25,7 @@ const ProfileComponent = () => {
   const navigate = useNavigate();
 
   const { usernameParam } = useParams();
+
   const { data, loading } = useQuery(GET_USER, {
     variables: { username: usernameParam },
   });
@@ -33,7 +34,7 @@ const ProfileComponent = () => {
     if (!loading) {
       const profile = Auth.getProfile();
 
-      if (data) {
+      if (data && data.user !== null) {
         setUsername(data.user.username);
         setUserId(data.user._id);
         getImage(data.user._id);
@@ -45,7 +46,7 @@ const ProfileComponent = () => {
         navigate('/404')
       }
     }
-  }, [data, loading, isCurrentUser]);
+  }, [data, loading, isCurrentUser, navigate]);
 
   // Function to fetch user image
   function getImage(userId) {
