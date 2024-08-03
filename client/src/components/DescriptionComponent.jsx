@@ -69,6 +69,9 @@ const DescriptionComponent = () => {
         </Box>
 
         <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} order={{ xs: 1, sm: 1 }}>
+            <img src={gnomes} width="500px" style={{ margin: '0 auto', display: 'block', maxWidth: '100%' }} />
+          </Grid>
           <Grid item xs={12} sm={6} order={{ xs: 1, sm: 2 }}>
             <Container>
               <Typography variant="h5" gutterBottom sx={{ fontFamily: 'MedievalSharp, sans-serif' }}>
@@ -98,16 +101,13 @@ const DescriptionComponent = () => {
               </List>
             </Container>
           </Grid>
-          <Grid item xs={12} sm={6} order={{ xs: 2, sm: 1 }}>
-            <img src={gnomes} width="500px" style={{ margin: '0 auto', display: 'block', maxWidth: '100%' }} />
-          </Grid>
         </Grid>
 
         <Typography variant="body1" align="center">
           Ready to embark on this legendary journey and prove your musical prowess? Sign up now, rally your fellow adventurers, and let the quest begin!
         </Typography>
         <Box textAlign="center" my={4}>
-          <Button variant="contained" sx={{ fontFamily: 'MedievalSharp, sans-serif' }} color="primary" size="large" onClick={() => {
+          <Button variant="contained" color="primary" size="large" onClick={() => {
             navigate('/signup');
           }}>
             Join the Legion!
