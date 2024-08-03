@@ -8,7 +8,6 @@ const leagues = [
   { id: 4, name: "League of Legends", isActive: true, numPlayers: 8, maxPlayers: 10  },
   { id: 5, name: "League of Heroes", isActive: true, numPlayers: 6, maxPlayers: 12  },
   { id: 6, name: "League of Champions", isActive: false, numPlayers: 4, maxPlayers: 8 },
-  // Add more leagues as needed
 ];
 
 const DashboardComponent = () => {
@@ -23,7 +22,7 @@ const DashboardComponent = () => {
           fontSize: "2.5rem",
           display: "flex",
           justifyContent: "center",
-          textAlign: "center", // Center the text
+          textAlign: "center", 
         }}
       >
         Your Legions
