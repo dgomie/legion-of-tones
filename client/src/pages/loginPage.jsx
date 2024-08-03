@@ -10,7 +10,7 @@ function LoginPage() {
         const isLoggedIn = Auth.loggedIn(); 
 
         if (isLoggedIn) {
-            navigate('/profile'); 
+            navigate('/dashboard'); 
         }
     }, [navigate]);
 
