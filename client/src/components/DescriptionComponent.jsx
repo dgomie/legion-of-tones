@@ -8,7 +8,6 @@ import {
   ListItem,
   Grid,
 } from '@mui/material';
-import '@fontsource/medievalsharp';
 import gnomes from '../images/gnomes.png';
 import knight from '../images/knight.png';
 
@@ -22,7 +21,7 @@ const DescriptionComponent = () => {
           gutterBottom
           sx={{ fontFamily: 'MedievalSharp, sans-serif' }}
         >
-          Welcome to Legion of Tones
+          Welcome to the Legion of Tones
         </Typography>
         <Typography
           variant="h5"
@@ -34,7 +33,7 @@ const DescriptionComponent = () => {
       </Box>
 
       <Box my={4}>
-        <Typography variant="body1" paragraph>
+        <Typography variant="body1" paragraph sx={{marginBottom:3}}>
           In the enchanted world of Legion of Tones, you are not just players,
           but heroes embarking on a musical quest. Channel your inner bard, and
           prepare for epic battles where your music knowledge will be your
