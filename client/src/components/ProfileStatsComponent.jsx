@@ -35,7 +35,7 @@ const ProfileStatsComponent = () => {
             >
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <img src={icons[index]} alt={category} style={{ width: 50, height: 50, marginBottom: 8 }} />
-                <Typography sx={{color: "#708090", fontSize: '1.2rem' }}>
+                <Typography sx={{color: "#708090", fontSize: '1.2rem'}}>
                   {category}
                 </Typography>
                 <Typography sx={{ fontSize: '1.5rem' }}>

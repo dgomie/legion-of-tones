@@ -166,7 +166,7 @@ const ProfileComponent = () => {
           </Box>
           <Typography
             variant="h6"
-            sx={{ textAlign: 'center', padding: '10px', fontWeight: 'bold', fontSize: '2rem' }}
+            sx={{ textAlign: 'center', padding: '10px', fontWeight: 'bold', fontSize: '2rem', fontFamily: "MedievalSharp, sans-serif" }}
           >
             {username}
           </Typography>

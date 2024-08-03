@@ -77,7 +77,7 @@ function Nav() {
                     navigate(`/${page.replace(/\s+/g, '')}`);
                   }
                 }}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block'}}
               >
                 {page}
               </Button>
