@@ -1,5 +1,7 @@
 const { User, Legion } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
+const mongoose = require('mongoose');
+
 
 const resolvers = {
   Query: {
@@ -67,8 +69,17 @@ const resolvers = {
       return updatedUser;
     },
 
-    addLegion: async (parent, { legionData }) => {
-      const newLegion = await Legion.create(legionData);
+    addLegion: async (parent, { legionData }, context) => {
+      console.log(context)
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const newLegion = await Legion.create({
+        ...legionData,
+        players: [new mongoose.Types.ObjectId(context.user._id)], // Use 'new' keyword
+      });
+
       return newLegion;
     },
 
