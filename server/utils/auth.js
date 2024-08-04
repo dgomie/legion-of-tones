@@ -2,6 +2,7 @@ require('dotenv').config({ path: '../.env' });
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
 
+
 const secret = process.env.SESSION_SECRET;
 const expiration = '48h';
 
@@ -11,6 +12,20 @@ module.exports = {
       code: 'UNAUTHENTICATED',
     },
   }),
+  authMiddleware: ({ req }) => {
+    const token = req.headers.authorization || '';
+  
+    if (!token) {
+      console.log("no token")
+    }
+  
+    try {
+      const decoded = jwt.verify(token.replace('Bearer ', ''), secret);
+      return { user: decoded.data };
+    } catch (err) {
+      console.log(err);
+    }
+  },
   verifyJWT: (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {

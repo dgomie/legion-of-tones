@@ -12,11 +12,13 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
 
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: authMiddleware,
 });
 
 app.use('/uploads', express.static('uploads'));

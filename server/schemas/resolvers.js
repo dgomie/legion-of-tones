@@ -1,5 +1,7 @@
-const { User} = require("../models");
+const { User, Legion } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
+const mongoose = require('mongoose');
+
 
 const resolvers = {
   Query: {
@@ -8,9 +10,16 @@ const resolvers = {
     },
 
     user: async (parent, { username }) => {
-      return await User.findOne({username});
+      return await User.findOne({ username });
     },
-    
+
+    legions: async () => {
+      return await Legion.find();
+    },
+
+    legion: async (parent, { id }) => {
+      return await Legion.findById(id);
+    },
   },
 
   Mutation: {
@@ -59,7 +68,38 @@ const resolvers = {
       );
       return updatedUser;
     },
-   
-  }
-}
+
+    addLegion: async (parent, { legionData }, context) => {
+      console.log(context)
+      if (!context.user) {
+        throw AuthenticationError;
+      }
+
+      const newLegion = await Legion.create({
+        ...legionData,
+        players: [new mongoose.Types.ObjectId(context.user._id)], // Use 'new' keyword
+      });
+
+      return newLegion;
+    },
+
+    updateLegion: async (parent, { legionId, updateData }) => {
+      const updatedLegion = await Legion.findOneAndUpdate(
+        { _id: legionId },
+        updateData,
+        { new: true }
+      );
+      return updatedLegion;
+    },
+
+    removeLegion: async (parent, { legionId }) => {
+      const deletedLegion = await Legion.findByIdAndDelete(legionId);
+      if (!deletedLegion) {
+        throw new Error("Legion not found.");
+      }
+      return deletedLegion;
+    },
+  },
+};
+
 module.exports = resolvers;

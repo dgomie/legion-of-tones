@@ -10,9 +10,9 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 
 const legions = [
-  { id: 1, title: "Legion of Champions", description: "A legion of elite champions.", numPlayers: 12, maxPlayers: 15, isActive: true },
-  { id: 2, title: "Legion of Heroes", description: "A legion of brave heroes.", numPlayers: 9, maxPlayers: 12, isActive: true },
-  { id: 3, title: "Legion of Legends", description: "A legion of legendary figures.", numPlayers: 8, maxPlayers: 10, isActive: false },
+  { id: 1, name: "Legion of Champions", description: "A legion of elite champions.", numPlayers: 12, maxPlayers: 15, isActive: true },
+  { id: 2, name: "Legion of Heroes", description: "A legion of brave heroes.", numPlayers: 9, maxPlayers: 12, isActive: true },
+  { id: 3, name: "Legion of Legends", description: "A legion of legendary figures.", numPlayers: 8, maxPlayers: 10, isActive: false },
 ];
 
 const DashboardComponent = () => {
@@ -57,7 +57,7 @@ const DashboardComponent = () => {
                         component="div"
                         sx={{ textAlign: 'center' }}
                       >
-                        {legion.title}
+                        {legion.name}
                       </Typography>
                       <Typography
                         variant="body2"
