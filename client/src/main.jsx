@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import { ContactPage } from '@mui/icons-material';
 import PageNotFound from './pages/404Page.jsx';
+import CreateLegionPage from './pages/CreateLegionPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: 'legions/:legionId',
         element: <LegionsPage />,
+      },
+      {
+        path: 'legions/create-legion',
+        element: <CreateLegionPage />,
       },
       {
         path: 'profile/:usernameParam',
