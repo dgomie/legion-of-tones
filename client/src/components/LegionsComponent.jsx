@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
 
 const legions = [
   {
@@ -79,6 +80,7 @@ const LegionsComponent = () => {
           component={Link}
           to="/legions/create-legion"
         >
+          <AddIcon sx={{padding: "4px"}}/>
           Create New Legion
         </Button>
       </Box>
