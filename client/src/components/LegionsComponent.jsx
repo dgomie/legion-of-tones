@@ -11,7 +11,7 @@ const LegionsComponent = () => {
   const activeLegions = legions.filter(legion => legion.isActive);
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box>
       <Typography
         sx={{
           fontWeight: "bold",
