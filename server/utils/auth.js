@@ -16,7 +16,7 @@ module.exports = {
     const token = req.headers.authorization || '';
   
     if (!token) {
-      console.log("no token")
+      return req
     }
   
     try {
