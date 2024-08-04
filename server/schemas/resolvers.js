@@ -8,9 +8,16 @@ const resolvers = {
     },
 
     user: async (parent, { username }) => {
-      return await User.findOne({username});
+      return await User.findOne({ username });
     },
-    
+
+    legions: async () => {
+      return await Legion.find();
+    },
+
+    legion: async (parent, { id }) => {
+      return await Legion.findById(id);
+    },
   },
 
   Mutation: {
@@ -59,7 +66,29 @@ const resolvers = {
       );
       return updatedUser;
     },
-   
-  }
-}
+
+    addLegion: async (parent, { legionData }) => {
+      const newLegion = await Legion.create(legionData);
+      return newLegion;
+    },
+
+    updateLegion: async (parent, { legionId, updateData }) => {
+      const updatedLegion = await Legion.findOneAndUpdate(
+        { _id: legionId },
+        updateData,
+        { new: true }
+      );
+      return updatedLegion;
+    },
+
+    removeLegion: async (parent, { legionId }) => {
+      const deletedLegion = await Legion.findByIdAndDelete(legionId);
+      if (!deletedLegion) {
+        throw new Error("Legion not found.");
+      }
+      return deletedLegion;
+    },
+  },
+};
+
 module.exports = resolvers;
