@@ -101,7 +101,10 @@ const CreateLegionComponent = () => {
           margin="normal"
           type="number"
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
+        <Button type="submit" variant="contained" sx={{ marginTop: 2, backgroundColor: '#c27ba0',
+            '&:hover': {
+              backgroundColor: '#a64d79',
+            }, }}>
           Create Legion
         </Button>
       </Box>
