@@ -1,9 +1,9 @@
-import { Box, Typography, Divider, TextField, Button } from "@mui/material";
+import { Box, Typography, Divider, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { useState } from "react";
 
 const CreateLegionComponent = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     description: "",
     maxPlayers: "",
     numRounds: "",
@@ -50,9 +50,9 @@ const CreateLegionComponent = () => {
         }}
       >
         <TextField
-          label="Name"
-          name="name"
-          value={formData.name}
+          label="Title"
+          name="title"
+          value={formData.title}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -65,15 +65,19 @@ const CreateLegionComponent = () => {
           fullWidth
           margin="normal"
         />
-        <TextField
-          label="Max Number of Players"
-          name="maxPlayers"
-          value={formData.maxPlayers}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          type="number"
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Max Number of Players</InputLabel>
+          <Select
+            label="Max Number of Players"
+            name="maxPlayers"
+            value={formData.maxPlayers}
+            onChange={handleChange}
+          >
+            {[...Array(14).keys()].map(i => (
+              <MenuItem key={i + 3} value={i + 3}>{i + 3}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           label="Number of Rounds"
           name="numRounds"
@@ -83,24 +87,32 @@ const CreateLegionComponent = () => {
           margin="normal"
           type="number"
         />
-        <TextField
-          label="Timing to Submit Songs (in days)"
-          name="submitTiming"
-          value={formData.submitTiming}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          type="number"
-        />
-        <TextField
-          label="Timing to Listen and Vote (in days)"
-          name="voteTiming"
-          value={formData.voteTiming}
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          type="number"
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Timing to Submit Songs (in days)</InputLabel>
+          <Select
+            label="Timing to Submit Songs (in days)"
+            name="submitTiming"
+            value={formData.submitTiming}
+            onChange={handleChange}
+          >
+            {[...Array(5).keys()].map(i => (
+              <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Timing to Listen and Vote (in days)</InputLabel>
+          <Select
+            label="Timing to Listen and Vote (in days)"
+            name="voteTiming"
+            value={formData.voteTiming}
+            onChange={handleChange}
+          >
+            {[...Array(5).keys()].map(i => (
+              <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button type="submit" variant="contained" sx={{ marginTop: 2, backgroundColor: '#c27ba0',
             '&:hover': {
               backgroundColor: '#a64d79',
