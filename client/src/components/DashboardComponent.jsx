@@ -9,18 +9,15 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 
-const leagues = [
-  { id: 1, name: "League of Champions", isActive: true, numPlayers: 12, maxPlayers: 15 },
-  { id: 2, name: "League of Heroes", isActive: true, numPlayers: 9, maxPlayers: 12  },
-  { id: 3, name: "League of Champions", isActive: false, numPlayers: 2, maxPlayers: 10 },
-  { id: 4, name: "League of Legends", isActive: true, numPlayers: 8, maxPlayers: 10  },
-  { id: 5, name: "League of Heroes", isActive: true, numPlayers: 6, maxPlayers: 12  },
-  { id: 6, name: "League of Champions", isActive: false, numPlayers: 4, maxPlayers: 8 },
+const legions = [
+  { id: 1, title: "Legion of Champions", description: "A legion of elite champions.", numPlayers: 12, maxPlayers: 15, isActive: true },
+  { id: 2, title: "Legion of Heroes", description: "A legion of brave heroes.", numPlayers: 9, maxPlayers: 12, isActive: true },
+  { id: 3, title: "Legion of Legends", description: "A legion of legendary figures.", numPlayers: 8, maxPlayers: 10, isActive: false },
 ];
 
 const DashboardComponent = () => {
   const navigate = useNavigate();
-  const activeLeagues = leagues.filter((league) => league.isActive);
+  const activeLegions = legions.filter((legion) => legion.isActive);
 
   return (
     <Box>
@@ -37,12 +34,12 @@ const DashboardComponent = () => {
         Your Legions
       </Typography>
       <Box sx={{ marginY: 3 }}>
-        {activeLeagues.length > 0 ? (
+        {activeLegions.length > 0 ? (
           <Grid container spacing={2}>
-            {activeLeagues.map((league) => (
-              <Grid item xs={12} sm={6} md={4} key={league.id}>
+            {activeLegions.map((legion) => (
+              <Grid item xs={12} sm={6} md={4} key={legion.id}>
                 <Link
-                  to={`/legions/${league.id}`}
+                  to={`/legions/${legion.id}`}
                   style={{ textDecoration: 'none' }}
                 >
                   <Card
@@ -60,14 +57,21 @@ const DashboardComponent = () => {
                         component="div"
                         sx={{ textAlign: 'center' }}
                       >
-                        {league.name}
+                        {legion.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        component="div"
+                        sx={{ textAlign: 'center', marginBottom: 2 }}
+                      >
+                        {legion.description}
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         component="div"
                         sx={{ textAlign: 'center' }}
                       >
-                        {league.numPlayers}/{league.maxPlayers} Players
+                        {legion.numPlayers}/{legion.maxPlayers} Players
                       </Typography>
                     </CardContent>
                   </Card>
@@ -95,7 +99,9 @@ const DashboardComponent = () => {
                     backgroundColor: '#a64d79',
                   },
                 }}
-                onClick={() => {navigate('/legions')}}
+                onClick={() => {
+                  navigate('/legions');
+                }}
               >
                 Join a new Legion
               </Button>
