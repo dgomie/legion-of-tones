@@ -6,7 +6,7 @@ import music from '../images/music.svg';
 import { useState, useEffect } from "react";
 import { useQuery } from '@apollo/client';
 import { GET_USER } from "../utils/queries";
-import { useInRouterContext, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 const ProfileStatsComponent = () => {
