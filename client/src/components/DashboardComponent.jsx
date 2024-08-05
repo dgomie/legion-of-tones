@@ -6,18 +6,37 @@ import {
   CardContent,
   Button,
   Container,
+  CircularProgress,  
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-
-const legions = [
-  { id: 1, name: "Legion of Champions", description: "A legion of elite champions.", numPlayers: 12, maxPlayers: 15, isActive: true },
-  { id: 2, name: "Legion of Heroes", description: "A legion of brave heroes.", numPlayers: 9, maxPlayers: 12, isActive: true },
-  { id: 3, name: "Legion of Legends", description: "A legion of legendary figures.", numPlayers: 8, maxPlayers: 10, isActive: false },
-];
+import { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { GET_LEGIONS } from "../utils/queries";
+import Auth from "../utils/auth";
 
 const DashboardComponent = () => {
+  const currentUserId = Auth.getProfile().data._id
+
   const navigate = useNavigate();
-  const activeLegions = legions.filter((legion) => legion.isActive);
+  const [legions, setLegions] = useState([]);
+  const { data, loading } = useQuery(GET_LEGIONS);
+
+  useEffect(() => {
+    if (data) {
+      const activeLegions = data.legions.filter(
+        (legion) => legion.isActive && legion.players.includes(currentUserId)
+      );
+      setLegions(activeLegions);
+    }
+  }, [data, currentUserId]);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -34,12 +53,12 @@ const DashboardComponent = () => {
         Your Legions
       </Typography>
       <Box sx={{ marginY: 3 }}>
-        {activeLegions.length > 0 ? (
+        {legions.length > 0 ? (
           <Grid container spacing={2}>
-            {activeLegions.map((legion) => (
-              <Grid item xs={12} sm={6} md={4} key={legion.id}>
+            {legions.map((legion) => (
+              <Grid item xs={12} sm={6} md={4} key={legion._id}>
                 <Link
-                  to={`/legions/${legion.id}`}
+                  to={`/legions/${legion._id}`}
                   style={{ textDecoration: 'none' }}
                 >
                   <Card
