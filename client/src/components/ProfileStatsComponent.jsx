@@ -6,16 +6,20 @@ import music from '../images/music.svg';
 import { useState, useEffect } from "react";
 import { useQuery } from '@apollo/client';
 import { GET_USER } from "../utils/queries";
-import AuthService from "../utils/auth"
+import { useInRouterContext, useParams } from 'react-router-dom';
+
 
 const ProfileStatsComponent = () => {
+  const { usernameParam } = useParams();
   const [legionsStat, setLegionsStat] = useState(0);
   const [winsStat, setWinsStat] = useState(0);
   const [songsStat, setSongsStat] = useState(0);
   const [votesStat, setVotesStat] = useState(0);
+  const [username, setUsername] = useState(usernameParam);
+
 
   const { data } = useQuery(GET_USER, {
-    variables: { username: AuthService.getProfile().data.username },
+    variables: { username },
   });
 
   useEffect(() => {
