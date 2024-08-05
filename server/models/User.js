@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
+const Legion = require("./Legion"); // Import the Legion model
 
 const userSchema = new Schema(
   {
@@ -100,15 +101,17 @@ userSchema.virtual('formattedCreatedAt').get(function() {
   });
 });
 
-// userSchema.pre("findOneAndDelete", async function (next) {
-//   const docToDelete = await this.model.findOne(this.getFilter());
-//   if (docToDelete) {
-//     // Assuming the Plan model references the User model with a field named 'userId'
-//     await PlansAI.deleteMany({ userId: docToDelete._id });
-//     await Workout.deleteMany({ userId: docToDelete._id });
-//   }
-//   next();
-// });
+userSchema.pre("findOneAndDelete", async function (next) {
+  const docToDelete = await this.model.findOne(this.getFilter());
+  if (docToDelete) {
+    // Remove the user from all legions' players array
+    await Legion.updateMany(
+      { players: docToDelete._id },
+      { $pull: { players: docToDelete._id } }
+    );
+  }
+  next();
+});
 
 const User = model("User", userSchema);
 
