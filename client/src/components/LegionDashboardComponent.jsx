@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Box, Typography, Divider } from "@mui/material";
 import { useQuery } from '@apollo/client';
 import { GET_LEGION } from "../utils/queries";
-import Auth from "../utils/auth";
+import PlayerName from "./PlayerName"; // Import the PlayerName component
 
 const LegionDashboardComponent = () => {
   const { legionId } = useParams();
@@ -16,23 +16,7 @@ const LegionDashboardComponent = () => {
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
-  const legion = data?.legion || {
-    _id: "placeholder-id",
-    name: "Placeholder Legion",
-    description: "This is a placeholder description for the legion.",
-    numPlayers: 5,
-    maxPlayers: 10,
-    players: ["player1", "player2", "player3", "player4", "player5"],
-    isActive: true,
-    numRounds: 3,
-    voteTime: 60,
-    submitTime: 120,
-    rounds: [
-      { roundNumber: 1, details: "Round 1 details" },
-      { roundNumber: 2, details: "Round 2 details" },
-      { roundNumber: 3, details: "Round 3 details" },
-    ],
-  };
+  const legion = data.legion;
 
   return (
     <Box>
@@ -44,13 +28,15 @@ const LegionDashboardComponent = () => {
       <Typography variant="body2">Max Players: {legion.maxPlayers}</Typography>
       <Typography variant="body2">Active: {legion.isActive ? "Yes" : "No"}</Typography>
       <Typography variant="body2">Rounds: {legion.numRounds}</Typography>
-      <Typography variant="body2">Vote Time: {legion.voteTime} seconds</Typography>
-      <Typography variant="body2">Submit Time: {legion.submitTime} seconds</Typography>
+      <Typography variant="body2">Vote Time: {legion.voteTime} Days</Typography>
+      <Typography variant="body2">Submit Time: {legion.submitTime} Days</Typography>
       <Divider />
       <Typography variant="h6">Players</Typography>
       <ul>
         {legion.players.map((playerId) => (
-          <li key={playerId}>{playerId}</li>
+          <li key={playerId}>
+            <PlayerName playerId={playerId} /> {/* Use PlayerName component */}
+          </li>
         ))}
       </ul>
       <Divider />

@@ -23,6 +23,20 @@ export const GET_USER = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query userByIdId($id: ID!) {
+    userById(id: $id) {
+      _id
+      username
+      email
+      firstName
+      lastName
+      profilePicture
+      formattedCreatedAt
+    }
+  }
+`;
+
 export const GET_LEGIONS = gql`
   query legions {
     legions {
