@@ -59,8 +59,8 @@ export const ADD_LEGION = gql`
 `;
 
 export const UPDATE_LEGION = gql`
-  mutation updateLegion($legionId: ID!, $legionData: UpdateLegionInput!) {
-    updateLegion(legionId: $legionId, legionData: $legionData) {
+  mutation updateLegion($legionId: ID!, $updateData: UpdateLegionInput!) {
+    updateLegion(legionId: $legionId, updateData: $updateData) {
       _id
       name
       description
