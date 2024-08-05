@@ -21,6 +21,7 @@ const roundSchema = new Schema({
   prompt: String,
   submissionDeadline: Date,
   voteDeadline: Date,
+  isComplete: Boolean,
   submissions: [songSchema],
   votes: [voteSchema],
 });
@@ -29,7 +30,6 @@ const legionSchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    numPlayers: { type: Number, required: true },
     maxPlayers: { type: Number, required: true },
     players: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     isActive: { type: Boolean, default: true },
@@ -43,6 +43,11 @@ const legionSchema = new Schema(
     toObject: { virtuals: true },
   }
 );
+
+// Add virtual property for numPlayers
+legionSchema.virtual('numPlayers').get(function() {
+  return this.players.length;
+});
 
 const Legion = model('Legion', legionSchema);
 

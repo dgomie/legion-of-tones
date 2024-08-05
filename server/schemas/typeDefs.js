@@ -28,14 +28,15 @@ const typeDefs = `
   }
 
   type Round {
-    _id: ID!
-    roundNumber: Int!
-    prompt: String!
-    submissionDeadline: String!
-    voteDeadline: String!
-    submissions: [Song]!
-    votes: [Vote]!
-  }
+  _id: ID!
+  roundNumber: Int!
+  prompt: String!
+  submissionDeadline: String!
+  voteDeadline: String!
+  submissions: [Song]!
+  votes: [Vote]!
+  isComplete: Boolean!
+}
 
   type Legion {
     _id: ID!

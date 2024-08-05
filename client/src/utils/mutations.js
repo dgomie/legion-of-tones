@@ -44,21 +44,55 @@ export const UPDATE_USER = gql`
   }
 `;
 
-export const CREATE_AI_PLAN = gql`
-  mutation createAIplan($userId: ID!, $title: String!, $plan: String!) {
-    createAIplan(userId: $userId, title: $title, plan: $plan) {
+export const ADD_LEGION = gql`
+  mutation addLegion($legionData: NewLegionInput!) {
+    addLegion(legionData: $legionData) {
       _id
-      userId
-      title
-      plan
-      createdAt
+      name
+      description
+      numPlayers
+      maxPlayers
+      players
+      isActive
+      numRounds
+      voteTime
+      submitTime
+      rounds {
+        _id
+        roundNumber
+        isComplete
+      }
     }
   }
 `;
 
-export const DELETE_AI_PLAN = gql`
-  mutation deleteAIplan($id: ID!) {
-    deleteAIplan(id: $id)
+export const UPDATE_LEGION = gql`
+  mutation updateLegion($legionId: ID!, $legionData: UpdateLegionInput!) {
+    updateLegion(legionId: $legionId, legionData: $legionData) {
+      _id
+      name
+      description
+      numPlayers
+      maxPlayers
+      players
+      isActive
+      numRounds
+      voteTime
+      submitTime
+      rounds {
+        _id
+        roundNumber
+        isComplete
+      }
+    }
+  }
+`;
+
+export const DELETE_LEGION = gql`
+  mutation deleteLegion($legionId: ID!) {
+    deleteLegion(legionId: $legionId) {
+      _id
+    }
   }
 `;
 

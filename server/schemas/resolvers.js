@@ -70,7 +70,6 @@ const resolvers = {
     },
 
     addLegion: async (parent, { legionData }, context) => {
-      console.log(context)
       if (!context.user) {
         throw AuthenticationError;
       }
@@ -99,6 +98,7 @@ const resolvers = {
       }
       return deletedLegion;
     },
+
   },
 };
 
