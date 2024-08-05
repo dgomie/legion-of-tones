@@ -56,14 +56,16 @@ const LegionDashboardComponent = () => {
       <Typography>Legion ID {legionId} </Typography>
       <Typography variant="h4">{legion.name}</Typography>
       <Typography variant="body1">{legion.description}</Typography>
-      {!isUserInLegion ? (
+      {!isUserInLegion && legion.numPlayers < legion.maxPlayers ? (
         <Button variant="contained" color="primary" onClick={handleJoinLegion}>
           Join Legion
         </Button>
       ) : (
-        <Button variant="contained" color="secondary" onClick={handleLeaveLegion}>
-          Leave Legion
-        </Button>
+        isUserInLegion && (
+          <Button variant="contained" color="secondary" onClick={handleLeaveLegion}>
+            Leave Legion
+          </Button>
+        )
       )}
       <Divider />
       
