@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_LEGIONS } from "../utils/queries";
 
 const LegionsComponent = () => {
@@ -20,8 +20,9 @@ const LegionsComponent = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
-      setLegions(data.legions);
+      console.log(data);
+      const activeLegions = data.legions.filter((legion) => legion.isActive);
+      setLegions(activeLegions);
     }
   }, [data]);
 
