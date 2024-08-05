@@ -1,6 +1,7 @@
 import { Box, Typography, Divider, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import AuthService from "../utils/auth";
 import { ADD_LEGION } from "../utils/mutations";
 
@@ -16,6 +17,8 @@ const CreateLegionComponent = () => {
     voteTime: ""
   });
 
+  const navigate = useNavigate(); // Get the navigate function
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,13 +30,19 @@ const CreateLegionComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addLegion({
+      const { data } = await addLegion({
         variables: {
           legionData: formData,
           currentUserId
         },
       });
-      console.log("Form Data Submitted:", formData);
+      console.log("Mutation Response:", data); // Log the entire response
+      const newLegionId = data?.addLegion?._id; // Safely access the ID
+      if (newLegionId) {
+        navigate(`/legions/${newLegionId}`); // Navigate to the new legion's page
+      } else {
+        console.error("New Legion ID is undefined");
+      }
     } catch (error) {
       console.error("Error submitting form data:", error.message);
       if (error.networkError) {

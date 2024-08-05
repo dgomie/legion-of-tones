@@ -47,6 +47,7 @@ export const UPDATE_USER = gql`
 export const ADD_LEGION = gql`
   mutation addLegion($legionData: NewLegionInput!) {
     addLegion(legionData: $legionData) {
+      _id
       name
       description
       maxPlayers
