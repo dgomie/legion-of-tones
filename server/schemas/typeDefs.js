@@ -8,6 +8,10 @@ const typeDefs = `
     age: Int
     profilePicture: String
     formattedCreatedAt: String
+    numVotes: Int
+    numSongs: Int
+    numLegions: Int
+    numVictories: Int
   }
 
   type Auth {
@@ -76,6 +80,10 @@ const typeDefs = `
     email: String
     dateOfBirth: String
     profilePicture: String
+    numVotes: Int
+    numSongs: Int
+    numLegions: Int
+    numVictories: Int
   }
 
   input NewLegionInput {
