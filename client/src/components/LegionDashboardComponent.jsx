@@ -1,50 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider, Container, Paper } from "@mui/material";
+import { useQuery } from '@apollo/client';
+import { GET_LEGION } from "../utils/queries";
+import PlayerName from "./PlayerName"; // Import the PlayerName component
 
 const LegionDashboardComponent = () => {
   const { legionId } = useParams();
-  console.log("Legion ID:",  legionId)
-  
-  // Placeholder legion object for development
-  const placeholderLegion = {
-    _id: "placeholder-id",
-    name: "Placeholder Legion",
-    description: "This is a placeholder description for the legion.",
-    numPlayers: 5,
-    maxPlayers: 10,
-    players: ["player1", "player2", "player3", "player4", "player5"],
-    isActive: true,
-    numRounds: 3,
-    voteTime: 60,
-    submitTime: 120,
-    rounds: [
-      { roundNumber: 1, details: "Round 1 details" },
-      { roundNumber: 2, details: "Round 2 details" },
-      { roundNumber: 3, details: "Round 3 details" },
-    ],
-  };
+  console.log("Legion ID:", legionId);
 
-  const [legion, setLegion] = useState(placeholderLegion);
+  const { loading, error, data } = useQuery(GET_LEGION, {
+    variables: { id: legionId },
+  });
 
-  // Comment out the fetch logic for now
-  // useEffect(() => {
-  //   const fetchLegionData = async () => {
-  //     try {
-  //       const response = await fetch(`/api/legions/${id}`);
-  //       const data = await response.json();
-  //       setLegion(data);
-  //     } catch (error) {
-  //       console.error("Error fetching legion data:", error);
-  //     }
-  //   };
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error: {error.message}</Typography>;
 
-  //   fetchLegionData();
-  // }, [id]);
-
-  if (!legion) {
-    return <Typography>Loading...</Typography>;
-  }
+  const legion = data.legion;
 
   return (
     <Box>
@@ -56,15 +28,29 @@ const LegionDashboardComponent = () => {
       <Typography variant="body2">Max Players: {legion.maxPlayers}</Typography>
       <Typography variant="body2">Active: {legion.isActive ? "Yes" : "No"}</Typography>
       <Typography variant="body2">Rounds: {legion.numRounds}</Typography>
-      <Typography variant="body2">Vote Time: {legion.voteTime} seconds</Typography>
-      <Typography variant="body2">Submit Time: {legion.submitTime} seconds</Typography>
+      <Typography variant="body2">Vote Time: {legion.voteTime} Days</Typography>
+      <Typography variant="body2">Submit Time: {legion.submitTime} Days</Typography>
       <Divider />
       <Typography variant="h6">Players</Typography>
-      <ul>
-        {legion.players.map((playerId) => (
-          <li key={playerId}>{playerId}</li>
-        ))}
-      </ul>
+      <Paper elevation={3} sx={{ padding: 2, borderRadius: '5px' }}>
+      <Container
+    sx={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 2,
+      justifyContent: {
+        xs: 'center', // Center on extra-small screens (mobile)
+        sm: 'flex-start' // Align to the start on small screens and up
+      }
+    }}
+  >
+          {legion.players.map((playerId) => (
+            <Box key={playerId} sx={{ display: 'inline-flex' }}>
+              <PlayerName playerId={playerId} /> {/* Use PlayerName component */}
+            </Box>
+          ))}
+        </Container>
+      </Paper>
       <Divider />
       <Typography variant="h6">Rounds</Typography>
       <ul>

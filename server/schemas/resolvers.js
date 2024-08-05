@@ -13,6 +13,10 @@ const resolvers = {
       return await User.findOne({ username });
     },
 
+    userById: async (parent, { id }) => {
+      return await User.findById(id);
+    },
+
     legions: async () => {
       return await Legion.find();
     },

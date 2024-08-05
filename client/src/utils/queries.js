@@ -23,6 +23,20 @@ export const GET_USER = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query userByIdId($id: ID!) {
+    userById(id: $id) {
+      _id
+      username
+      email
+      firstName
+      lastName
+      profilePicture
+      formattedCreatedAt
+    }
+  }
+`;
+
 export const GET_LEGIONS = gql`
   query legions {
     legions {
@@ -53,10 +67,7 @@ export const GET_LEGION = gql`
       description
       numPlayers
       maxPlayers
-      players {
-        _id
-        username
-      }
+      players
       isActive
       numRounds
       voteTime
@@ -68,8 +79,16 @@ export const GET_LEGION = gql`
         prompt
         submissionDeadline
         voteDeadline
-        submissions
-        votes
+        submissions {
+          title
+          artist
+          url
+        }
+        votes {
+          userId
+          songId
+          points
+        }
         isComplete
       }
     }
