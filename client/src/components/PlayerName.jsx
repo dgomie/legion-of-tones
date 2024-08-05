@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from '@apollo/client';
 import { GET_USER_BY_ID } from "../utils/queries";
 import { Avatar, Typography } from "@mui/material";

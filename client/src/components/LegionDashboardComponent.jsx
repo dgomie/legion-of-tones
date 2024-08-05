@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider, Container, Paper } from "@mui/material";
 import { useQuery } from '@apollo/client';
 import { GET_LEGION } from "../utils/queries";
 import PlayerName from "./PlayerName"; // Import the PlayerName component
@@ -32,13 +32,25 @@ const LegionDashboardComponent = () => {
       <Typography variant="body2">Submit Time: {legion.submitTime} Days</Typography>
       <Divider />
       <Typography variant="h6">Players</Typography>
-      <ul>
-        {legion.players.map((playerId) => (
-          <li key={playerId}>
-            <PlayerName playerId={playerId} /> {/* Use PlayerName component */}
-          </li>
-        ))}
-      </ul>
+      <Paper elevation={3} sx={{ padding: 2, borderRadius: '5px' }}>
+      <Container
+    sx={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 2,
+      justifyContent: {
+        xs: 'center', // Center on extra-small screens (mobile)
+        sm: 'flex-start' // Align to the start on small screens and up
+      }
+    }}
+  >
+          {legion.players.map((playerId) => (
+            <Box key={playerId} sx={{ display: 'inline-flex' }}>
+              <PlayerName playerId={playerId} /> {/* Use PlayerName component */}
+            </Box>
+          ))}
+        </Container>
+      </Paper>
       <Divider />
       <Typography variant="h6">Rounds</Typography>
       <ul>
