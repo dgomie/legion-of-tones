@@ -80,7 +80,6 @@ const typeDefs = `
   input NewLegionInput {
     name: String!
     description: String
-    numPlayers: Int!
     maxPlayers: Int!
     numRounds: Int!
     voteTime: Int!

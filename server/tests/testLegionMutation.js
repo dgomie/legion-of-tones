@@ -14,7 +14,6 @@ const query = `
     addLegion(legionData: {
       name: "New Legion",
       description: "test file creation of create legion",
-      numPlayers: 1,
       maxPlayers: 12,
       numRounds: 5,
       voteTime: 3,
