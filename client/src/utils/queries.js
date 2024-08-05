@@ -31,10 +31,7 @@ export const GET_LEGIONS = gql`
       description
       numPlayers
       maxPlayers
-      players {
-        _id
-        username
-      }
+      players 
       isActive
       numRounds
       voteTime

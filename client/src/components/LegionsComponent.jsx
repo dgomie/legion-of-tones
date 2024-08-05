@@ -6,40 +6,25 @@ import {
   CardContent,
   Button,
   Pagination,
+  CircularProgress,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-
-const legions = [
-  {
-    id: 1,
-    title: 'Legion of Champions',
-    description: 'A legion of elite champions.',
-    numPlayers: 12,
-    maxPlayers: 15,
-    isActive: true,
-  },
-  {
-    id: 2,
-    title: 'Legion of Heroes',
-    description: 'A legion of brave heroes.',
-    numPlayers: 9,
-    maxPlayers: 12,
-    isActive: true,
-  },
-  {
-    id: 3,
-    title: 'Legion of Legends',
-    description: 'A legion of legendary figures.',
-    numPlayers: 8,
-    maxPlayers: 10,
-    isActive: false,
-  },
-  // Add more legions as needed
-];
+import { useQuery, gql } from '@apollo/client';
+import { GET_LEGIONS } from "../utils/queries";
 
 const LegionsComponent = () => {
+  const [legions, setLegions] = useState([]);
+  const { data, loading } = useQuery(GET_LEGIONS);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      setLegions(data.legions);
+    }
+  }, [data]);
+
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
   const activeLegions = legions.filter((legion) => legion.isActive);
@@ -52,6 +37,14 @@ const LegionsComponent = () => {
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 3 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -80,7 +73,7 @@ const LegionsComponent = () => {
           component={Link}
           to="/legions/create-legion"
         >
-          <AddIcon sx={{padding: "4px"}}/>
+          <AddIcon sx={{ padding: '4px' }} />
           Create New Legion
         </Button>
       </Box>
@@ -88,9 +81,9 @@ const LegionsComponent = () => {
         <>
           <Grid container spacing={2}>
             {displayedLegions.map((legion) => (
-              <Grid item xs={12} sm={6} md={4} key={legion.id}>
+              <Grid item xs={12} sm={6} md={4} key={legion._id}>
                 <Link
-                  to={`/legions/${legion.id}`}
+                  to={`/legions/${legion._id}`}
                   style={{ textDecoration: 'none' }}
                 >
                   <Card
@@ -108,7 +101,7 @@ const LegionsComponent = () => {
                         component="div"
                         sx={{ textAlign: 'center' }}
                       >
-                        {legion.title}
+                        {legion.name}
                       </Typography>
                       <Typography
                         variant="body2"
