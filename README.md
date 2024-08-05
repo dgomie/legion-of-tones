@@ -1,5 +1,5 @@
 # Legion of Tones
-<img src="./client/src/images/lot-hero.png" width='650px'>
+<img src="./client/src/images/lot-hero.png" width='100%'>
 
   ### Table of Contents  
   [Description](#description)  
