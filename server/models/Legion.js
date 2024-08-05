@@ -21,6 +21,7 @@ const roundSchema = new Schema({
   prompt: String,
   submissionDeadline: Date,
   voteDeadline: Date,
+  isComplete: Boolean,
   submissions: [songSchema],
   votes: [voteSchema],
 });

@@ -23,13 +23,58 @@ export const GET_USER = gql`
   }
 `;
 
-export const GET_AI_PLANS = gql`
-  query aiPlans($userId: ID!) {
-    aiPlans(userId: $userId) {
+export const GET_LEGIONS = gql`
+  query legions {
+    legions {
       _id
-      userId
-      title
-      plan
+      name
+      description
+      numPlayers
+      maxPlayers
+      players {
+        _id
+        username
+      }
+      isActive
+      numRounds
+      voteTime
+      submitTime
+      rounds {
+        _id
+        roundNumber
+        isComplete
+      }
+    }
+  }
+`;
+
+export const GET_LEGION = gql`
+  query legion($id: ID!) {
+    legion(id: $id) {
+      _id
+      name
+      description
+      numPlayers
+      maxPlayers
+      players {
+        _id
+        username
+      }
+      isActive
+      numRounds
+      voteTime
+      submitTime
+      rounds {
+        _id
+        roundNumber
+        isComplete
+        prompt
+        submissionDeadline
+        voteDeadline
+        submissions
+        votes
+        isComplete
+      }
     }
   }
 `;
