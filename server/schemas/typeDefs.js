@@ -100,6 +100,7 @@ const typeDefs = `
     description: String
     numPlayers: Int
     maxPlayers: Int
+    players: [ID!]
     numRounds: Int
     voteTime: Int
     submitTime: Int
