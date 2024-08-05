@@ -53,10 +53,7 @@ export const GET_LEGION = gql`
       description
       numPlayers
       maxPlayers
-      players {
-        _id
-        username
-      }
+      players
       isActive
       numRounds
       voteTime
@@ -68,8 +65,16 @@ export const GET_LEGION = gql`
         prompt
         submissionDeadline
         voteDeadline
-        submissions
-        votes
+        submissions {
+          title
+          artist
+          url
+        }
+        votes {
+          userId
+          songId
+          points
+        }
         isComplete
       }
     }

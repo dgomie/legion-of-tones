@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Divider } from "@mui/material";
+import { useQuery } from '@apollo/client';
+import { GET_LEGION } from "../utils/queries";
+import Auth from "../utils/auth";
 
 const LegionDashboardComponent = () => {
   const { legionId } = useParams();
-  console.log("Legion ID:",  legionId)
-  
-  // Placeholder legion object for development
-  const placeholderLegion = {
+  console.log("Legion ID:", legionId);
+
+  const { loading, error, data } = useQuery(GET_LEGION, {
+    variables: { id: legionId },
+  });
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error: {error.message}</Typography>;
+
+  const legion = data?.legion || {
     _id: "placeholder-id",
     name: "Placeholder Legion",
     description: "This is a placeholder description for the legion.",
@@ -24,27 +33,6 @@ const LegionDashboardComponent = () => {
       { roundNumber: 3, details: "Round 3 details" },
     ],
   };
-
-  const [legion, setLegion] = useState(placeholderLegion);
-
-  // Comment out the fetch logic for now
-  // useEffect(() => {
-  //   const fetchLegionData = async () => {
-  //     try {
-  //       const response = await fetch(`/api/legions/${id}`);
-  //       const data = await response.json();
-  //       setLegion(data);
-  //     } catch (error) {
-  //       console.error("Error fetching legion data:", error);
-  //     }
-  //   };
-
-  //   fetchLegionData();
-  // }, [id]);
-
-  if (!legion) {
-    return <Typography>Loading...</Typography>;
-  }
 
   return (
     <Box>
