@@ -1,28 +1,52 @@
 import { Box, Typography, Divider, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import AuthService from "../utils/auth";
+import { ADD_LEGION } from "../utils/mutations";
 
 const CreateLegionComponent = () => {
+  const currentUserId = AuthService.getProfile().data._id;
+  const [addLegion] = useMutation(ADD_LEGION);
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     description: "",
     maxPlayers: "",
     numRounds: "",
-    submitTiming: "",
-    voteTiming: ""
+    submitTime: "",
+    voteTime: ""
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: name === "numRounds" || name === "submitTime" || name === "voteTime" ? parseInt(value, 10) : value
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Data Submitted:", formData);
+    try {
+      await addLegion({
+        variables: {
+          legionData: formData,
+          currentUserId
+        },
+      });
+      console.log("Form Data Submitted:", formData);
+    } catch (error) {
+      console.error("Error submitting form data:", error.message);
+      if (error.networkError) {
+        console.error("Network Error:", error.networkError);
+      }
+      if (error.graphQLErrors) {
+        error.graphQLErrors.forEach(({ message, locations, path }) => {
+          console.error(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          );
+        });
+      }
+    }
   };
 
   return (
@@ -50,9 +74,9 @@ const CreateLegionComponent = () => {
         }}
       >
         <TextField
-          label="Title"
-          name="title"
-          value={formData.title}
+          label="Legion Name"
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           fullWidth
           margin="normal"
@@ -91,8 +115,8 @@ const CreateLegionComponent = () => {
           <InputLabel>Timing to Submit Songs (in days)</InputLabel>
           <Select
             label="Timing to Submit Songs (in days)"
-            name="submitTiming"
-            value={formData.submitTiming}
+            name="submitTime"
+            value={formData.submitTime}
             onChange={handleChange}
           >
             {[...Array(5).keys()].map(i => (
@@ -104,8 +128,8 @@ const CreateLegionComponent = () => {
           <InputLabel>Timing to Listen and Vote (in days)</InputLabel>
           <Select
             label="Timing to Listen and Vote (in days)"
-            name="voteTiming"
-            value={formData.voteTiming}
+            name="voteTime"
+            value={formData.voteTime}
             onChange={handleChange}
           >
             {[...Array(5).keys()].map(i => (
