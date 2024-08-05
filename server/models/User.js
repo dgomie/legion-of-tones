@@ -41,9 +41,24 @@ const userSchema = new Schema(
       type: Date,
       required: true,
       default: Date.now
+    },
+    numVotes: {
+      type: Number,
+      default: 0,
+    },
+    numSongs: {
+      type: Number,
+      default: 0,
+    },
+    numLegions: {
+      type: Number,
+      default: 0,
+    },
+    numVictories: {
+      type: Number,
+      default: 0,
     }
   },
-
   {
     toJSON: { virtuals: true }, // Ensure virtuals are included in toJSON output
     toObject: { virtuals: true },

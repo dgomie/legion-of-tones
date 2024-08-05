@@ -19,6 +19,10 @@ export const GET_USER = gql`
       lastName
       profilePicture
       formattedCreatedAt
+      numVotes
+      numSongs
+      numLegions
+      numVictories
     }
   }
 `;
@@ -33,6 +37,7 @@ export const GET_USER_BY_ID = gql`
       lastName
       profilePicture
       formattedCreatedAt
+    
     }
   }
 `;

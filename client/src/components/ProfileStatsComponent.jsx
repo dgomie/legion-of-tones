@@ -3,14 +3,33 @@ import grail from '../images/grail.svg';
 import quest from '../images/quest.svg';
 import vote from '../images/vote.svg';
 import music from '../images/music.svg';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from '@apollo/client';
+import { GET_USER } from "../utils/queries";
+import { useParams } from 'react-router-dom';
+
 
 const ProfileStatsComponent = () => {
+  const { usernameParam } = useParams();
   const [legionsStat, setLegionsStat] = useState(0);
   const [winsStat, setWinsStat] = useState(0);
   const [songsStat, setSongsStat] = useState(0);
   const [votesStat, setVotesStat] = useState(0);
+  const [username, setUsername] = useState(usernameParam);
 
+
+  const { data } = useQuery(GET_USER, {
+    variables: { username },
+  });
+
+  useEffect(() => {
+    if (data && data.user) {
+      setLegionsStat(data.user.numLegions || 0);
+      setWinsStat(data.user.numVictories || 0);
+      setSongsStat(data.user.numSongs || 0);
+      setVotesStat(data.user.numVotes || 0);
+    }
+  }, [data]);
 
   const categories = ["Legions Joined", "Treasures Won", "Songs Shared", "Votes Cast"];
   const icons = [quest, grail, music, vote];
