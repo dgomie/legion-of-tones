@@ -8,8 +8,6 @@ const PlayerName = ({ playerId }) => {
     variables: { id: playerId },
   });
 
-  console.log(data);
-
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
