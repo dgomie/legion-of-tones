@@ -16,7 +16,7 @@ import { GET_LEGIONS } from "../utils/queries";
 
 const LegionsComponent = () => {
   const [legions, setLegions] = useState([]);
-  const { data, loading } = useQuery(GET_LEGIONS);
+  const { data, loading, refetch } = useQuery(GET_LEGIONS);
 
   useEffect(() => {
     if (data) {
@@ -24,6 +24,10 @@ const LegionsComponent = () => {
       setLegions(activeLegions);
     }
   }, [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;

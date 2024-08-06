@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, Container, Paper, Button, Modal } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
