@@ -20,7 +20,6 @@ const LegionsComponent = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       const activeLegions = data.legions.filter((legion) => legion.isActive);
       setLegions(activeLegions);
     }

@@ -1,12 +1,14 @@
-import { useParams } from 'react-router-dom';
-import { Box, Typography, Divider, Container, Paper, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Box, Typography, Divider, Container, Paper, Button, Modal } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
-import { UPDATE_LEGION } from '../utils/mutations';
+import { UPDATE_LEGION, REMOVE_LEGION } from '../utils/mutations';
 import PlayerName from './PlayerName';
 import AuthService from '../utils/auth';
 
 const LegionDashboardComponent = () => {
+  const navigate = useNavigate();
   const currentUserId = AuthService.getProfile().data._id;
   const { legionId } = useParams();
   const { loading, error, data } = useQuery(GET_LEGION, {
@@ -14,12 +16,15 @@ const LegionDashboardComponent = () => {
   });
 
   const [updateLegion] = useMutation(UPDATE_LEGION);
+  const [removeLegion] = useMutation(REMOVE_LEGION);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   const legion = data.legion;
   const isUserInLegion = legion.players.includes(currentUserId);
+  const isAdminUser = currentUserId === legion.adminUser;
 
   const handleJoinLegion = async () => {
     try {
@@ -51,6 +56,21 @@ const LegionDashboardComponent = () => {
     }
   };
 
+  const handleDeleteLegion = async () => {
+    try {
+      await removeLegion({
+        variables: {
+          legionId: legion._id,
+        },
+      });
+      console.log('Legion deleted');
+      setModalOpen(false);
+      navigate('/legions');
+    } catch (err) {
+      console.error('Error deleting the legion:', err);
+    }
+  };
+
   return (
     <Box>
       <Typography>Legion ID {legionId} </Typography>
@@ -62,9 +82,15 @@ const LegionDashboardComponent = () => {
         </Button>
       ) : (
         isUserInLegion && (
-          <Button variant="contained" color="secondary" onClick={handleLeaveLegion}>
-            Leave Legion
-          </Button>
+          isAdminUser ? (
+            <Button variant="contained" color="secondary" onClick={() => setModalOpen(true)}>
+              Delete Legion
+            </Button>
+          ) : (
+            <Button variant="contained" color="secondary" onClick={handleLeaveLegion}>
+              Leave Legion
+            </Button>
+          )
         )
       )}
       <Divider />
@@ -110,6 +136,40 @@ const LegionDashboardComponent = () => {
           <li key={index}>{JSON.stringify(round)}</li>
         ))}
       </ul>
+
+      <Modal
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        aria-labelledby="delete-legion-modal-title"
+        aria-describedby="delete-legion-modal-description"
+      >
+        <Box sx={{ 
+          position: 'absolute', 
+          top: '50%', 
+          left: '50%', 
+          transform: 'translate(-50%, -50%)', 
+          width: 400, 
+          bgcolor: 'background.paper', 
+          border: '2px solid #000', 
+          boxShadow: 24, 
+          p: 4 
+        }}>
+          <Typography id="delete-legion-modal-title" variant="h6" component="h2">
+            Confirm Delete
+          </Typography>
+          <Typography id="delete-legion-modal-description" sx={{ mt: 2 }}>
+            Are you sure you want to delete this legion? This action cannot be undone.
+          </Typography>
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+            <Button variant="contained" color="secondary" onClick={handleDeleteLegion}>
+              Delete
+            </Button>
+            <Button variant="contained" onClick={() => setModalOpen(false)}>
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 };

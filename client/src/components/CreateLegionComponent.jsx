@@ -36,7 +36,6 @@ const CreateLegionComponent = () => {
           currentUserId
         },
       });
-      console.log("Mutation Response:", data); // Log the entire response
       const newLegionId = data?.addLegion?._id; // Safely access the ID
       if (newLegionId) {
         navigate(`/legions/${newLegionId}`); // Navigate to the new legion's page

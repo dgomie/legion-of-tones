@@ -80,9 +80,9 @@ export const UPDATE_LEGION = gql`
   }
 `;
 
-export const DELETE_LEGION = gql`
-  mutation deleteLegion($legionId: ID!) {
-    deleteLegion(legionId: $legionId) {
+export const REMOVE_LEGION = gql`
+  mutation removeLegion($legionId: ID!) {
+    removeLegion(legionId: $legionId) {
       _id
     }
   }

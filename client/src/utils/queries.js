@@ -48,6 +48,7 @@ export const GET_LEGIONS = gql`
       _id
       name
       description
+      adminUser
       numPlayers
       maxPlayers
       players 
@@ -70,6 +71,7 @@ export const GET_LEGION = gql`
       _id
       name
       description
+      adminUser
       numPlayers
       maxPlayers
       players
