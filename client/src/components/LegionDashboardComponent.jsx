@@ -35,7 +35,6 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
-      console.log('User joined the legion');
     } catch (err) {
       console.error('Error joining the legion:', err);
     }
@@ -50,7 +49,6 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
-      console.log('User left the legion');
     } catch (err) {
       console.error('Error leaving the legion:', err);
     }
@@ -63,7 +61,6 @@ const LegionDashboardComponent = () => {
           legionId: legion._id,
         },
       });
-      console.log('Legion deleted');
       setModalOpen(false);
       navigate('/legions');
     } catch (err) {
