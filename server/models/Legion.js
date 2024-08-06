@@ -30,6 +30,7 @@ const legionSchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
+    adminUser: { type: Schema.Types.ObjectId, ref: 'User' },
     maxPlayers: { type: Number, required: true },
     players: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     isActive: { type: Boolean, default: true },

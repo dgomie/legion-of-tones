@@ -80,6 +80,7 @@ const resolvers = {
 
       const newLegion = await Legion.create({
         ...legionData,
+        adminUser: new mongoose.Types.ObjectId(context.user._id),
         players: [new mongoose.Types.ObjectId(context.user._id)], // Use 'new' keyword
       });
 

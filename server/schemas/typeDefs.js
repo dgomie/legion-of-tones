@@ -46,6 +46,7 @@ const typeDefs = `
     _id: ID!
     name: String!
     description: String
+    adminUser: ID!
     numPlayers: Int!
     maxPlayers: Int!
     players: [ID]!
