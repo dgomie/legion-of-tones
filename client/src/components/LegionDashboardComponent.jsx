@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import { UPDATE_LEGION, REMOVE_LEGION } from '../utils/mutations';
 import PlayerName from './PlayerName';
+import RoundsComponent from './RoundsComponent';
 import AuthService from '../utils/auth';
 
 const LegionDashboardComponent = () => {
@@ -35,7 +36,6 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
-      console.log('User joined the legion');
     } catch (err) {
       console.error('Error joining the legion:', err);
     }
@@ -50,7 +50,6 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
-      console.log('User left the legion');
     } catch (err) {
       console.error('Error leaving the legion:', err);
     }
@@ -63,7 +62,6 @@ const LegionDashboardComponent = () => {
           legionId: legion._id,
         },
       });
-      console.log('Legion deleted');
       setModalOpen(false);
       navigate('/legions');
     } catch (err) {
@@ -136,6 +134,7 @@ const LegionDashboardComponent = () => {
           <li key={index}>{JSON.stringify(round)}</li>
         ))}
       </ul>
+      <RoundsComponent />
 
       <Modal
         open={isModalOpen}
