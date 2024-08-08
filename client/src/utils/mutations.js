@@ -88,4 +88,20 @@ export const REMOVE_LEGION = gql`
   }
 `;
 
+export const CREATE_ROUND = gql`
+  mutation createRound($legionId: ID!, $roundData: NewRoundInput!) {
+    createRound(legionId: $legionId, roundData: $roundData) {
+      _id
+      rounds {
+        _id
+        roundNumber
+        prompt
+        submissionDeadline
+        voteDeadline
+        isComplete
+      }
+    }
+  }
+`;
+
 
