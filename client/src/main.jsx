@@ -15,6 +15,7 @@ import { ContactPage } from '@mui/icons-material';
 import PageNotFound from './pages/404Page.jsx';
 import CreateLegionPage from './pages/CreateLegionPage.jsx';
 import LegionDashboardPage from './pages/LegionDashboardPage.jsx';
+import LegionRoundPage from './pages/LegionRoundPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: 'legions/:legionId',
         element: <LegionDashboardPage />,
+      },
+      {
+        path: 'legions/:legionId/:roundId',
+        element: <LegionRoundPage />,
       },
       {
         path: 'legions/create-legion',
