@@ -136,8 +136,6 @@ const resolvers = {
       return legion;
     },
   },
-
-  },
 };
 
 module.exports = resolvers;
