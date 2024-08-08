@@ -103,6 +103,23 @@ const resolvers = {
       }
       return deletedLegion;
     },
+    createRound: async (_, { legionId, roundInput }) => {
+      const legion = await Legion.findById(legionId);
+      if (!legion) {
+        throw new Error('Legion not found');
+      }
+
+      const newRound = {
+        _id: new mongoose.Types.ObjectId(),
+        ...roundInput,
+        submissions: [],
+        votes: [],
+      };
+
+      legion.rounds.push(newRound);
+      await legion.save();
+      return legion;
+    },
 
   },
 };
