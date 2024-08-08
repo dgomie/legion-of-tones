@@ -120,6 +120,22 @@ const resolvers = {
       await legion.save();
       return legion;
     },
+    updateRound: async (_, { legionId, roundId, roundData }) => {
+      const legion = await Legion.findById(legionId);
+      if (!legion) {
+        throw new Error('Legion not found');
+      }
+
+      const round = legion.rounds.id(roundId);
+      if (!round) {
+        throw new Error('Round not found');
+      }
+
+      Object.assign(round, roundData);
+      await legion.save();
+      return legion;
+    },
+  },
 
   },
 };
