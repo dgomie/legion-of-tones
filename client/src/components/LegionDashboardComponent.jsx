@@ -5,6 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import { UPDATE_LEGION, REMOVE_LEGION } from '../utils/mutations';
 import PlayerName from './PlayerName';
+import RoundsComponent from './RoundsComponent';
 import AuthService from '../utils/auth';
 
 const LegionDashboardComponent = () => {
@@ -133,6 +134,7 @@ const LegionDashboardComponent = () => {
           <li key={index}>{JSON.stringify(round)}</li>
         ))}
       </ul>
+      <RoundsComponent />
 
       <Modal
         open={isModalOpen}
