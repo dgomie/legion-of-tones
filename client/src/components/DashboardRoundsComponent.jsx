@@ -7,13 +7,16 @@ const RoundsComponent = () => {
   const location = useLocation();
 
   const rounds = [
-    { legionId: 'legion1', roundId: 'round1', title: 'Round 1', description: 'Description for Round 1', date: '2023-10-01' },
-    { legionId: 'legion2', roundId: 'round2', title: 'Round 2', description: 'Description for Round 2', date: '2023-09-01' },
-    { legionId: 'legion3', roundId: 'round3', title: 'Round 3', description: 'Description for Round 3', date: '2023-08-01' },
+    { legionId: 'legion1', roundId: 'round1', title: 'Round 1', description: 'Description for Round 1', date: '01-01-2024' },
+    { legionId: 'legion1', roundId: 'round2', title: 'Round 2', description: 'Description for Round 2', date: '01-02-2024' },
+    { legionId: 'legion1', roundId: 'round3', title: 'Round 3', description: 'Description for Round 3', date: '01-03-2024' },
+    { legionId: 'legion1', roundId: 'round4', title: 'Round 4', description: 'Description for Round 4', date: '01-04-2024' },
+    { legionId: 'legion1', roundId: 'round5', title: 'Round 5', description: 'Description for Round 5', date: '01-05-2024'},
+    { legionId: 'legion1', roundId: 'round6', title: 'Round 6', description: 'Description for Round 6', date: '01-06-2024' },
   ];
 
   // Sort rounds from newest to oldest
-  const sortedRounds = rounds.sort((b, a) => new Date(b.date) - new Date(a.date));
+  const sortedRounds = rounds.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const handleButtonClick = (roundId) => {
     navigate(`${location.pathname}/${roundId}`);
