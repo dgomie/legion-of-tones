@@ -88,4 +88,36 @@ export const REMOVE_LEGION = gql`
   }
 `;
 
+export const CREATE_ROUND = gql`
+  mutation createRound($legionId: ID!, $roundData: NewRoundInput!) {
+    createRound(legionId: $legionId, roundData: $roundData) {
+      _id
+      rounds {
+        _id
+        roundNumber
+        prompt
+        submissionDeadline
+        voteDeadline
+        isComplete
+      }
+    }
+  }
+`;
+
+export const UPDATE_ROUND = gql`
+  mutation updateRound($legionId: ID!, $roundId: ID!, $roundData: UpdateRoundInput!) {
+    updateRound(legionId: $legionId, roundId: $roundId, roundData: $roundData) {
+      _id
+      rounds {
+        _id
+        roundNumber
+        prompt
+        submissionDeadline
+        voteDeadline
+        isComplete
+      }
+    }
+  }
+`;
+
 

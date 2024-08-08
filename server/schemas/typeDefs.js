@@ -107,6 +107,22 @@ const typeDefs = `
     submitTime: Int
   }
 
+  input RoundInput {
+  roundNumber: Int!
+  prompt: String!
+  submissionDeadline: String!
+  voteDeadline: String!
+  isComplete: Boolean
+  }
+
+  input UpdateRoundInput {
+  roundNumber: Int
+  prompt: String
+  submissionDeadline: String
+  voteDeadline: String
+  isComplete: Boolean
+}
+
   type Mutation {
     addUser(userData: NewUserInput!): Auth
     login(username: String!, password: String!): Auth
@@ -115,6 +131,8 @@ const typeDefs = `
     addLegion(legionData: NewLegionInput!): Legion
     updateLegion(legionId: ID!, updateData: UpdateLegionInput!): Legion
     removeLegion(legionId: ID!): Legion
+    createRound(legionId: ID!, roundInput: RoundInput!): Legion
+    updateRound(legionId: ID!, roundId: ID!, roundData: UpdateRoundInput!): Legion
   }
 `;
 
