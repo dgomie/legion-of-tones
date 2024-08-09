@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Typography, Divider, Container, Paper, Button, Modal } from '@mui/material';
+import { Box, Typography, Divider, Container, Paper, Button, Modal, TextField } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import { UPDATE_LEGION, REMOVE_LEGION } from '../utils/mutations';
@@ -19,6 +19,14 @@ const LegionDashboardComponent = () => {
   const [updateLegion] = useMutation(UPDATE_LEGION);
   const [removeLegion] = useMutation(REMOVE_LEGION);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isConfirmDelete, setConfirmDelete] = useState(false);
+  const [legionSettings, setLegionSettings] = useState({
+    name: '',
+    description: '',
+    maxPlayers: 0,
+    voteTime: 0,
+    submitTime: 0,
+  });
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
@@ -69,6 +77,34 @@ const LegionDashboardComponent = () => {
     }
   };
 
+  const handleUpdateLegion = async () => {
+    try {
+      const updatedSettings = {
+        ...legionSettings,
+        maxPlayers: parseInt(legionSettings.maxPlayers, 10),
+        voteTime: parseInt(legionSettings.voteTime, 10),
+        submitTime: parseInt(legionSettings.submitTime, 10),
+      };
+      await updateLegion({
+        variables: {
+          legionId: legion._id,
+          updateData: updatedSettings,
+        },
+      });
+      setModalOpen(false);
+    } catch (err) {
+      console.error('Error updating the legion:', err);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setLegionSettings({
+      ...legionSettings,
+      [name]: value,
+    });
+  };
+
   return (
     <Box>
       <Typography>Legion ID {legionId} </Typography>
@@ -82,7 +118,7 @@ const LegionDashboardComponent = () => {
         isUserInLegion && (
           isAdminUser ? (
             <Button variant="contained" color="secondary" onClick={() => setModalOpen(true)}>
-              Delete Legion
+              Legion Settings
             </Button>
           ) : (
             <Button variant="contained" color="secondary" onClick={handleLeaveLegion}>
@@ -139,34 +175,99 @@ const LegionDashboardComponent = () => {
       <Modal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
-        aria-labelledby="delete-legion-modal-title"
-        aria-describedby="delete-legion-modal-description"
+        aria-labelledby="legion-settings-modal-title"
+        aria-describedby="legion-settings-modal-description"
       >
         <Box sx={{ 
           position: 'absolute', 
           top: '50%', 
           left: '50%', 
           transform: 'translate(-50%, -50%)', 
-          width: 400, 
+          width: isConfirmDelete ? 300 : 400, 
           bgcolor: 'background.paper', 
           border: '2px solid #000', 
           boxShadow: 24, 
           p: 4 
         }}>
-          <Typography id="delete-legion-modal-title" variant="h6" component="h2">
-            Confirm Delete
-          </Typography>
-          <Typography id="delete-legion-modal-description" sx={{ mt: 2 }}>
-            Are you sure you want to delete this legion? This action cannot be undone.
-          </Typography>
-          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="contained" color="secondary" onClick={handleDeleteLegion}>
-              Delete
-            </Button>
-            <Button variant="contained" onClick={() => setModalOpen(false)}>
-              Cancel
-            </Button>
-          </Box>
+          {isConfirmDelete ? (
+            <>
+              <Typography id="legion-settings-modal-title" variant="h6" component="h2">
+                Confirm Delete
+              </Typography>
+              <Typography id="legion-settings-modal-description" sx={{ mt: 2 }}>
+                Are you sure you want to delete this legion? This action cannot be undone.
+              </Typography>
+              <Box sx={{ mt: 2, display: 'flex-column', justifyContent: 'center' }}>
+              <Button variant="contained" sx={{mb:1, width: '100%'}} onClick={() => setConfirmDelete(false)}>
+                  Cancel
+                </Button>
+                <Button variant="contained" color="secondary" sx={{width: '100%'}} onClick={handleDeleteLegion}>
+                  Confirm Delete
+                </Button>
+              
+              </Box>
+            </>
+          ) : (
+            <>
+              <Typography id="legion-settings-modal-title" variant="h6" component="h2">
+                Legion Settings
+              </Typography>
+              <TextField
+                label="Name"
+                name="name"
+                value={legionSettings.name}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Description"
+                name="description"
+                value={legionSettings.description}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Max Players"
+                name="maxPlayers"
+                type="number"
+                value={legionSettings.maxPlayers}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Vote Time (Days)"
+                name="voteTime"
+                type="number"
+                value={legionSettings.voteTime}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Submit Time (Days)"
+                name="submitTime"
+                type="number"
+                value={legionSettings.submitTime}
+                onChange={handleInputChange}
+                fullWidth
+                margin="normal"
+              />
+              <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+                <Button variant="contained" color="primary" onClick={handleUpdateLegion}>
+                  Update
+                </Button>
+                <Button variant="contained" color="secondary" onClick={() => setConfirmDelete(true)}>
+                  Delete Legion
+                </Button>
+                <Button variant="contained" onClick={() => setModalOpen(false)}>
+                  Cancel
+                </Button>
+              </Box>
+            </>
+          )}
         </Box>
       </Modal>
     </Box>
