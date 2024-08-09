@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, Container, Paper, Button, Modal, TextField } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
@@ -27,6 +27,13 @@ const LegionDashboardComponent = () => {
     voteTime: 0,
     submitTime: 0,
   });
+
+  useEffect(() => {
+    if (data) {
+      const { name, description, maxPlayers, voteTime, submitTime } = data.legion;
+      setLegionSettings({ name, description, maxPlayers, voteTime, submitTime });
+    }
+  }, [data]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
@@ -198,13 +205,12 @@ const LegionDashboardComponent = () => {
                 Are you sure you want to delete this legion? This action cannot be undone.
               </Typography>
               <Box sx={{ mt: 2, display: 'flex-column', justifyContent: 'center' }}>
-              <Button variant="contained" sx={{mb:1, width: '100%'}} onClick={() => setConfirmDelete(false)}>
+                <Button variant="contained" sx={{ mb: 1, width: '100%' }} onClick={() => setConfirmDelete(false)}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="secondary" sx={{width: '100%'}} onClick={handleDeleteLegion}>
+                <Button variant="contained" color="secondary" sx={{ width: '100%' }} onClick={handleDeleteLegion}>
                   Confirm Delete
                 </Button>
-              
               </Box>
             </>
           ) : (
