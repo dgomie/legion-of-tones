@@ -134,7 +134,7 @@ const LegionDashboardComponent = () => {
           <li key={index}>{JSON.stringify(round)}</li>
         ))}
       </ul>
-      <RoundsComponent legion={legion} />
+      <RoundsComponent legion={legion} isAdminUser={isAdminUser}/>
 
       <Modal
         open={isModalOpen}
