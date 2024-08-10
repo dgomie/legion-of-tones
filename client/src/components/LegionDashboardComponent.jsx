@@ -171,12 +171,6 @@ const LegionDashboardComponent = () => {
         </Container>
       </Paper>
       <Divider />
-      <Typography variant="h6">Rounds</Typography>
-      <ul>
-        {legion.rounds.map((round, index) => (
-          <li key={index}>{JSON.stringify(round)}</li>
-        ))}
-      </ul>
       <RoundsComponent legion={legion} isAdminUser={isAdminUser}/>
 
       <Modal

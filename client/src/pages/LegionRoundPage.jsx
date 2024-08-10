@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Auth from "../utils/auth";
-import LegionRoundComponent from '../components/LegionRoundComponent';
+import RoundComponent from '../components/RoundComponent';
 
 function LegionDashboardPage() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function LegionDashboardPage() {
 
   return (
   <>
-  <LegionRoundComponent />
+  <RoundComponent />
 
   </>)
   ;
