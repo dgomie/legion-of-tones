@@ -16,12 +16,12 @@ const voteSchema = new Schema({
 
 // Define the round schema
 const roundSchema = new Schema({
-  _id: Schema.Types.ObjectId,
+  _id: { type: Schema.Types.ObjectId, auto: true },
   roundNumber: Number,
   prompt: String,
   submissionDeadline: Date,
   voteDeadline: Date,
-  isComplete: Boolean,
+  isComplete: { type: Boolean, default: false },
   submissions: [songSchema],
   votes: [voteSchema],
 });
@@ -35,8 +35,8 @@ const legionSchema = new Schema(
     players: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     isActive: { type: Boolean, default: true },
     numRounds: { type: Number, required: true },
-    voteTime: { type: Number, required: true },
-    submitTime: { type: Number, required: true },
+    voteTime: { type: Number, required: true }, // in days
+    submitTime: { type: Number, required: true }, // in days
     rounds: [roundSchema],
   },
   {
@@ -50,6 +50,31 @@ legionSchema.virtual('numPlayers').get(function() {
   return this.players.length;
 });
 
+// Pre-save hook to add rounds
+legionSchema.pre('save', function(next) {
+  if (this.isNew) {
+    let currentDate = new Date();
+    for (let i = 0; i < this.numRounds; i++) {
+      const submissionDeadline = new Date(currentDate);
+      submissionDeadline.setDate(submissionDeadline.getDate() + this.submitTime);
+
+      const voteDeadline = new Date(submissionDeadline);
+      voteDeadline.setDate(voteDeadline.getDate() + this.voteTime);
+
+      this.rounds.push({
+        roundNumber: i + 1,
+        prompt: `Prompt for round ${i + 1}`,
+        submissionDeadline: submissionDeadline,
+        voteDeadline: voteDeadline,
+      });
+
+      // Update currentDate to the voteDeadline for the next round
+      currentDate = new Date(voteDeadline);
+    }
+  }
+  next();
+});
+
 const Legion = model('Legion', legionSchema);
 
-module.exports = Legion;
+module.exports = Legion;module.exports = Legion;
