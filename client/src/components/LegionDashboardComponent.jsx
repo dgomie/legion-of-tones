@@ -114,7 +114,6 @@ const LegionDashboardComponent = () => {
 
   return (
     <Box>
-      <Typography>Legion ID {legionId} </Typography>
       <Typography variant="h4">{legion.name}</Typography>
       <Typography variant="body1">{legion.description}</Typography>
       {!isUserInLegion && legion.numPlayers < legion.maxPlayers ? (
@@ -150,7 +149,7 @@ const LegionDashboardComponent = () => {
       </Typography>
       <Divider />
       <Typography variant="h6">Players</Typography>
-      <Paper elevation={3} sx={{ padding: 2, borderRadius: '5px' }}>
+      <Paper elevation={1} sx={{ padding: 2, borderRadius: '5px' }}>
         <Container
           sx={{
             display: 'flex',
@@ -170,7 +169,6 @@ const LegionDashboardComponent = () => {
           ))}
         </Container>
       </Paper>
-      <Divider />
       <RoundsComponent legion={legion} isAdminUser={isAdminUser}/>
 
       <Modal
