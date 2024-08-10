@@ -1,6 +1,6 @@
 import { Box, Typography, Divider, Button } from '@mui/material';
 
-const LegionRoundComponent = () => {
+const RoundComponent = () => {
 
   return (
     <Box>
@@ -11,4 +11,4 @@ const LegionRoundComponent = () => {
   );
 };
 
-export default LegionRoundComponent;
+export default RoundComponent;
