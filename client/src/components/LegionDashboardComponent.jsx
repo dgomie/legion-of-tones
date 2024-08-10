@@ -169,7 +169,7 @@ const LegionDashboardComponent = () => {
           ))}
         </Container>
       </Paper>
-      <RoundsComponent legion={legion} isAdminUser={isAdminUser}/>
+      <RoundsComponent legion={legion} isAdminUser={isAdminUser} isUserInLegion={isUserInLegion}/>
 
       <Modal
         open={isModalOpen}
