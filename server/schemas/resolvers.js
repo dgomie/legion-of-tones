@@ -1,7 +1,6 @@
-const { User, Legion } = require("../models");
-const { signToken, AuthenticationError } = require("../utils/auth");
+const { User, Legion } = require('../models');
+const { signToken, AuthenticationError } = require('../utils/auth');
 const mongoose = require('mongoose');
-
 
 const resolvers = {
   Query: {
@@ -59,7 +58,7 @@ const resolvers = {
     removeUser: async (parent, { userId }) => {
       const deletedUser = await User.findByIdAndDelete(userId);
       if (!deletedUser) {
-        throw new Error("User not found.");
+        throw new Error('User not found.');
       }
       return deletedUser;
     },
@@ -99,7 +98,7 @@ const resolvers = {
     removeLegion: async (parent, { legionId }) => {
       const deletedLegion = await Legion.findByIdAndDelete(legionId);
       if (!deletedLegion) {
-        throw new Error("Legion not found.");
+        throw new Error('Legion not found.');
       }
       return deletedLegion;
     },
@@ -134,6 +133,19 @@ const resolvers = {
       Object.assign(round, roundData);
       await legion.save();
       return legion;
+    },
+
+    createSong: async (_, { userId, title, artist, url }) => {
+      const newSong = new Song({ userId, title, artist, url });
+      return await newSong.save();
+    },
+    updateSong: async (_, { _id, title, artist, url }) => {
+      const updatedSong = await Song.findByIdAndUpdate(
+        _id,
+        { title, artist, url },
+        { new: true }
+      );
+      return updatedSong;
     },
   },
 };
