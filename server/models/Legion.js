@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose');
 
 // Define the song schema
 const songSchema = new Schema({
+  _id: { type: Schema.Types.ObjectId, auto: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
   title: String,
   artist: String,
   url: String,

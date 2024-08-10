@@ -20,6 +20,8 @@ const typeDefs = `
   }
 
   type Song {
+    _id: ID!
+    userId: ID!
     title: String!
     artist: String!
     url: String!
@@ -133,6 +135,8 @@ const typeDefs = `
     removeLegion(legionId: ID!): Legion
     createRound(legionId: ID!, roundInput: RoundInput!): Legion
     updateRound(legionId: ID!, roundId: ID!, roundData: UpdateRoundInput!): Legion
+    createSong(userId: ID!, title: String!, artist: String!, url: String!): Song
+    updateSong(_id: ID!, title: String, artist: String, url: String): Song
   }
 `;
 
