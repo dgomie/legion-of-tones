@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import share from '../images/share.svg';
 import change from '../images/change.svg';
+import vote from '../images/vote.svg';
+import playlist from '../images/playlist.svg';
 
 const RoundComponent = () => {
   const { legionId, roundId } = useParams();
@@ -33,6 +35,14 @@ const RoundComponent = () => {
     console.log('changed')
   }
 
+  const handleVoteClick = () => {
+    console.log('voted')
+  }
+
+  const handlePlaylistClick = () => {
+    console.log('playlist')
+  }
+
   return (
     <Box>
       <Button variant="contained" color="primary" onClick={handleBackClick} sx={{mb: 2}}>
@@ -56,6 +66,21 @@ const RoundComponent = () => {
       <Typography>Change Song</Typography>
       </Button>
       </Container>
+
+      <Container sx={{display:"flex", justifyContent:"center"}}>
+      <Button onClick={handleVoteClick} sx={{display:"block"}}>
+      <img src={vote} width="45px"/>
+      <Typography>Vote</Typography>
+      </Button>
+      </Container>
+
+      <Container sx={{display:"flex", justifyContent:"center"}}>
+      <Button onClick={handlePlaylistClick} sx={{display:"block"}}>
+      <img src={playlist} width="45px"/>
+      <Typography>Listen to Playlist</Typography>
+      </Button>
+      </Container>
+
     </Box>
   );
 };
