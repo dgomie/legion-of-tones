@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -21,6 +22,21 @@ const RoundComponent = () => {
   const { loading, error, data } = useQuery(GET_LEGION, {
     variables: { id: legionId },
   });
+
+  const [submitDeadline, setSubmitDeadline] = useState(null);
+  const [voteDeadline, setVoteDeadline] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      const legion = data.legion;
+      const round = legion?.rounds.find((r) => r._id === roundId);
+
+      if (round) {
+        setSubmitDeadline(new Date(parseInt(round.submissionDeadline, 10)));
+        setVoteDeadline(new Date(parseInt(round.voteDeadline, 10)));
+      }
+    }
+  }, [data, roundId]);
 
   if (loading) return <CircularProgress />;
   if (error) return <Typography>Error loading data</Typography>;
@@ -51,19 +67,9 @@ const RoundComponent = () => {
   };
 
   const currentDate = new Date();
-  console.log('Current Date:', currentDate);
 
-  const submitDeadlineTimestamp = 1723586400000; // Replace with actual timestamp if different
-  const voteDeadlineTimestamp = 1723586400000; // Replace with actual timestamp if different
-
-  const submitDeadline = new Date(submitDeadlineTimestamp);
-  console.log('Submission Deadline:', submitDeadlineTimestamp, submitDeadline);
-
-  const voteDeadline = new Date(voteDeadlineTimestamp);
-  console.log('Vote Deadline:', voteDeadlineTimestamp, voteDeadline);
-
-  const isBeforeSubmitDeadline = currentDate < submitDeadline;
-  const isBeforeVoteDeadline = currentDate < voteDeadline;
+  const isBeforeSubmitDeadline = submitDeadline && currentDate < submitDeadline;
+  const isBeforeVoteDeadline = voteDeadline && currentDate < voteDeadline;
 
   const formatDate = (date) => {
     return date.toLocaleString('en-US', {
@@ -75,9 +81,6 @@ const RoundComponent = () => {
       second: '2-digit',
     });
   };
-
-  console.log('Formatted Submission Deadline:', formatDate(submitDeadline));
-  console.log('Formatted Vote Deadline:', formatDate(voteDeadline));
 
   return (
     <Box>
@@ -98,8 +101,12 @@ const RoundComponent = () => {
       <Box sx={{ my: 2 }}>
         <Typography variant="h6">Current Date:</Typography>
         <Typography variant="body1">{formatDate(currentDate)}</Typography>
-        <Typography variant="h6">Submission Deadline:</Typography>
-        <Typography variant="body1">{formatDate(submitDeadline)}</Typography>
+        {submitDeadline && (
+          <>
+            <Typography variant="h6">Submission Deadline:</Typography>
+            <Typography variant="body1">{formatDate(submitDeadline)}</Typography>
+          </>
+        )}
       </Box>
 
       {isBeforeSubmitDeadline && (
