@@ -1,5 +1,21 @@
 const { Schema, model } = require('mongoose');
 
+// Function to round the date to the nearest hour
+function getDate() {
+    let now = new Date();
+    let minutes = now.getMinutes();
+    
+    if (minutes >= 30) {
+        now.setHours(now.getHours() + 1);
+    }
+    
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    
+    return now;
+}
+
 // Define the song schema
 const songSchema = new Schema({
   _id: { type: Schema.Types.ObjectId, auto: true },
@@ -55,7 +71,7 @@ legionSchema.virtual('numPlayers').get(function() {
 // Pre-save hook to add rounds
 legionSchema.pre('save', function(next) {
   if (this.isNew) {
-    let currentDate = new Date();
+    let currentDate = getDate();
     for (let i = 0; i < this.numRounds; i++) {
       const submissionDeadline = new Date(currentDate);
       submissionDeadline.setDate(submissionDeadline.getDate() + this.submitTime);
@@ -79,4 +95,4 @@ legionSchema.pre('save', function(next) {
 
 const Legion = model('Legion', legionSchema);
 
-module.exports = Legion;module.exports = Legion;
+module.exports = Legion;
