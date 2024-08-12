@@ -12,7 +12,7 @@ import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import share from '../images/share.svg';
 import change from '../images/change.svg';
-import VoteComponent from './submissions/SongSubmission';
+import VoteComponent from './submissions/VoteSubmission';
 
 
 const RoundComponent = () => {
