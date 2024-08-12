@@ -2,13 +2,17 @@ import vote from '../../images/vote.svg';
 import playlist from '../../images/playlist.svg';
 import { Container, Button, Typography } from '@mui/material';
 
-const VoteComponent = () => {
+const VoteComponent = ({legion, round}) => {
   const handleVoteClick = () => {
     console.log('voted');
+    console.log("legion", legion)
+    console.log("round", round)
   };
 
   const handlePlaylistClick = () => {
     console.log('playlist');
+    console.log("legion", legion)
+    console.log("round", round)
   };
 
   return (
