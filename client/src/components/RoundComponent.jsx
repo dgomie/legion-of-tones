@@ -94,7 +94,7 @@ const RoundComponent = () => {
       </Box>
 
       {isBeforeSubmitDeadline && (
-       <SongSubmissionComponent />
+       <SongSubmissionComponent legion={legion} round={round}/>
       )}
 
       {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
