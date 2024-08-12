@@ -10,9 +10,8 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
-import share from '../images/share.svg';
-import change from '../images/change.svg';
 import VoteComponent from './submissions/VoteSubmission';
+import SongSubmissionComponent from './submissions/SongSubmission';
 
 
 const RoundComponent = () => {
@@ -50,13 +49,6 @@ const RoundComponent = () => {
     navigate(`/legions/${legionId}`);
   };
 
-  const handleShareClick = () => {
-    console.log('shared');
-  };
-
-  const handleChangeClick = () => {
-    console.log('changed');
-  };
 
   const currentDate = new Date();
 
@@ -102,21 +94,7 @@ const RoundComponent = () => {
       </Box>
 
       {isBeforeSubmitDeadline && (
-        <>
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleShareClick} sx={{ display: 'block' }}>
-              <img src={share} width="50px" />
-              <Typography>Submit Song</Typography>
-            </Button>
-          </Container>
-
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleChangeClick} sx={{ display: 'block' }}>
-              <img src={change} width="45px" />
-              <Typography>Change Song</Typography>
-            </Button>
-          </Container>
-        </>
+       <SongSubmissionComponent />
       )}
 
       {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
