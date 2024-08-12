@@ -1,4 +1,5 @@
-import { Box, Typography, Divider, Button } from '@mui/material';
+import { Box, Typography, Divider, Button, Container } from '@mui/material';
+import wizard from '../images/1.png';
 
 const AboutComponent = () => {
   const handleDonateClick = () => {
@@ -6,23 +7,31 @@ const AboutComponent = () => {
   };
 
   return (
-    <Box>
-      <Typography variant="h3" sx={{ fontFamily: 'medievalSharp' }}>
+    <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <Typography variant="h3" sx={{ fontFamily: 'medievalSharp', textAlign: 'center' }}>
         About Us
       </Typography>
-      <Divider sx={{ marginY: 2 }} />
-      <Box>
-        <Typography sx={{ fontWeight: 'bold' }}>
-          Building and maintaining a melodically enchanted realms takes a lot of
-          mana! Consider donating potions of awakening or even a coffee to help
-          the dev wizards slay bugs, maintain the realms, and expand the Legion.
+      <Divider sx={{ marginY: 2, width: '100%' }} />
+      <img src={wizard} width='370px' />
+      <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+        <Typography>
+          Building and maintaining a melodically enchanted realms takes a lot
+          of mana! Consider donating potions of awakening or even a coffee to
+          help the dev wizards slay bugs, maintain the realms, and expand the
+          Legion.
         </Typography>
-        <Button variant="contained" color="primary" onClick={handleDonateClick}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDonateClick}
+          sx={{ marginY: 2 }}
+        >
           Donate Here
         </Button>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
 export default AboutComponent;
+
