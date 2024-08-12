@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -12,6 +12,7 @@ import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import VoteComponent from './submissions/VoteSubmission';
 import SongSubmissionComponent from './submissions/SongSubmission';
+import AuthService from "../utils/auth"
 
 
 const RoundComponent = () => {
@@ -24,6 +25,7 @@ const RoundComponent = () => {
 
   const [submitDeadline, setSubmitDeadline] = useState(null);
   const [voteDeadline, setVoteDeadline] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -34,6 +36,8 @@ const RoundComponent = () => {
         setSubmitDeadline(new Date(parseInt(round.submissionDeadline, 10)));
         setVoteDeadline(new Date(parseInt(round.voteDeadline, 10)));
       }
+
+      setCurrentUser(AuthService.getProfile())
     }
   }, [data, roundId]);
 
@@ -48,7 +52,6 @@ const RoundComponent = () => {
   const handleBackClick = () => {
     navigate(`/legions/${legionId}`);
   };
-
 
   const currentDate = new Date();
 
@@ -94,11 +97,11 @@ const RoundComponent = () => {
       </Box>
 
       {isBeforeSubmitDeadline && (
-       <SongSubmissionComponent legion={legion} round={round}/>
+       <SongSubmissionComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
-
+      {/* TODO: !isBeforeSubmitDeadline */}
       {isBeforeSubmitDeadline && isBeforeVoteDeadline && (
-       <VoteComponent legion={legion} round={round}/>
+       <VoteComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
     </Box>
   );
