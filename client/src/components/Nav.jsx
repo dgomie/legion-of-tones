@@ -48,7 +48,7 @@ function Nav() {
   };
 
   const pages = isLoggedIn ? ['dashboard', 'legions', 'profile'] : ['login'];
-  const settings = ['settings', 'logout'];
+  const settings = ['about', 'settings', 'logout'];
 
   return (
     <AppBar position="static" sx={{ mb: 3 }}>
