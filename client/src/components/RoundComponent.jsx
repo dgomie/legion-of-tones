@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,10 +10,10 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
-import share from '../images/share.svg';
-import change from '../images/change.svg';
-import vote from '../images/vote.svg';
-import playlist from '../images/playlist.svg';
+import VoteComponent from './submissions/VoteSubmission';
+import SongSubmissionComponent from './submissions/SongSubmission';
+import AuthService from "../utils/auth"
+
 
 const RoundComponent = () => {
   const { legionId, roundId } = useParams();
@@ -25,6 +25,7 @@ const RoundComponent = () => {
 
   const [submitDeadline, setSubmitDeadline] = useState(null);
   const [voteDeadline, setVoteDeadline] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     if (data) {
@@ -35,6 +36,8 @@ const RoundComponent = () => {
         setSubmitDeadline(new Date(parseInt(round.submissionDeadline, 10)));
         setVoteDeadline(new Date(parseInt(round.voteDeadline, 10)));
       }
+
+      setCurrentUser(AuthService.getProfile())
     }
   }, [data, roundId]);
 
@@ -48,22 +51,6 @@ const RoundComponent = () => {
 
   const handleBackClick = () => {
     navigate(`/legions/${legionId}`);
-  };
-
-  const handleShareClick = () => {
-    console.log('shared');
-  };
-
-  const handleChangeClick = () => {
-    console.log('changed');
-  };
-
-  const handleVoteClick = () => {
-    console.log('voted');
-  };
-
-  const handlePlaylistClick = () => {
-    console.log('playlist');
   };
 
   const currentDate = new Date();
@@ -110,39 +97,11 @@ const RoundComponent = () => {
       </Box>
 
       {isBeforeSubmitDeadline && (
-        <>
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleShareClick} sx={{ display: 'block' }}>
-              <img src={share} width="50px" />
-              <Typography>Submit Song</Typography>
-            </Button>
-          </Container>
-
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleChangeClick} sx={{ display: 'block' }}>
-              <img src={change} width="45px" />
-              <Typography>Change Song</Typography>
-            </Button>
-          </Container>
-        </>
+       <SongSubmissionComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
-
-      {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
-        <>
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleVoteClick} sx={{ display: 'block' }}>
-              <img src={vote} width="45px" />
-              <Typography>Vote</Typography>
-            </Button>
-          </Container>
-
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handlePlaylistClick} sx={{ display: 'block' }}>
-              <img src={playlist} width="45px" />
-              <Typography>Listen to Playlist</Typography>
-            </Button>
-          </Container>
-        </>
+      {/* TODO: !isBeforeSubmitDeadline */}
+      {isBeforeSubmitDeadline && isBeforeVoteDeadline && (
+       <VoteComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
     </Box>
   );
