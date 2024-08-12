@@ -12,8 +12,8 @@ import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import share from '../images/share.svg';
 import change from '../images/change.svg';
-import vote from '../images/vote.svg';
-import playlist from '../images/playlist.svg';
+import VoteComponent from './submissions/SongSubmission';
+
 
 const RoundComponent = () => {
   const { legionId, roundId } = useParams();
@@ -56,14 +56,6 @@ const RoundComponent = () => {
 
   const handleChangeClick = () => {
     console.log('changed');
-  };
-
-  const handleVoteClick = () => {
-    console.log('voted');
-  };
-
-  const handlePlaylistClick = () => {
-    console.log('playlist');
   };
 
   const currentDate = new Date();
@@ -128,21 +120,7 @@ const RoundComponent = () => {
       )}
 
       {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
-        <>
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleVoteClick} sx={{ display: 'block' }}>
-              <img src={vote} width="45px" />
-              <Typography>Vote</Typography>
-            </Button>
-          </Container>
-
-          <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handlePlaylistClick} sx={{ display: 'block' }}>
-              <img src={playlist} width="45px" />
-              <Typography>Listen to Playlist</Typography>
-            </Button>
-          </Container>
-        </>
+       <VoteComponent />
       )}
     </Box>
   );
