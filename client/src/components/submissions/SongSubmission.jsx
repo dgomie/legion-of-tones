@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import share from '../../images/share.svg';
 import change from '../../images/change.svg';
 import {
@@ -13,14 +13,16 @@ import {
   TextField,
   Alert,
 } from '@mui/material';
-import { useMutation, useQuery } from '@apollo/client';
-import { UPDATE_LEGION } from '../../utils/mutations';
+import { useMutation } from '@apollo/client';
+import { ADD_SONG_TO_ROUND } from '../../utils/mutations'; // Import the mutation
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);
-  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [url, setUrl] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
+
+  const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND); // Use the mutation
 
   const handleShareClick = () => {
     setOpen(true);
@@ -37,22 +39,34 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
     setError('');
   };
 
-  const handleSubmit = () => {
-    if (!youtubeUrl) {
+  const handleSubmit = async () => {
+    if (!url) {
       setError('Please enter a YouTube URL.');
       return;
     }
-    console.log('YouTube URL:', youtubeUrl);
-    console.log('Comment:', comment);
-    // Add your submission logic here
-    setOpen(false);
-    setError('');
-    setYoutubeUrl('');
-    setComment('');
+
+    try {
+      await addSongToRound({
+        variables: {
+          legionId: legion._id,
+          roundNumber: round.roundNumber,
+          songInput: {
+            url,
+            comment,
+            userId: currentUser.data._id,
+          },
+        },
+      });
+
+      setOpen(false);
+      setError('');
+    } catch (error) {
+      setError('An error occurred while submitting your song.');
+    }
   };
 
   const hasSubmitted = round.submissions.some(
-    (submission) => submission.userId === currentUser.id
+    (submission) => submission.userId === currentUser.data._id
   );
 
   return (
@@ -87,8 +101,8 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
             type="url"
             fullWidth
             variant="standard"
-            value={youtubeUrl}
-            onChange={(e) => setYoutubeUrl(e.target.value)}
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
           />
           <TextField
             margin="dense"
