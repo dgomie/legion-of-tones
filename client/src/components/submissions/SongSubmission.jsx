@@ -21,6 +21,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [url, setUrl] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false); // Add success state
 
   const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND); // Use the mutation
 
@@ -37,6 +38,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const handleClose = () => {
     setOpen(false);
     setError('');
+    setSuccess(false); // Reset success state on close
   };
 
   const handleSubmit = async () => {
@@ -58,8 +60,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         },
       });
 
-      setOpen(false);
-      setError('');
+      setSuccess(true); // Set success state on successful submission
     } catch (error) {
       setError('An error occurred while submitting your song.');
     }
@@ -88,35 +89,41 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </Container>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Submit Your Song</DialogTitle>
+        <DialogTitle>{success ? 'Success' : 'Submit Your Song'}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please enter the YouTube URL of your song and a comment.
-          </DialogContentText>
-          {error && <Alert severity="error">{error}</Alert>}
-          <TextField
-            autoFocus
-            margin="dense"
-            label="YouTube URL"
-            type="url"
-            fullWidth
-            variant="standard"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="Comment"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
+          {success ? (
+            <Alert severity="success">Song submitted successfully!</Alert>
+          ) : (
+            <>
+              <DialogContentText>
+                Please enter the YouTube URL of your song and a comment.
+              </DialogContentText>
+              {error && <Alert severity="error">{error}</Alert>}
+              <TextField
+                autoFocus
+                margin="dense"
+                label="YouTube URL"
+                type="url"
+                fullWidth
+                variant="standard"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Comment"
+                type="text"
+                fullWidth
+                variant="standard"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+            </>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleClose}>Close</Button>
+          {!success && <Button onClick={handleSubmit}>Submit</Button>}
         </DialogActions>
       </Dialog>
     </>
