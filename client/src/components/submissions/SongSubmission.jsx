@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import share from '../../images/share.svg';
 import change from '../../images/change.svg';
 import {
@@ -22,8 +22,17 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false); // Add success state
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Add hasSubmitted state
 
   const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND); // Use the mutation
+
+  useEffect(() => {
+    setHasSubmitted(
+      round.submissions.some(
+        (submission) => submission.userId === currentUser.data._id
+      )
+    );
+  }, [round.submissions, currentUser.data._id]);
 
   const handleShareClick = () => {
     setOpen(true);
@@ -61,14 +70,11 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
       });
 
       setSuccess(true); // Set success state on successful submission
+      setHasSubmitted(true); // Update hasSubmitted state
     } catch (error) {
       setError('An error occurred while submitting your song.');
     }
   };
-
-  const hasSubmitted = round.submissions.some(
-    (submission) => submission.userId === currentUser.data._id
-  );
 
   return (
     <>
