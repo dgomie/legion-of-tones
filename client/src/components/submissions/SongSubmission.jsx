@@ -1,18 +1,53 @@
+import React, { useState } from 'react';
 import share from '../../images/share.svg';
 import change from '../../images/change.svg';
-import { Container, Button, Typography } from '@mui/material';
+import {
+  Container,
+  Button,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Alert,
+} from '@mui/material';
+
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
+  const [open, setOpen] = useState(false);
+  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [comment, setComment] = useState('');
+  const [error, setError] = useState('');
+
   const handleShareClick = () => {
-    console.log('shared');
-    console.log('legion', legion);
-    console.log('round', round);
+    setOpen(true);
   };
 
   const handleChangeClick = () => {
     console.log('changed');
     console.log('legion', legion);
     console.log('round', round);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setError('');
+  };
+
+  const handleSubmit = () => {
+    if (!youtubeUrl) {
+      setError('Please enter a YouTube URL.');
+      return;
+    }
+    console.log('YouTube URL:', youtubeUrl);
+    console.log('Comment:', comment);
+    // Add your submission logic here
+    setOpen(false);
+    setError('');
+    setYoutubeUrl('');
+    setComment('');
   };
 
   const hasSubmitted = round.submissions.some(
@@ -37,6 +72,38 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
           </Button>
         </Container>
       )}
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Submit Your Song</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter the YouTube URL of your song and a comment.
+          </DialogContentText>
+          {error && <Alert severity="error">{error}</Alert>}
+          <TextField
+            autoFocus
+            margin="dense"
+            label="YouTube URL"
+            type="url"
+            fullWidth
+            variant="standard"
+            value={youtubeUrl}
+            onChange={(e) => setYoutubeUrl(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            label="Comment"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
