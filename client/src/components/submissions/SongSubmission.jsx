@@ -13,7 +13,8 @@ import {
   TextField,
   Alert,
 } from '@mui/material';
-
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_LEGION } from '../../utils/mutations';
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);

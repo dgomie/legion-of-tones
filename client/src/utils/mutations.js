@@ -120,4 +120,30 @@ export const UPDATE_ROUND = gql`
   }
 `;
 
+export const CREATE_SONG = gql`
+  mutation createSong($userId: ID!, $title: String, $artist: String, $url: String!) {
+    createSong(userId: $userId, title: $title, artist: $artist, url: $url) {
+      _id
+      userId
+      title
+      artist
+      url
+      comment
+    }
+  }
+`;
+
+export const UPDATE_SONG = gql`
+  mutation updateSong($_id: ID!, $title: String, $artist: String, $url: String) {
+    updateSong(_id: $_id, title: $title, artist: $artist, url: $url) {
+      _id
+      userId
+      title
+      artist
+      url
+      comment
+    }
+  }
+`;
+
 
