@@ -22,6 +22,7 @@ const songSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   title: String,
   artist: String,
+  comment: String,
   url: String,
 });
 

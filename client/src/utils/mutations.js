@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
@@ -105,7 +105,11 @@ export const CREATE_ROUND = gql`
 `;
 
 export const UPDATE_ROUND = gql`
-  mutation updateRound($legionId: ID!, $roundId: ID!, $roundData: UpdateRoundInput!) {
+  mutation updateRound(
+    $legionId: ID!
+    $roundId: ID!
+    $roundData: UpdateRoundInput!
+  ) {
     updateRound(legionId: $legionId, roundId: $roundId, roundData: $roundData) {
       _id
       rounds {
@@ -120,4 +124,28 @@ export const UPDATE_ROUND = gql`
   }
 `;
 
-
+export const ADD_SONG_TO_ROUND = gql`
+  mutation addSongToRound(
+    $legionId: ID!
+    $roundNumber: Int!
+    $songInput: SongInput!
+  ) {
+    addSongToRound(
+      legionId: $legionId
+      roundNumber: $roundNumber
+      songInput: $songInput
+    ) {
+      _id
+      rounds {
+        _id
+        roundNumber
+        submissions {
+          _id
+          title
+          artist
+          url
+        }
+      }
+    }
+  }
+`;

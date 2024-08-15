@@ -22,9 +22,10 @@ const typeDefs = `
   type Song {
     _id: ID!
     userId: ID!
-    title: String!
-    artist: String!
+    title: String
+    artist: String
     url: String!
+    comment: String
   }
 
   type Vote {
@@ -117,6 +118,14 @@ const typeDefs = `
   isComplete: Boolean
   }
 
+  input SongInput {
+  userId: ID!
+  title: String
+  artist: String
+  comment: String
+  url: String!
+ }
+
   input UpdateRoundInput {
   roundNumber: Int
   prompt: String
@@ -135,8 +144,7 @@ const typeDefs = `
     removeLegion(legionId: ID!): Legion
     createRound(legionId: ID!, roundInput: RoundInput!): Legion
     updateRound(legionId: ID!, roundId: ID!, roundData: UpdateRoundInput!): Legion
-    createSong(userId: ID!, title: String!, artist: String!, url: String!): Song
-    updateSong(_id: ID!, title: String, artist: String, url: String): Song
+    addSongToRound(legionId: ID!, roundNumber: Int!, songInput: SongInput!): Legion
   }
 `;
 
