@@ -99,8 +99,8 @@ const RoundComponent = () => {
       {isBeforeSubmitDeadline && (
        <SongSubmissionComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
-      {/* TODO: !isBeforeSubmitDeadline */}
-      {isBeforeSubmitDeadline && isBeforeVoteDeadline && (
+      {/* TODO: Separate the Vote from Listen to Playlist */}
+      {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
        <VoteComponent legion={legion} round={round} currentUser={currentUser}/>
       )}
     </Box>
