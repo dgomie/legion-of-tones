@@ -1,14 +1,3 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  Paper,
-  Card,
-  CardContent,
-} from '@mui/material';
-import Auth from '../utils/auth';
 import DescriptionComponent from './DescriptionComponent';
 import hero from '../images/lot-hero.png';
 
