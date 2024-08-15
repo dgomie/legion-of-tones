@@ -100,7 +100,7 @@ const startApolloServer = async () => {
     }
   });
 
-  app.post('/verify-password', async (req, res) => {
+  app.post('/verify-password', verifyJWT, async (req, res) => {
     const { userId, currentPassword } = req.body;
   
     try {
@@ -122,7 +122,7 @@ const startApolloServer = async () => {
     }
   });
 
-  app.post('/update-password', async (req, res) => {
+  app.post('/update-password', verifyJWT, async (req, res) => {
     const { userId, newPassword } = req.body;
   
     try {

@@ -98,14 +98,14 @@ const SettingsComponent = () => {
     }
 
     try {
-      // Verify current password
-      console.log(verifyEndpoint)
       const verifyResponse = await fetch(verifyEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ userId, currentPassword }),
+
       });
       console.log(verifyResponse.body)
       if (!verifyResponse.ok) {
@@ -119,6 +119,7 @@ const SettingsComponent = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ userId, newPassword }),
       });
