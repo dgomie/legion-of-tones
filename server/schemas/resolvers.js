@@ -172,6 +172,41 @@ const resolvers = {
       }
     },
 
+    async updateSong(_, { legionId, roundNumber, songId, updateData }) {
+      try {
+        // Find the legion by its ID
+        const legion = await Legion.findById(legionId);
+
+        if (!legion) {
+          throw new UserInputError('Legion not found');
+        }
+
+        // Find the round by its round number
+        const round = legion.rounds.find(r => r.roundNumber === roundNumber);
+
+        if (!round) {
+          throw new UserInputError('Round not found');
+        }
+
+        // Find the song by its ID
+        const song = round.submissions.id(songId);
+
+        if (!song) {
+          throw new UserInputError('Song not found');
+        }
+
+        // Update the song's details
+        Object.assign(song, updateData);
+
+        await legion.save();
+
+        return legion;
+      } catch (error) {
+        console.error('Error updating song:', error.message);
+        throw new UserInputError(error.message);
+      }
+    },
+
   },
 };
 
