@@ -5,15 +5,13 @@ import {
   Button,
   CircularProgress,
   Divider,
-  Container,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
 import VoteComponent from './submissions/VoteSubmission';
 import SongSubmissionComponent from './submissions/SongSubmission';
-import AuthService from "../utils/auth"
-
+import AuthService from '../utils/auth';
 
 const RoundComponent = () => {
   const { legionId, roundId } = useParams();
@@ -37,7 +35,7 @@ const RoundComponent = () => {
         setVoteDeadline(new Date(parseInt(round.voteDeadline, 10)));
       }
 
-      setCurrentUser(AuthService.getProfile())
+      setCurrentUser(AuthService.getProfile());
     }
   }, [data, roundId]);
 
@@ -91,17 +89,27 @@ const RoundComponent = () => {
         {submitDeadline && (
           <>
             <Typography variant="h6">Submission Deadline:</Typography>
-            <Typography variant="body1">{formatDate(submitDeadline)}</Typography>
+            <Typography variant="body1">
+              {formatDate(submitDeadline)}
+            </Typography>
           </>
         )}
       </Box>
 
       {isBeforeSubmitDeadline && (
-       <SongSubmissionComponent legion={legion} round={round} currentUser={currentUser}/>
+        <SongSubmissionComponent
+          legion={legion}
+          round={round}
+          currentUser={currentUser}
+        />
       )}
       {/* TODO: Separate the Vote from Listen to Playlist */}
       {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
-       <VoteComponent legion={legion} round={round} currentUser={currentUser}/>
+        <VoteComponent
+          legion={legion}
+          round={round}
+          currentUser={currentUser}
+        />
       )}
     </Box>
   );
