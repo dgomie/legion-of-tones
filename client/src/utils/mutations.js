@@ -149,3 +149,31 @@ export const ADD_SONG_TO_ROUND = gql`
     }
   }
 `;
+
+export const UPDATE_SONG = gql`
+  mutation updateSong(
+    $legionId: ID!
+    $roundNumber: Int!
+    $songId: ID!
+    $updateData: UpdateSongInput!
+  ) {
+    updateSong(
+      legionId: $legionId
+      roundNumber: $roundNumber
+      songId: $songId
+      updateData: $updateData
+    ) {
+      _id
+      rounds {
+        _id
+        roundNumber
+        submissions {
+          _id
+          title
+          artist
+          url
+        }
+      }
+    }
+  }
+`;

@@ -118,6 +118,14 @@ const typeDefs = `
   isComplete: Boolean
   }
 
+  input UpdateRoundInput {
+  roundNumber: Int
+  prompt: String
+  submissionDeadline: String
+  voteDeadline: String
+  isComplete: Boolean
+}
+
   input SongInput {
   userId: ID!
   title: String
@@ -126,13 +134,13 @@ const typeDefs = `
   url: String!
  }
 
-  input UpdateRoundInput {
-  roundNumber: Int
-  prompt: String
-  submissionDeadline: String
-  voteDeadline: String
-  isComplete: Boolean
-}
+   input UpdateSongInput {
+   title: String
+   artist: String
+   comment: String
+   url: String
+  }
+
 
   type Mutation {
     addUser(userData: NewUserInput!): Auth
@@ -145,6 +153,7 @@ const typeDefs = `
     createRound(legionId: ID!, roundInput: RoundInput!): Legion
     updateRound(legionId: ID!, roundId: ID!, roundData: UpdateRoundInput!): Legion
     addSongToRound(legionId: ID!, roundNumber: Int!, songInput: SongInput!): Legion
+    updateSong(legionId: ID!, roundNumber: Int!, songId: ID!, updateData: UpdateSongInput!): Legion
   }
 `;
 

@@ -14,17 +14,19 @@ import {
   Alert,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { ADD_SONG_TO_ROUND } from '../../utils/mutations'; // Import the mutation
+import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations'; // Import the mutations
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);
   const [url, setUrl] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false); // Add success state
-  const [hasSubmitted, setHasSubmitted] = useState(false); // Add hasSubmitted state
+  const [success, setSuccess] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [isChange, setIsChange] = useState(false); // Add isChange state
 
-  const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND); // Use the mutation
+  const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND);
+  const [updateSong] = useMutation(UPDATE_SONG); // Use the updateSong mutation
 
   useEffect(() => {
     setHasSubmitted(
@@ -36,18 +38,18 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
   const handleShareClick = () => {
     setOpen(true);
+    setIsChange(false); // Set isChange to false for adding a new song
   };
 
   const handleChangeClick = () => {
-    console.log('changed');
-    console.log('legion', legion);
-    console.log('round', round);
+    setOpen(true);
+    setIsChange(true); // Set isChange to true for updating an existing song
   };
 
   const handleClose = () => {
     setOpen(false);
     setError('');
-    setSuccess(false); // Reset success state on close
+    setSuccess(false);
   };
 
   const handleSubmit = async () => {
@@ -57,20 +59,38 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
     }
 
     try {
-      await addSongToRound({
-        variables: {
-          legionId: legion._id,
-          roundNumber: round.roundNumber,
-          songInput: {
-            url,
-            comment,
-            userId: currentUser.data._id,
+      if (isChange) {
+        // Use the updateSong mutation
+        await updateSong({
+          variables: {
+            legionId: legion._id,
+            roundNumber: round.roundNumber,
+            songId: round.submissions.find(
+              (submission) => submission.userId === currentUser.data._id
+            )._id,
+            updateData: {
+              url,
+              comment,
+            },
           },
-        },
-      });
+        });
+      } else {
+        // Use the addSongToRound mutation
+        await addSongToRound({
+          variables: {
+            legionId: legion._id,
+            roundNumber: round.roundNumber,
+            songInput: {
+              url,
+              comment,
+              userId: currentUser.data._id,
+            },
+          },
+        });
+      }
 
-      setSuccess(true); // Set success state on successful submission
-      setHasSubmitted(true); // Update hasSubmitted state
+      setSuccess(true);
+      setHasSubmitted(true);
     } catch (error) {
       setError('An error occurred while submitting your song.');
     }
@@ -95,10 +115,10 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </Container>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{success ? 'Success' : 'Submit Your Song'}</DialogTitle>
+        <DialogTitle>{success ? 'Success' : isChange ? 'Update Your Song' : 'Submit Your Song'}</DialogTitle>
         <DialogContent>
           {success ? (
-            <Alert severity="success">Song submitted successfully!</Alert>
+            <Alert severity="success">Song {isChange ? 'updated' : 'submitted'} successfully!</Alert>
           ) : (
             <>
               <DialogContentText>
@@ -129,7 +149,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          {!success && <Button onClick={handleSubmit}>Submit</Button>}
+          {!success && <Button onClick={handleSubmit}>{isChange ? 'Update' : 'Submit'}</Button>}
         </DialogActions>
       </Dialog>
     </>
