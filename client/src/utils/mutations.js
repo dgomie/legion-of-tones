@@ -40,6 +40,7 @@ export const UPDATE_USER = gql`
     updateUser(userId: $userId, updateData: $updateData) {
       _id
       username
+      numLegions
     }
   }
 `;
@@ -183,6 +184,24 @@ export const INCREMENT_NUM_SONGS = gql`
     incrementNumSongs(userId: $userId) {
       _id
       numSongs
+    }
+  }
+`;
+
+export const INCREMENT_NUM_LEGIONS = gql`
+  mutation incrementNumLegions($userId: ID!) {
+    incrementNumLegions(userId: $userId) {
+      _id
+      numLegions
+    }
+  }
+`;
+
+export const DECREMENT_NUM_LEGIONS = gql`
+  mutation decrementNumLegions($userId: ID!) {
+    decrementNumLegions(userId: $userId) {
+      _id
+      numLegions
     }
   }
 `;

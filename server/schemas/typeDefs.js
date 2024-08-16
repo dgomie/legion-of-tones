@@ -155,6 +155,8 @@ const typeDefs = `
     addSongToRound(legionId: ID!, roundNumber: Int!, songInput: SongInput!): Legion
     updateSong(legionId: ID!, roundNumber: Int!, songId: ID!, updateData: UpdateSongInput!): Legion
     incrementNumSongs(userId: ID!): User
+    incrementNumLegions(userId: ID!): User
+    decrementNumLegions(userId: ID!): User
   }
 `;
 

@@ -214,6 +214,22 @@ const resolvers = {
         { new: true }
       );
     },
+
+    incrementNumLegions: async (_, { userId }) => {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $inc: { numLegions: 1 } },
+        { new: true }
+      );
+    },
+
+    decrementNumLegions: async (_, { userId }) => {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $inc: { numLegions: -1 } },
+        { new: true }
+      );
+    },
   },
 };
 
