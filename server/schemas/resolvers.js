@@ -145,7 +145,7 @@ const resolvers = {
         }
 
         // Find the round by its round number
-        const round = legion.rounds.find(r => r.roundNumber === roundNumber);
+        const round = legion.rounds.find((r) => r.roundNumber === roundNumber);
 
         if (!round) {
           throw new UserInputError('Round not found');
@@ -182,7 +182,7 @@ const resolvers = {
         }
 
         // Find the round by its round number
-        const round = legion.rounds.find(r => r.roundNumber === roundNumber);
+        const round = legion.rounds.find((r) => r.roundNumber === roundNumber);
 
         if (!round) {
           throw new UserInputError('Round not found');
@@ -207,6 +207,13 @@ const resolvers = {
       }
     },
 
+    incrementNumSongs: async (_, { userId }) => {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $inc: { numSongs: 1 } },
+        { new: true }
+      );
+    },
   },
 };
 

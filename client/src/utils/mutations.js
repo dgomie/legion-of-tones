@@ -177,3 +177,12 @@ export const UPDATE_SONG = gql`
     }
   }
 `;
+
+export const INCREMENT_NUM_SONGS = gql`
+  mutation IncrementNumSongs($userId: ID!) {
+    incrementNumSongs(userId: $userId) {
+      _id
+      numSongs
+    }
+  }
+`;
