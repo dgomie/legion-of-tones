@@ -91,6 +91,7 @@ export const GET_LEGION = gql`
           artist
           url
           userId
+          _id
         }
         votes {
           userId

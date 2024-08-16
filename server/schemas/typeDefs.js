@@ -153,7 +153,7 @@ const typeDefs = `
     createRound(legionId: ID!, roundInput: RoundInput!): Legion
     updateRound(legionId: ID!, roundId: ID!, roundData: UpdateRoundInput!): Legion
     addSongToRound(legionId: ID!, roundNumber: Int!, songInput: SongInput!): Legion
-    updateSong(legionIdL ID!, roundNumber: Int!, songId: ID!, updateData: UpdateSongInput!): Legion
+    updateSong(legionId: ID!, roundNumber: Int!, songId: ID!, updateData: UpdateSongInput!): Legion
   }
 `;
 
