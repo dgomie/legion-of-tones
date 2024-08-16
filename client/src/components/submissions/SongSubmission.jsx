@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import share from '../../images/share.svg';
 import change from '../../images/change.svg';
 import {
@@ -14,7 +14,12 @@ import {
   Alert,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations'; // Import the mutations
+import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations';
+import Autosuggest from 'react-autosuggest';
+import axios from 'axios';
+
+const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API;
+const YOUTUBE_URL_REGEX = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);
@@ -23,10 +28,12 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [isChange, setIsChange] = useState(false); // Add isChange state
+  const [isChange, setIsChange] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const cache = useRef({});
 
   const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND);
-  const [updateSong] = useMutation(UPDATE_SONG); // Use the updateSong mutation
+  const [updateSong] = useMutation(UPDATE_SONG);
 
   useEffect(() => {
     setHasSubmitted(
@@ -38,12 +45,12 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
   const handleShareClick = () => {
     setOpen(true);
-    setIsChange(false); // Set isChange to false for adding a new song
+    setIsChange(false);
   };
 
   const handleChangeClick = () => {
     setOpen(true);
-    setIsChange(true); // Set isChange to true for updating an existing song
+    setIsChange(true);
   };
 
   const handleClose = () => {
@@ -57,10 +64,14 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
       setError('Please enter a YouTube URL.');
       return;
     }
-
+  
+    if (!YOUTUBE_URL_REGEX.test(url)) {
+      setError('Please enter a valid YouTube URL.');
+      return;
+    }
+  
     try {
       if (isChange) {
-        // Use the updateSong mutation
         await updateSong({
           variables: {
             legionId: legion._id,
@@ -75,7 +86,6 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
           },
         });
       } else {
-        // Use the addSongToRound mutation
         await addSongToRound({
           variables: {
             legionId: legion._id,
@@ -88,13 +98,93 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
           },
         });
       }
-
+  
       setSuccess(true);
       setHasSubmitted(true);
     } catch (error) {
       setError('An error occurred while submitting your song.');
     }
   };
+
+  const fetchSuggestions = async ({ value }) => {
+    if (!value) return;
+
+    // Check cache first
+    if (cache.current[value]) {
+      setSuggestions(cache.current[value]);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${value}&key=${YOUTUBE_API_KEY}`
+      );
+      const suggestions = response.data.items.map((item) => ({
+        title: item.snippet.title,
+        url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      }));
+      // Store in cache
+      cache.current[value] = suggestions;
+      setSuggestions(suggestions);
+    } catch (error) {
+      console.error('Error fetching YouTube suggestions:', error);
+    }
+  };
+
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const debouncedFetchSuggestions = useCallback(
+    debounce(fetchSuggestions, 500),
+    []
+  );
+
+  const onSuggestionsFetchRequested = ({ value }) => {
+    debouncedFetchSuggestions({ value });
+  };
+
+  const onSuggestionsClearRequested = () => {
+    setSuggestions([]);
+  };
+
+  const getSuggestionValue = (suggestion) => suggestion.url;
+
+  // Function to decode HTML entities
+  const decodeHtmlEntities = (text) => {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
+  };
+
+  // Updated renderSuggestion function
+  const renderSuggestion = (suggestion) => (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '10px',
+        borderBottom: '1px solid #ccc',
+      }}
+    >
+      <img
+        src={`https://img.youtube.com/vi/${
+          suggestion.url.split('v=')[1]
+        }/0.jpg`}
+        alt={suggestion.title}
+        style={{ width: '50px', height: '50px', marginRight: '10px' }}
+      />
+      <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
+        {decodeHtmlEntities(suggestion.title)}
+      </span>
+    </div>
+  );
 
   return (
     <>
@@ -115,25 +205,40 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </Container>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{success ? 'Success' : isChange ? 'Update Your Song' : 'Submit Your Song'}</DialogTitle>
+        <DialogTitle>
+          {success
+            ? 'Success'
+            : isChange
+            ? 'Update Your Song'
+            : 'Submit Your Song'}
+        </DialogTitle>
         <DialogContent>
           {success ? (
-            <Alert severity="success">Song {isChange ? 'updated' : 'submitted'} successfully!</Alert>
+            <Alert severity="success">
+              Song {isChange ? 'updated' : 'submitted'} successfully!
+            </Alert>
           ) : (
             <>
               <DialogContentText>
-                Please enter the YouTube URL of your song and a comment.
+                Search for your song or copy and paste a valid YouTube url.
               </DialogContentText>
               {error && <Alert severity="error">{error}</Alert>}
-              <TextField
-                autoFocus
-                margin="dense"
-                label="YouTube URL"
-                type="url"
-                fullWidth
-                variant="standard"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
+              <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={{
+                  autoFocus: true,
+                  margin: 'dense',
+                  label: 'YouTube URL',
+                  type: 'url',
+                  fullWidth: true,
+                  variant: 'standard',
+                  value: url,
+                  onChange: (e, { newValue }) => setUrl(newValue),
+                }}
               />
               <TextField
                 margin="dense"
@@ -149,7 +254,11 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          {!success && <Button onClick={handleSubmit}>{isChange ? 'Update' : 'Submit'}</Button>}
+          {!success && (
+            <Button onClick={handleSubmit}>
+              {isChange ? 'Update' : 'Submit'}
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </>
