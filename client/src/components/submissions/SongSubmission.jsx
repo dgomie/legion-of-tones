@@ -126,11 +126,20 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
   const getSuggestionValue = (suggestion) => suggestion.url;
 
-  const renderSuggestion = (suggestion) => (
-    <div>
-      {suggestion.title}
-    </div>
-  );
+ // Function to decode HTML entities
+const decodeHtmlEntities = (text) => {
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = text;
+  return textArea.value;
+};
+
+// Updated renderSuggestion function
+const renderSuggestion = (suggestion) => (
+  <div style={{ display: 'flex', alignItems: 'center', padding: '10px', borderBottom: '1px solid #ccc' }}>
+    <img src={`https://img.youtube.com/vi/${suggestion.url.split('v=')[1]}/0.jpg`} alt={suggestion.title} style={{ width: '50px', height: '50px', marginRight: '10px' }} />
+    <span style={{ fontSize: '14px', fontWeight: 'bold' }}>{decodeHtmlEntities(suggestion.title)}</span>
+  </div>
+);
 
   return (
     <>
@@ -151,50 +160,50 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
         </Container>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{success ? 'Success' : isChange ? 'Update Your Song' : 'Submit Your Song'}</DialogTitle>
-        <DialogContent>
-          {success ? (
-            <Alert severity="success">Song {isChange ? 'updated' : 'submitted'} successfully!</Alert>
-          ) : (
-            <>
-              <DialogContentText>
-                Please enter the YouTube URL of your song and a comment.
-              </DialogContentText>
-              {error && <Alert severity="error">{error}</Alert>}
-              <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={{
-                  autoFocus: true,
-                  margin: 'dense',
-                  label: 'YouTube URL',
-                  type: 'url',
-                  fullWidth: true,
-                  variant: 'standard',
-                  value: url,
-                  onChange: (e, { newValue }) => setUrl(newValue),
-                }}
-              />
-              <TextField
-                margin="dense"
-                label="Comment"
-                type="text"
-                fullWidth
-                variant="standard"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          {!success && <Button onClick={handleSubmit}>{isChange ? 'Update' : 'Submit'}</Button>}
-        </DialogActions>
-      </Dialog>
+  <DialogTitle>{success ? 'Success' : isChange ? 'Update Your Song' : 'Submit Your Song'}</DialogTitle>
+  <DialogContent>
+    {success ? (
+      <Alert severity="success">Song {isChange ? 'updated' : 'submitted'} successfully!</Alert>
+    ) : (
+      <>
+        <DialogContentText>
+          Search for your song or copy and paste a valid YouTube url.
+        </DialogContentText>
+        {error && <Alert severity="error">{error}</Alert>}
+        <Autosuggest
+          suggestions={suggestions}
+          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={onSuggestionsClearRequested}
+          getSuggestionValue={getSuggestionValue}
+          renderSuggestion={renderSuggestion}
+          inputProps={{
+            autoFocus: true,
+            margin: 'dense',
+            label: 'YouTube URL',
+            type: 'url',
+            fullWidth: true,
+            variant: 'standard',
+            value: url,
+            onChange: (e, { newValue }) => setUrl(newValue),
+          }}
+        />
+        <TextField
+          margin="dense"
+          label="Comment"
+          type="text"
+          fullWidth
+          variant="standard"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      </>
+    )}
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleClose}>Close</Button>
+    {!success && <Button onClick={handleSubmit}>{isChange ? 'Update' : 'Submit'}</Button>}
+  </DialogActions>
+</Dialog>
     </>
   );
 };
