@@ -19,6 +19,7 @@ import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
 const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API;
+const YOUTUBE_URL_REGEX = /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/;
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);
@@ -63,7 +64,12 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
       setError('Please enter a YouTube URL.');
       return;
     }
-
+  
+    if (!YOUTUBE_URL_REGEX.test(url)) {
+      setError('Please enter a valid YouTube URL.');
+      return;
+    }
+  
     try {
       if (isChange) {
         await updateSong({
@@ -92,7 +98,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
           },
         });
       }
-
+  
       setSuccess(true);
       setHasSubmitted(true);
     } catch (error) {
