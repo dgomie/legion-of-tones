@@ -84,6 +84,12 @@ const LegionDashboardComponent = () => {
 
   const handleDeleteLegion = async () => {
     try {
+      await decrementNumLegions({
+        variables: {
+          userId: currentUserId,
+        },
+      });
+       
       await removeLegion({
         variables: {
           legionId: legion._id,
