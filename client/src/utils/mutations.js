@@ -180,10 +180,28 @@ export const UPDATE_SONG = gql`
 `;
 
 export const INCREMENT_NUM_SONGS = gql`
-  mutation IncrementNumSongs($userId: ID!) {
+  mutation incrementNumSongs($userId: ID!) {
     incrementNumSongs(userId: $userId) {
       _id
       numSongs
+    }
+  }
+`;
+
+export const INCREMENT_NUM_VOTES = gql`
+  mutation incrementNumVotes($userId: ID!) {
+    incrementNumVotes(userId: $userId) {
+      _id
+      numVotes
+    }
+  }
+`;
+
+export const INCREMENT_NUM_VICTORIES = gql`
+  mutation incrementNumVictories($userId: ID!) {
+    incrementNumVictories(userId: $userId) {
+      _id
+      numVictories
     }
   }
 `;

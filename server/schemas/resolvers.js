@@ -215,6 +215,22 @@ const resolvers = {
       );
     },
 
+    incrementNumVotes: async (_, { userId }) => {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $inc: { numVictories: 1 } },
+        { new: true }
+      );
+    },
+
+    incrementNumVictories: async (_, { userId }) => {
+      return await User.findByIdAndUpdate(
+        userId,
+        { $inc: { numVictories: 1 } },
+        { new: true }
+      );
+    },
+
     incrementNumLegions: async (_, { userId }) => {
       return await User.findByIdAndUpdate(
         userId,
