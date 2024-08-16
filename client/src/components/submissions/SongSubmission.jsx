@@ -14,7 +14,11 @@ import {
   Alert,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations'; // Import the mutations
+import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations';
+import Autosuggest from 'react-autosuggest';
+import axios from 'axios';
+
+const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API; 
 
 const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [open, setOpen] = useState(false);
@@ -23,10 +27,11 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [isChange, setIsChange] = useState(false); // Add isChange state
+  const [isChange, setIsChange] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
 
   const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND);
-  const [updateSong] = useMutation(UPDATE_SONG); // Use the updateSong mutation
+  const [updateSong] = useMutation(UPDATE_SONG);
 
   useEffect(() => {
     setHasSubmitted(
@@ -38,12 +43,12 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
   const handleShareClick = () => {
     setOpen(true);
-    setIsChange(false); // Set isChange to false for adding a new song
+    setIsChange(false);
   };
 
   const handleChangeClick = () => {
     setOpen(true);
-    setIsChange(true); // Set isChange to true for updating an existing song
+    setIsChange(true);
   };
 
   const handleClose = () => {
@@ -60,7 +65,6 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
     try {
       if (isChange) {
-        // Use the updateSong mutation
         await updateSong({
           variables: {
             legionId: legion._id,
@@ -75,7 +79,6 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
           },
         });
       } else {
-        // Use the addSongToRound mutation
         await addSongToRound({
           variables: {
             legionId: legion._id,
@@ -95,6 +98,39 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
       setError('An error occurred while submitting your song.');
     }
   };
+
+  const fetchSuggestions = async ({ value }) => {
+    if (!value) return;
+
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${value}&key=${YOUTUBE_API_KEY}`
+      );
+      const suggestions = response.data.items.map((item) => ({
+        title: item.snippet.title,
+        url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+      }));
+      setSuggestions(suggestions);
+    } catch (error) {
+      console.error('Error fetching YouTube suggestions:', error);
+    }
+  };
+
+  const onSuggestionsFetchRequested = ({ value }) => {
+    fetchSuggestions({ value });
+  };
+
+  const onSuggestionsClearRequested = () => {
+    setSuggestions([]);
+  };
+
+  const getSuggestionValue = (suggestion) => suggestion.url;
+
+  const renderSuggestion = (suggestion) => (
+    <div>
+      {suggestion.title}
+    </div>
+  );
 
   return (
     <>
@@ -125,15 +161,22 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
                 Please enter the YouTube URL of your song and a comment.
               </DialogContentText>
               {error && <Alert severity="error">{error}</Alert>}
-              <TextField
-                autoFocus
-                margin="dense"
-                label="YouTube URL"
-                type="url"
-                fullWidth
-                variant="standard"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
+              <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={{
+                  autoFocus: true,
+                  margin: 'dense',
+                  label: 'YouTube URL',
+                  type: 'url',
+                  fullWidth: true,
+                  variant: 'standard',
+                  value: url,
+                  onChange: (e, { newValue }) => setUrl(newValue),
+                }}
               />
               <TextField
                 margin="dense"
