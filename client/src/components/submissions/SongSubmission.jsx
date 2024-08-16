@@ -14,7 +14,7 @@ import {
   Alert,
 } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { ADD_SONG_TO_ROUND, UPDATE_SONG } from '../../utils/mutations';
+import { ADD_SONG_TO_ROUND, UPDATE_SONG, INCREMENT_NUM_SONGS } from '../../utils/mutations';
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
@@ -34,6 +34,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
 
   const [addSongToRound] = useMutation(ADD_SONG_TO_ROUND);
   const [updateSong] = useMutation(UPDATE_SONG);
+  const [incrementNumSongs] = useMutation(INCREMENT_NUM_SONGS);
 
   useEffect(() => {
     setHasSubmitted(
@@ -95,6 +96,12 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
               comment,
               userId: currentUser.data._id,
             },
+          },
+        });
+
+        await incrementNumSongs({
+          variables: {
+            userId: currentUser.data._id,
           },
         });
       }

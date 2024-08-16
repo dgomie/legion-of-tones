@@ -1,13 +1,14 @@
 import { Box, Typography, Divider, TextField, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import AuthService from "../utils/auth";
-import { ADD_LEGION } from "../utils/mutations";
+import { ADD_LEGION, INCREMENT_NUM_LEGIONS } from "../utils/mutations";
 
 const CreateLegionComponent = () => {
   const currentUserId = AuthService.getProfile().data._id;
   const [addLegion] = useMutation(ADD_LEGION);
+  const [incrementNumLegions] = useMutation(INCREMENT_NUM_LEGIONS)
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -36,9 +37,15 @@ const CreateLegionComponent = () => {
           currentUserId
         },
       });
-      const newLegionId = data?.addLegion?._id; // Safely access the ID
+      const newLegionId = data?.addLegion?._id; 
       if (newLegionId) {
-        navigate(`/legions/${newLegionId}`); // Navigate to the new legion's page
+        await incrementNumLegions({
+          variables: {
+            userId: currentUserId,
+          },
+        });
+
+        navigate(`/legions/${newLegionId}`);
       } else {
         console.error("New Legion ID is undefined");
       }

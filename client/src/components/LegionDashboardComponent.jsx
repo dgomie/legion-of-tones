@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, Container, Paper, Button, Modal, TextField } from '@mui/material';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
-import { UPDATE_LEGION, REMOVE_LEGION } from '../utils/mutations';
+import { UPDATE_LEGION, REMOVE_LEGION, INCREMENT_NUM_LEGIONS, DECREMENT_NUM_LEGIONS } from '../utils/mutations';
 import PlayerName from './PlayerName';
 import RoundsComponent from './DashboardRoundsComponent';
 import AuthService from '../utils/auth';
@@ -18,6 +18,8 @@ const LegionDashboardComponent = () => {
 
   const [updateLegion] = useMutation(UPDATE_LEGION);
   const [removeLegion] = useMutation(REMOVE_LEGION);
+  const [incrementNumLegions] = useMutation(INCREMENT_NUM_LEGIONS);
+  const [decrementNumLegions] = useMutation(DECREMENT_NUM_LEGIONS);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isConfirmDelete, setConfirmDelete] = useState(false);
   const [legionSettings, setLegionSettings] = useState({
@@ -51,6 +53,11 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
+      await incrementNumLegions({
+        variables: {
+          userId: currentUserId,
+        },
+      });
     } catch (err) {
       console.error('Error joining the legion:', err);
     }
@@ -65,6 +72,11 @@ const LegionDashboardComponent = () => {
           updateData: { players: updatedPlayers },
         },
       });
+      await decrementNumLegions({
+        variables: {
+          userId: currentUserId,
+        },
+      });
     } catch (err) {
       console.error('Error leaving the legion:', err);
     }
@@ -72,6 +84,12 @@ const LegionDashboardComponent = () => {
 
   const handleDeleteLegion = async () => {
     try {
+      await decrementNumLegions({
+        variables: {
+          userId: currentUserId,
+        },
+      });
+       
       await removeLegion({
         variables: {
           legionId: legion._id,

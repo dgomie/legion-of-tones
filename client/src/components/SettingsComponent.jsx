@@ -65,8 +65,7 @@ const SettingsComponent = () => {
 
   const handleDelete = () => {
     removeUserMutation({ variables: { userId } })
-      .then((response) => {
-        console.log('User removed:', response.data.removeUser);
+      .then(() => {
         Auth.logout();
       })
       .catch((err) => {
@@ -107,7 +106,6 @@ const SettingsComponent = () => {
         body: JSON.stringify({ userId, currentPassword }),
 
       });
-      console.log(verifyResponse.body)
       if (!verifyResponse.ok) {
         const errorData = await verifyResponse.json();
         alert(errorData.message);
@@ -147,10 +145,9 @@ const SettingsComponent = () => {
       email,
     };
     try {
-      const response = await updateUser({
+      await updateUser({
         variables: { userId, updateData },
       });
-      console.log('Update successful', response);
       setUpdateSuccess(true);
       setTimeout(() => setUpdateSuccess(false), 5000);
     } catch (error) {

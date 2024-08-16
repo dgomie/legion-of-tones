@@ -1,5 +1,3 @@
-// DashboardRoundsComponent.jsx
-import React from 'react';
 import { Box, Typography, Divider, Button, Card, CardContent } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -7,11 +5,8 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Use the original rounds array directly
   const rounds = legion.rounds;
   const currentRound = rounds.find(round => round.isComplete === false);
-
-  console.log(currentRound);
 
   const handleButtonClick = (roundId) => {
     navigate(`${location.pathname}/${roundId}`);
