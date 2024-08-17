@@ -1,4 +1,4 @@
-import playlist from '../../images/playlist.svg';
+import medal from '../../images/medal.svg';
 import { Container, Button, Typography } from '@mui/material';
 
 const ViewResults = ({ legion, round }) => {
@@ -13,8 +13,8 @@ const ViewResults = ({ legion, round }) => {
     <>
       <Container sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button onClick={handleResultsClick} sx={{ display: 'block' }}>
-          <img src={playlist} width="45px" />
-          <Typography>Listen to Playlist</Typography>
+          <img src={medal} width="45px" />
+          <Typography>View Results</Typography>
         </Button>
       </Container>
     </>
