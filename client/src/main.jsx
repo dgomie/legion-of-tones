@@ -16,6 +16,7 @@ import PageNotFound from './pages/404Page.jsx';
 import CreateLegionPage from './pages/CreateLegionPage.jsx';
 import LegionDashboardPage from './pages/LegionDashboardPage.jsx';
 import LegionRoundPage from './pages/LegionRoundPage.jsx';
+import ResultsPage from './pages/ResultsPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: 'legions/:legionId/:roundId',
         element: <LegionRoundPage />,
+      },
+      {
+        path: 'results/:legionId/:roundId',
+        element: <ResultsPage />,
       },
       {
         path: 'legions/create-legion',
