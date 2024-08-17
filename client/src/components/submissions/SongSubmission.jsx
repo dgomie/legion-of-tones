@@ -138,6 +138,7 @@ const SongSubmissionComponent = ({ legion, round, currentUser }) => {
     }
   };
 
+
   const debounce = (func, delay) => {
     let timeoutId;
     return (...args) => {
