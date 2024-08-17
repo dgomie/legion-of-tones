@@ -12,6 +12,7 @@ import { GET_LEGION } from '../utils/queries';
 import VoteComponent from './submissions/VoteSubmission';
 import SongSubmissionComponent from './submissions/SongSubmission';
 import AuthService from '../utils/auth';
+import ViewResults from './submissions/ViewResults';
 
 const RoundComponent = () => {
   const { legionId, roundId } = useParams();
@@ -106,6 +107,13 @@ const RoundComponent = () => {
       {/* TODO: Separate the Vote from Listen to Playlist */}
       {!isBeforeSubmitDeadline && isBeforeVoteDeadline && (
         <VoteComponent
+          legion={legion}
+          round={round}
+          currentUser={currentUser}
+        />
+      )}
+       {!isBeforeSubmitDeadline && !isBeforeVoteDeadline && (
+        <ViewResults
           legion={legion}
           round={round}
           currentUser={currentUser}
