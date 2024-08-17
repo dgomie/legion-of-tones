@@ -1,12 +1,12 @@
 import medal from '../../images/medal.svg';
 import { Container, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const ViewResults = ({ legion, round }) => {
+    const navigate = useNavigate()
 
   const handleResultsClick = () => {
-    console.log('playlist');
-    console.log('legion', legion);
-    console.log('round', round);
+    navigate(`/results/${round._id}`)
   };
 
   return (
