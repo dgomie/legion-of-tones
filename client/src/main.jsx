@@ -17,6 +17,7 @@ import CreateLegionPage from './pages/CreateLegionPage.jsx';
 import LegionDashboardPage from './pages/LegionDashboardPage.jsx';
 import LegionRoundPage from './pages/LegionRoundPage.jsx';
 import ResultsPage from './pages/ResultsPage.jsx';
+import MascaradePage from './pages/MascaradePage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <ContactPage />,
+      },
+      {
+        path: 'melodymascarade',
+        element: <MascaradePage />,
       },
       {
         path: '404',
