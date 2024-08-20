@@ -11,9 +11,7 @@ const VoteComponent = ({ legion, round }) => {
   };
 
   const handlePlaylistClick = () => {
-    console.log('playlist');
-    console.log('legion', legion);
-    console.log('round', round);
+    navigate(`${location.pathname}/playlist`)
   };
 
   return (
