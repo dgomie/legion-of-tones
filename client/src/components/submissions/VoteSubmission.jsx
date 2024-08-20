@@ -7,7 +7,7 @@ const VoteComponent = ({ legion, round }) => {
   const navigate = useNavigate();
 
   const handleVoteClick = () => {
-    navigate(`/vote/${round._id}`)
+    navigate(`${location.pathname}/vote`)
   };
 
   const handlePlaylistClick = () => {
