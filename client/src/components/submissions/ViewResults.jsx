@@ -6,7 +6,7 @@ const ViewResults = ({ legion, round }) => {
     const navigate = useNavigate()
 
   const handleResultsClick = () => {
-    navigate(`/results/${legion._id}/${round._id}`)
+    navigate(`${location.pathname}/results`)
   };
 
   return (
