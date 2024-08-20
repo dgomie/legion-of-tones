@@ -17,7 +17,8 @@ import CreateLegionPage from './pages/CreateLegionPage.jsx';
 import LegionDashboardPage from './pages/LegionDashboardPage.jsx';
 import LegionRoundPage from './pages/LegionRoundPage.jsx';
 import ResultsPage from './pages/ResultsPage.jsx';
-import MascaradePage from './pages/MascaradePage.jsx';
+import MasqueradePage from './pages/MasqueradePage.jsx';
+import VotePage from './pages/VotePage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
         element: <LegionRoundPage />,
       },
       {
+        path: 'legions/:legionId/:roundId/vote',
+        element: <VotePage />,
+      },
+      {
         path: 'results/:legionId/:roundId',
         element: <ResultsPage />,
       },
@@ -79,8 +84,8 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
-        path: 'melodymascarade',
-        element: <MascaradePage />,
+        path: 'melodymasquerade',
+        element: <MasqueradePage />,
       },
       {
         path: '404',

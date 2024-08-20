@@ -1,12 +1,13 @@
 import vote from '../../images/vote.svg';
 import playlist from '../../images/playlist.svg';
 import { Container, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const VoteComponent = ({ legion, round }) => {
+  const navigate = useNavigate();
+
   const handleVoteClick = () => {
-    console.log('voted');
-    console.log('legion', legion);
-    console.log('round', round);
+    navigate(`${location.pathname}/vote`)
   };
 
   const handlePlaylistClick = () => {
