@@ -26,18 +26,28 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
     navigate(`${location.pathname}/${roundId}`);
   };
 
+  const formatDate = (timestamp) => {
+    const date = new Date(parseInt(timestamp, 10));
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+  
   const handleEditClick = (round) => {
     setFormData({
-      submissionDeadline: round.submissionDeadline,
-      voteDeadline: round.voteDeadline,
+      submissionDeadline: formatDate(round.submissionDeadline),
+      voteDeadline: formatDate(round.voteDeadline),
       prompt: round.prompt,
       roundNumber: round.roundNumber,
       roundId: round._id
     });
-    console.log(round)
     setIsModalOpen(true);
   };
-
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
