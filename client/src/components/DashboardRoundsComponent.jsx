@@ -1,5 +1,8 @@
-import { Box, Typography, Divider, Button, Card, CardContent } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Divider, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { UPDATE_ROUND } from '../utils/mutations';
 
 const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
   const navigate = useNavigate();
@@ -8,12 +11,62 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
   const rounds = legion.rounds;
   const currentRound = rounds.find(round => round.isComplete === false);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    submissionDeadline: '',
+    voteDeadline: '',
+    prompt: '',
+    roundNumber: '',
+    roundId: ''
+  });
+
+  const [updateRound] = useMutation(UPDATE_ROUND);
+
   const handleButtonClick = (roundId) => {
     navigate(`${location.pathname}/${roundId}`);
   };
 
-  const handleEditClick = (roundId) => {
-    navigate(`${location.pathname}/${roundId}/edit`);
+  const handleEditClick = (round) => {
+    setFormData({
+      submissionDeadline: round.submissionDeadline,
+      voteDeadline: round.voteDeadline,
+      prompt: round.prompt,
+      roundNumber: round.roundNumber,
+      roundId: round._id
+    });
+    console.log(round)
+    setIsModalOpen(true);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      await updateRound({
+        variables: {
+          legionId: legion._id,
+          roundId: formData.roundId,
+          roundData: {
+            submissionDeadline: formData.submissionDeadline,
+            voteDeadline: formData.voteDeadline,
+            prompt: formData.prompt
+          }
+        }
+      });
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating round:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const truncateString = (str, num) => {
@@ -46,7 +99,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
               <Button 
                 variant="outlined" 
                 color="secondary" 
-                onClick={() => handleEditClick(currentRound?._id)}
+                onClick={() => handleEditClick(currentRound)}
                 disabled={!currentRound}
               >
                 Edit
@@ -77,7 +130,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
                   <Button 
                     variant="outlined" 
                     color="secondary" 
-                    onClick={() => handleEditClick(rounds[index]?._id || index)}
+                    onClick={() => handleEditClick(rounds[index])}
                   >
                     Edit
                   </Button>
@@ -87,6 +140,47 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
           </Card>
         ))}
       </Box>
+
+      <Dialog open={isModalOpen} onClose={handleCancel}>
+        <DialogTitle>Edit Round {formData.roundNumber}</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            name="submissionDeadline"
+            label="Submission Deadline"
+            type="datetime-local"
+            fullWidth
+            value={formData.submissionDeadline}
+            onChange={handleFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="voteDeadline"
+            label="Vote Deadline"
+            type="datetime-local"
+            fullWidth
+            value={formData.voteDeadline}
+            onChange={handleFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="prompt"
+            label="Prompt"
+            type="text"
+            fullWidth
+            value={formData.prompt}
+            onChange={handleFormChange}
+          />
+        </DialogContent>
+        <DialogActions sx={{display:"flex", justifyContent: "center", mb:1}}>
+          <Button onClick={handleCancel} color="primary" variant='contained'>
+            Cancel
+          </Button>
+          <Button onClick={handleSaveChanges} color="primary" variant='contained'>
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };
