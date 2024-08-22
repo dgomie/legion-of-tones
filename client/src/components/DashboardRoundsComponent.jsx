@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
-import { Box, Typography, Divider, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { useState } from 'react';
+import {
+  Box,
+  Typography,
+  Divider,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { UPDATE_ROUND } from '../utils/mutations';
@@ -9,7 +21,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
   const location = useLocation();
 
   const rounds = legion.rounds;
-  const currentRound = rounds.find(round => round.isComplete === false);
+  const currentRound = rounds.find((round) => round.isComplete === false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,7 +29,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
     voteDeadline: '',
     prompt: '',
     roundNumber: '',
-    roundId: ''
+    roundId: '',
   });
 
   const [updateRound] = useMutation(UPDATE_ROUND);
@@ -28,31 +40,31 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
 
   const formatDate = (timestamp) => {
     const date = new Date(parseInt(timestamp, 10));
-    
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
-  
+
   const handleEditClick = (round) => {
     setFormData({
       submissionDeadline: formatDate(round.submissionDeadline),
       voteDeadline: formatDate(round.voteDeadline),
       prompt: round.prompt,
       roundNumber: round.roundNumber,
-      roundId: round._id
+      roundId: round._id,
     });
     setIsModalOpen(true);
   };
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -65,13 +77,13 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
           roundData: {
             submissionDeadline: formData.submissionDeadline,
             voteDeadline: formData.voteDeadline,
-            prompt: formData.prompt
-          }
-        }
+            prompt: formData.prompt,
+          },
+        },
       });
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Error updating round:", error);
+      console.error('Error updating round:', error);
     }
   };
 
@@ -92,13 +104,18 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
       <Card>
         <CardContent>
           <Typography variant="h5">Round {currentRound.roundNumber}</Typography>
-          <Typography variant="body2">{truncateString(currentRound?.prompt || 'No description available', 100)}</Typography>
+          <Typography variant="body2">
+            {truncateString(
+              currentRound?.prompt || 'No description available',
+              100
+            )}
+          </Typography>
           <Divider sx={{ marginY: 1 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             {isUserInLegion && (
-              <Button 
-                variant="contained" 
-                color="primary" 
+              <Button
+                variant="contained"
+                color="primary"
                 onClick={() => handleButtonClick(currentRound?._id)}
                 disabled={!currentRound}
               >
@@ -106,9 +123,9 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
               </Button>
             )}
             {isAdminUser && (
-              <Button 
-                variant="outlined" 
-                color="secondary" 
+              <Button
+                variant="outlined"
+                color="secondary"
                 onClick={() => handleEditClick(currentRound)}
                 disabled={!currentRound}
               >
@@ -123,23 +140,32 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
         {Array.from({ length: legion.numRounds }).map((_, index) => (
           <Card key={index} sx={{ marginRight: 2, minWidth: 300 }}>
             <CardContent>
-              <Typography variant="h5">{rounds[index]?.title || `Round ${index + 1}`}</Typography>
-              <Typography variant="body2">{truncateString(rounds[index]?.prompt || 'No description available', 100)}</Typography>
+              <Typography variant="h5">
+                {rounds[index]?.title || `Round ${index + 1}`}
+              </Typography>
+              <Typography variant="body2">
+                {truncateString(
+                  rounds[index]?.prompt || 'No description available',
+                  100
+                )}
+              </Typography>
               <Divider sx={{ marginY: 1 }} />
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 {isUserInLegion && (
-                  <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={() => handleButtonClick(rounds[index]?._id || index)}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      handleButtonClick(rounds[index]?._id || index)
+                    }
                   >
                     View Details
                   </Button>
                 )}
                 {isAdminUser && (
-                  <Button 
-                    variant="outlined" 
-                    color="secondary" 
+                  <Button
+                    variant="outlined"
+                    color="secondary"
                     onClick={() => handleEditClick(rounds[index])}
                   >
                     Edit
@@ -182,11 +208,17 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
             onChange={handleFormChange}
           />
         </DialogContent>
-        <DialogActions sx={{display:"flex", justifyContent: "center", mb:1}}>
-          <Button onClick={handleCancel} color="primary" variant='contained'>
+        <DialogActions
+          sx={{ display: 'flex', justifyContent: 'center', mb: 1 }}
+        >
+          <Button onClick={handleCancel} color="primary" variant="contained">
             Cancel
           </Button>
-          <Button onClick={handleSaveChanges} color="primary" variant='contained'>
+          <Button
+            onClick={handleSaveChanges}
+            color="primary"
+            variant="contained"
+          >
             Save Changes
           </Button>
         </DialogActions>

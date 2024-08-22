@@ -32,8 +32,8 @@ const LegionDashboardComponent = () => {
 
   useEffect(() => {
     if (data) {
-      const { name, description, maxPlayers, voteTime, submitTime } = data.legion;
-      setLegionSettings({ name, description, maxPlayers, voteTime, submitTime });
+      const { name, description, maxPlayers} = data.legion;
+      setLegionSettings({ name, description, maxPlayers });
     }
   }, [data]);
 
@@ -249,24 +249,6 @@ const LegionDashboardComponent = () => {
                 name="maxPlayers"
                 type="number"
                 value={legionSettings.maxPlayers}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Vote Time (Days)"
-                name="voteTime"
-                type="number"
-                value={legionSettings.voteTime}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
-                label="Submit Time (Days)"
-                name="submitTime"
-                type="number"
-                value={legionSettings.submitTime}
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
