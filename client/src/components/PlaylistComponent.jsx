@@ -30,11 +30,10 @@ const PlaylistComponent = () => {
         alignItems="center"
         justifyContent="center"
         textAlign="center"
-        minHeight="100vh"
       >
         <Typography variant="h3" sx={{ fontFamily: "medievalSharp" }}>Round {round.roundNumber} Playlist</Typography>
         <Typography>{round.prompt}</Typography>
-        <Paper sx={{ padding: "1rem", width: "100%", maxWidth: "600px" }}>
+        <Paper sx={{ my:"1rem", padding: "1rem", width: "100%", maxWidth: "600px" }}>
           {submissions.map((submission) => {
             const embedUrl = submission.url.replace('watch?v=', 'embed/');
             return (
