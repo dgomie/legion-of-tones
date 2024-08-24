@@ -7,8 +7,9 @@ import {
   Divider,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_LEGION } from '../utils/queries';
+import { UPDATE_ROUND } from '../utils/mutations';
 import VoteComponent from './submissions/VoteSubmission';
 import SongSubmissionComponent from './submissions/SongSubmission';
 import AuthService from '../utils/auth';
@@ -21,6 +22,8 @@ const RoundComponent = () => {
   const { loading, error, data } = useQuery(GET_LEGION, {
     variables: { id: legionId },
   });
+
+  const [updateRound] = useMutation(UPDATE_ROUND);
 
   const [submitDeadline, setSubmitDeadline] = useState(null);
   const [voteDeadline, setVoteDeadline] = useState(null);
@@ -56,6 +59,18 @@ const RoundComponent = () => {
 
   const isBeforeSubmitDeadline = submitDeadline && currentDate < submitDeadline;
   const isBeforeVoteDeadline = voteDeadline && currentDate < voteDeadline;
+
+  useEffect(() => {
+    if (!isBeforeSubmitDeadline && !isBeforeVoteDeadline) {
+      updateRound({
+        variables: {
+          legionId,
+          roundId,
+          roundData: { isComplete: true },
+        },
+      });
+    }
+  }, [isBeforeSubmitDeadline, isBeforeVoteDeadline, updateRound, legionId, roundId]);
 
   const formatDate = (date) => {
     return date.toLocaleString('en-US', {
@@ -112,7 +127,7 @@ const RoundComponent = () => {
           currentUser={currentUser}
         />
       )}
-       {!isBeforeSubmitDeadline && !isBeforeVoteDeadline && (
+      {!isBeforeSubmitDeadline && !isBeforeVoteDeadline && (
         <ViewResults
           legion={legion}
           round={round}

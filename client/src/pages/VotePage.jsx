@@ -1,23 +1,22 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Auth from "../utils/auth";
+import Auth from '../utils/auth';
+import VoteComponent from '../components/VoteComponent'
 
 function VotePage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const isLoggedIn = Auth.loggedIn(); 
+  useEffect(() => {
+    const isLoggedIn = Auth.loggedIn();
 
-        if (!isLoggedIn) {
-            navigate('/'); 
-        }
-    }, [navigate]);
+    if (!isLoggedIn) {
+      navigate('/');
+    }
+  }, [navigate]);
 
-    return (
-        <div>
-            Vote
-        </div>
-    );
+  return (
+   <VoteComponent />
+  );
 }
 
 export default VotePage;
