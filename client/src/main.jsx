@@ -20,6 +20,7 @@ import ResultsPage from './pages/ResultsPage.jsx';
 import MasqueradePage from './pages/MasqueradePage.jsx';
 import VotePage from './pages/VotePage.jsx';
 import PlaylistPage from './pages/PlaylistPage.jsx';
+import StandingsPage from './pages/StandingsPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: 'legions/:legionId/:roundId/results',
         element: <ResultsPage />,
+      },
+      {
+        path: 'legions/:legionId/standings',
+        element: <StandingsPage />,
       },
       {
         path: 'legions/create-legion',

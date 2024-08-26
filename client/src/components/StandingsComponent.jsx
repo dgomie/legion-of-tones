@@ -1,12 +1,12 @@
 import { Container } from '@mui/material';
 
-const ResultsComponent = () => {
+const StandingsComponent = () => {
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      results
+      Standings
     </Container>
   );
 };
 
-export default ResultsComponent;
+export default StandingsComponent;
