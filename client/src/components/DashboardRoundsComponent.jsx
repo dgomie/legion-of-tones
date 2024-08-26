@@ -60,6 +60,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
     });
     setIsModalOpen(true);
   };
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -103,36 +104,44 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
       <Typography variant="h6">Current Round</Typography>
       <Card>
         <CardContent>
-          <Typography variant="h5">Round {currentRound.roundNumber}</Typography>
-          <Typography variant="body2">
-            {truncateString(
-              currentRound?.prompt || 'No description available',
-              100
-            )}
-          </Typography>
-          <Divider sx={{ marginY: 1 }} />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            {isUserInLegion && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => handleButtonClick(currentRound?._id)}
-                disabled={!currentRound}
-              >
-                View Details
-              </Button>
-            )}
-            {isAdminUser && (
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => handleEditClick(currentRound)}
-                disabled={!currentRound}
-              >
-                Edit
-              </Button>
-            )}
-          </Box>
+          {currentRound?.roundNumber ? (
+            <>
+              <Typography variant="h5">Round {currentRound.roundNumber}</Typography>
+              <Typography variant="body2">
+                {truncateString(
+                  currentRound?.prompt || 'No description available',
+                  100
+                )}
+              </Typography>
+              <Divider sx={{ marginY: 1 }} />
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                {isUserInLegion && (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleButtonClick(currentRound?._id)}
+                    disabled={!currentRound}
+                  >
+                    View Details
+                  </Button>
+                )}
+                {isAdminUser && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleEditClick(currentRound)}
+                    disabled={!currentRound}
+                  >
+                    Edit
+                  </Button>
+                )}
+              </Box>
+            </>
+          ) : (
+            <Button variant="contained" color="primary">
+              Final Standings
+            </Button>
+          )}
         </CardContent>
       </Card>
       <Typography variant="h6">Rounds</Typography>
