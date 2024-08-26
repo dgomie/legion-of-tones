@@ -43,17 +43,8 @@ const RoundComponent = () => {
     }
   }, [data, roundId]);
 
-  if (loading) return <CircularProgress />;
-  if (error) return <Typography>Error loading data</Typography>;
-
   const legion = data?.legion;
   const round = legion?.rounds.find((r) => r._id === roundId);
-
-  if (!round) return <Typography>Round not found</Typography>;
-
-  const handleBackClick = () => {
-    navigate(`/legions/${legionId}`);
-  };
 
   const currentDate = new Date();
 
@@ -72,6 +63,10 @@ const RoundComponent = () => {
     }
   }, [isBeforeSubmitDeadline, isBeforeVoteDeadline, updateRound, legionId, roundId]);
 
+  const handleBackClick = () => {
+    navigate(`/legions/${legionId}`);
+  };
+
   const formatDate = (date) => {
     return date.toLocaleString('en-US', {
       year: 'numeric',
@@ -82,6 +77,18 @@ const RoundComponent = () => {
       second: '2-digit',
     });
   };
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    return <Typography>Error loading data</Typography>;
+  }
+
+  if (!round) {
+    return <Typography>Round not found</Typography>;
+  }
 
   return (
     <Box>
