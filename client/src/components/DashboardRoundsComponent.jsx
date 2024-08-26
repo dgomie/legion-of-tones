@@ -38,6 +38,10 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
     navigate(`${location.pathname}/${roundId}`);
   };
 
+  const handleFinalStandingsClick = (roundId) => {
+    navigate(`${location.pathname}/standings`);
+  };
+
   const formatDate = (timestamp) => {
     const date = new Date(parseInt(timestamp, 10));
 
@@ -138,7 +142,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
               </Box>
             </>
           ) : (
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleFinalStandingsClick}>
               Final Standings
             </Button>
           )}
