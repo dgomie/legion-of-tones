@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Auth from '../utils/auth';
+import StandingsComponent from '../components/StandingsComponent';
 
 function StandingsPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function StandingsPage() {
     return null;
   }
 
-  return <div>Standings</div>;
+  return <StandingsComponent />;
 }
 
 export default StandingsPage;
