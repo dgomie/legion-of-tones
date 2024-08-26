@@ -1,5 +1,4 @@
-import { Box, Typography, Divider, Button, Container } from '@mui/material';
-import wizard from '../images/1.png';
+import { Container } from '@mui/material';
 
 const ResultsComponent = () => {
 
