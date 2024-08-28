@@ -45,6 +45,12 @@ const roundSchema = new Schema({
   votes: [voteSchema],
 });
 
+// Define the standings schema
+const standingsSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  totalScore: { type: Number, default: 0 },
+});
+
 const legionSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -57,6 +63,7 @@ const legionSchema = new Schema(
     voteTime: { type: Number, required: true }, // in days
     submitTime: { type: Number, required: true }, // in days
     rounds: [roundSchema],
+    standings: [standingsSchema], // Add standings field
   },
   {
     toJSON: { virtuals: true }, 
@@ -93,6 +100,29 @@ legionSchema.pre('save', function(next) {
   }
   next();
 });
+
+// Pre-save hook to add new players to standings
+legionSchema.pre('save', function(next) {
+  const existingPlayerIds = this.standings.map(standing => standing.userId.toString());
+  for (const playerId of this.players) {
+    if (!existingPlayerIds.includes(playerId.toString())) {
+      this.standings.push({ userId: playerId, totalScore: 0 });
+    }
+  }
+  next();
+});
+
+// Method to remove a player
+legionSchema.methods.removePlayer = async function(playerId) {
+  // Remove player from players array
+  this.players = this.players.filter(player => player.toString() !== playerId.toString());
+
+  // Remove player from standings array
+  this.standings = this.standings.filter(standing => standing.userId.toString() !== playerId.toString());
+
+  // Save the document
+  await this.save();
+};
 
 const Legion = model('Legion', legionSchema);
 

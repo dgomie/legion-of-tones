@@ -72,6 +72,10 @@ export const UPDATE_LEGION = gql`
       numRounds
       voteTime
       submitTime
+      standings {
+       userId
+       totalScore
+      }
       rounds {
         _id
         roundNumber
@@ -220,6 +224,15 @@ export const DECREMENT_NUM_LEGIONS = gql`
     decrementNumLegions(userId: $userId) {
       _id
       numLegions
+    }
+  }
+`;
+
+export const UPDATE_STANDINGS = gql`
+  mutation updateStandings($legionId: ID!, $userId: ID!, $score: Int!) {
+    updateStandings(legionId: $legionId, playerId: $userId, score: $score) {
+      userId
+      totalScore
     }
   }
 `;

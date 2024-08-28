@@ -35,15 +35,20 @@ const typeDefs = `
   }
 
   type Round {
-  _id: ID!
-  roundNumber: Int!
-  prompt: String!
-  submissionDeadline: String!
-  voteDeadline: String!
-  submissions: [Song]!
-  votes: [Vote]!
-  isComplete: Boolean!
-}
+    _id: ID!
+    roundNumber: Int!
+    prompt: String!
+    submissionDeadline: String!
+    voteDeadline: String!
+    submissions: [Song]!
+    votes: [Vote]!
+    isComplete: Boolean!
+  }
+
+  type Standings {
+    userId: ID!
+    totalScore: Int!
+  }
 
   type Legion {
     _id: ID!
@@ -58,6 +63,7 @@ const typeDefs = `
     voteTime: Int!
     submitTime: Int!
     rounds: [Round]!
+    standings: [Standings]!
   }
 
   type Query {
@@ -66,6 +72,7 @@ const typeDefs = `
     userById(id: ID!): User
     legions: [Legion]
     legion(id: ID!): Legion
+    standings(legionId: ID!): [Standings]
   }
 
   input NewUserInput {
@@ -99,6 +106,11 @@ const typeDefs = `
     submitTime: Int!
   }
 
+  input StandingsInput {
+    userId: ID!
+    totalScore: Int!
+  }
+
   input UpdateLegionInput {
     name: String
     description: String
@@ -108,39 +120,39 @@ const typeDefs = `
     numRounds: Int
     voteTime: Int
     submitTime: Int
+    standings: [StandingsInput!]
   }
 
   input RoundInput {
-  roundNumber: Int!
-  prompt: String!
-  submissionDeadline: String!
-  voteDeadline: String!
-  isComplete: Boolean
+    roundNumber: Int!
+    prompt: String!
+    submissionDeadline: String!
+    voteDeadline: String!
+    isComplete: Boolean
   }
 
   input UpdateRoundInput {
-  roundNumber: Int
-  prompt: String
-  submissionDeadline: String
-  voteDeadline: String
-  isComplete: Boolean
-}
-
-  input SongInput {
-  userId: ID!
-  title: String
-  artist: String
-  comment: String
-  url: String!
- }
-
-   input UpdateSongInput {
-   title: String
-   artist: String
-   comment: String
-   url: String
+    roundNumber: Int
+    prompt: String
+    submissionDeadline: String
+    voteDeadline: String
+    isComplete: Boolean
   }
 
+  input SongInput {
+    userId: ID!
+    title: String
+    artist: String
+    comment: String
+    url: String!
+  }
+
+  input UpdateSongInput {
+    title: String
+    artist: String
+    comment: String
+    url: String
+  }
 
   type Mutation {
     addUser(userData: NewUserInput!): Auth
@@ -159,6 +171,7 @@ const typeDefs = `
     incrementNumVictories(userId: ID!): User
     incrementNumLegions(userId: ID!): User
     decrementNumLegions(userId: ID!): User
+    updateStandings(legionId: ID!, userId: ID!, score: Int!): [Standings]
   }
 `;
 

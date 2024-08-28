@@ -79,6 +79,10 @@ export const GET_LEGION = gql`
       numRounds
       voteTime
       submitTime
+      standings {
+        userId
+        totalScore
+      }
       rounds {
         _id
         roundNumber
@@ -100,6 +104,15 @@ export const GET_LEGION = gql`
         }
         isComplete
       }
+    }
+  }
+`;
+
+export const GET_STANDINGS = gql`
+  query standings($legionId: ID!) {
+    standings(legionId: $legionId) {
+      userId
+      totalScore
     }
   }
 `;
