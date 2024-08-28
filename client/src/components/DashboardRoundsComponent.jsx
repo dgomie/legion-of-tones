@@ -38,7 +38,7 @@ const RoundsComponent = ({ legion, isAdminUser, isUserInLegion }) => {
     navigate(`${location.pathname}/${roundId}`);
   };
 
-  const handleFinalStandingsClick = (roundId) => {
+  const handleFinalStandingsClick = () => {
     navigate(`${location.pathname}/standings`);
   };
 
