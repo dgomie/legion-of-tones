@@ -45,6 +45,12 @@ const roundSchema = new Schema({
   votes: [voteSchema],
 });
 
+// Define the standings schema
+const standingsSchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  totalScore: { type: Number, default: 0 },
+});
+
 const legionSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -57,6 +63,7 @@ const legionSchema = new Schema(
     voteTime: { type: Number, required: true }, // in days
     submitTime: { type: Number, required: true }, // in days
     rounds: [roundSchema],
+    standings: [standingsSchema], // Add standings field
   },
   {
     toJSON: { virtuals: true }, 

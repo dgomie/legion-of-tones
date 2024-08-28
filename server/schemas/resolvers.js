@@ -23,6 +23,14 @@ const resolvers = {
     legion: async (parent, { id }) => {
       return await Legion.findById(id);
     },
+
+    standings: async (parent, { legionId }) => {
+      const legion = await Legion.findById(legionId);
+      if (!legion) {
+        throw new Error('Legion not found');
+      }
+      return legion.standings;
+    },
   },
 
   Mutation: {
@@ -102,6 +110,7 @@ const resolvers = {
       }
       return deletedLegion;
     },
+
     createRound: async (_, { legionId, roundInput }) => {
       const legion = await Legion.findById(legionId);
       if (!legion) {
@@ -119,6 +128,7 @@ const resolvers = {
       await legion.save();
       return legion;
     },
+
     updateRound: async (_, { legionId, roundId, roundData }) => {
       const legion = await Legion.findById(legionId);
       if (!legion) {
@@ -245,6 +255,26 @@ const resolvers = {
         { $inc: { numLegions: -1 } },
         { new: true }
       );
+    },
+
+    updateStandings: async (_, { legionId, playerId, score }) => {
+      const legion = await Legion.findById(legionId);
+      if (!legion) {
+        throw new Error('Legion not found');
+      }
+
+      const playerStanding = legion.standings.find(
+        (standing) => standing.userId.toString() === userId
+      );
+
+      if (playerStanding) {
+        playerStanding.totalScore += score;
+      } else {
+        legion.standings.push({ playerId, totalScore: score });
+      }
+
+      await legion.save();
+      return legion.standings;
     },
   },
 };
