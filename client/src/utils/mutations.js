@@ -72,6 +72,10 @@ export const UPDATE_LEGION = gql`
       numRounds
       voteTime
       submitTime
+      standings {
+       userId
+       totalScore
+      }
       rounds {
         _id
         roundNumber

@@ -106,6 +106,11 @@ const typeDefs = `
     submitTime: Int!
   }
 
+  input StandingsInput {
+    userId: ID!
+    totalScore: Int!
+  }
+
   input UpdateLegionInput {
     name: String
     description: String
@@ -115,6 +120,7 @@ const typeDefs = `
     numRounds: Int
     voteTime: Int
     submitTime: Int
+    standings: [StandingsInput!]
   }
 
   input RoundInput {

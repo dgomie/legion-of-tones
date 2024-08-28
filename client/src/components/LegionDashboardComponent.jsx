@@ -63,15 +63,24 @@ const LegionDashboardComponent = () => {
     }
   };
 
+  console.log(legion)
   const handleLeaveLegion = async () => {
     try {
       const updatedPlayers = legion.players.filter(playerId => playerId !== currentUserId);
+      const updatedStandings = legion.standings
+        .filter(standing => standing.userId !== currentUserId)
+        .map(({ __typename, ...rest }) => rest);
+  
       await updateLegion({
         variables: {
           legionId: legion._id,
-          updateData: { players: updatedPlayers },
+          updateData: { 
+            players: updatedPlayers,
+            standings: updatedStandings,
+          },
         },
       });
+  
       await decrementNumLegions({
         variables: {
           userId: currentUserId,

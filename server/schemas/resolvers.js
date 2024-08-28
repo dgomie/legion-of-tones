@@ -94,13 +94,24 @@ const resolvers = {
       return newLegion;
     },
 
-    updateLegion: async (parent, { legionId, updateData }) => {
-      const updatedLegion = await Legion.findOneAndUpdate(
-        { _id: legionId },
-        updateData,
-        { new: true }
-      );
-      return updatedLegion;
+    updateLegion: async (_, { legionId, updateData }) => {
+      try {
+        const legion = await Legion.findById(legionId);
+        if (!legion) {
+          throw new Error('Legion not found');
+        }
+
+        // Update the legion with the new data
+        Object.assign(legion, updateData);
+
+        // Save the legion to trigger the pre-save hook
+        await legion.save();
+
+        return legion;
+      } catch (err) {
+        console.error('Error updating legion:', err);
+        throw new Error('Failed to update legion');
+      }
     },
 
     removeLegion: async (parent, { legionId }) => {
@@ -134,14 +145,18 @@ const resolvers = {
       if (!legion) {
         throw new Error('Legion not found');
       }
-
+    
       const round = legion.rounds.id(roundId);
       if (!round) {
         throw new Error('Round not found');
       }
-
+    
       Object.assign(round, roundData);
       await legion.save();
+    
+      // Manually call updateStandings after saving the Legion document
+      await legion.updateStandings();
+    
       return legion;
     },
 
