@@ -72,7 +72,6 @@ const PlayerItem = ({ playerId }) => {
   }
 
   const player = data.userById;
-  console.log(player); // Active selection
 
   return (
     <ListItem>
