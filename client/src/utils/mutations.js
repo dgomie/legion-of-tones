@@ -223,3 +223,12 @@ export const DECREMENT_NUM_LEGIONS = gql`
     }
   }
 `;
+
+export const UPDATE_STANDINGS = gql`
+  mutation updateStandings($legionId: ID!, $userId: ID!, $score: Int!) {
+    updateStandings(legionId: $legionId, playerId: $userId, score: $score) {
+      userId
+      totalScore
+    }
+  }
+`;

@@ -107,7 +107,7 @@ export const GET_LEGION = gql`
 export const GET_STANDINGS = gql`
   query standings($legionId: ID!) {
     standings(legionId: $legionId) {
-      playerId
+      userId
       totalScore
     }
   }

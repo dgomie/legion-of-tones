@@ -46,7 +46,7 @@ const typeDefs = `
   }
 
   type Standings {
-    playerId: ID!
+    userId: ID!
     totalScore: Int!
   }
 
@@ -165,7 +165,7 @@ const typeDefs = `
     incrementNumVictories(userId: ID!): User
     incrementNumLegions(userId: ID!): User
     decrementNumLegions(userId: ID!): User
-    updateStandings(legionId: ID!, playerId: ID!, score: Int!): [Standings]
+    updateStandings(legionId: ID!, userId: ID!, score: Int!): [Standings]
   }
 `;
 

@@ -257,7 +257,7 @@ const resolvers = {
       );
     },
 
-    updateStandings: async (_, { legionId, playerId, score }) => {
+    updateStandings: async (_, { legionId, userId, score }) => {
       const legion = await Legion.findById(legionId);
       if (!legion) {
         throw new Error('Legion not found');
