@@ -47,7 +47,7 @@ function Nav() {
     );
   };
 
-  const pages = isLoggedIn ? ['dashboard', 'legions', 'profile'] : ['login'];
+  const pages = isLoggedIn ? ['dashboard', 'legions', 'melody masquerade', 'profile'] : ['login'];
   const settings = ['about', 'settings', 'logout'];
 
   return (
